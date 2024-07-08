@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clothing.CMS.Application\Clothing.CMS.Application.csproj" />
+    <ProjectReference Include="..\Clothing.CMS.EntityFrameworkCore\Clothing.CMS.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Clothing.Shared\Clothing.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
