@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Clothing.CMS.Application\Clothing.CMS.Application.csproj" />
     <ProjectReference Include="..\Clothing.CMS.EntityFrameworkCore\Clothing.CMS.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Clothing.Shared\Clothing.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 
 </Project>
