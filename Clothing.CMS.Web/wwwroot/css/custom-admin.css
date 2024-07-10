@@ -1,0 +1,17 @@
+﻿#footer {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 300px);
+}
+
+@media (max-width: 1199px) {
+    #footer {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .toggle-sidebar #footer {
+        width: 100%;
+    }
+}
