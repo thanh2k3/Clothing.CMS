@@ -25,6 +25,18 @@
     {
       "library": "bootstrap-icons@1.11.3",
       "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "boxicons@2.1.4",
+      "destination": "wwwroot/lib/boxicons/"
+    },
+    {
+      "library": "quill@2.0.2",
+      "destination": "wwwroot/lib/quill/"
+    },
+    {
+      "library": "remixicon@4.2.0",
+      "destination": "wwwroot/lib/remixicon/"
     }
   ]
 }
