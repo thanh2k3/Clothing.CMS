@@ -1,4 +1,18 @@
+using Clothing.CMS.EntityFrameworkCore.Pattern;
+using Clothing.CMS.Web.Areas.Admin.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// For Entity Framework
+var connectionString = builder.Configuration["ConnectionStrings:Database"];
+builder.Services.AddDbContext<CMSDbContext>(o => o.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOption => { sqlOption.EnableRetryOnFailure(); }));
+
+//Identity
+builder.Services.AddIdentity<CMSIdentityUser, IdentityRole>()
+				.AddEntityFrameworkStores<CMSDbContext>()
+				.AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -27,5 +41,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Populate default user admin
+DataSeed.Seed(app.Services).Wait();
 
 app.Run();
