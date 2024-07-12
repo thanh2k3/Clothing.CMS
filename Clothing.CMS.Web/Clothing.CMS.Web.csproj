@@ -21,8 +21,4 @@
     <ProjectReference Include="..\Clothing.Shared\Clothing.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-  </ItemGroup>
-
 </Project>

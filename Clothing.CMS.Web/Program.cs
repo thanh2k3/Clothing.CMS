@@ -1,4 +1,5 @@
 using Clothing.CMS.EntityFrameworkCore.Pattern;
+using Clothing.CMS.Web.Areas.Admin.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,5 +41,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Populate default user admin
+DataSeed.Seed(app.Services).Wait();
 
 app.Run();
