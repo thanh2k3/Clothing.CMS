@@ -14,6 +14,15 @@ builder.Services.AddIdentity<CMSIdentityUser, IdentityRole>()
 				.AddEntityFrameworkStores<CMSDbContext>()
 				.AddDefaultTokenProviders();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+	options.Cookie.HttpOnly = true;
+	options.ExpireTimeSpan = TimeSpan.FromDays(30);
+	options.LoginPath = $"/Admin/Account/Login";
+	options.LogoutPath = $"/Admin/Account/Logout";
+	options.AccessDeniedPath = $"/Admin/Account/AccessDenied";
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -31,6 +40,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
