@@ -70,6 +70,16 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			return View(model);
 		}
 
+        //
+        // POST: /Account/LogOut
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation(4, "User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
 		#region Helpers
 
 		private IActionResult RedirectToLocal(string returnUrl)
