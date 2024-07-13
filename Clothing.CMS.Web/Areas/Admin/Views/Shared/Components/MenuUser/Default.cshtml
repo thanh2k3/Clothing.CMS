@@ -1,0 +1,60 @@
+﻿<li class="nav-item dropdown pe-3">
+
+    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+        <img src="@User.GetUserProperty(CustomClaimTypes.AvatarURL)" alt="Profile" class="rounded-circle">
+        <span class="d-none d-md-block dropdown-toggle ps-2">
+            @User.GetUserProperty(CustomClaimTypes.GivenName)
+            @User.GetUserProperty(CustomClaimTypes.Surname)
+        </span>
+    </a><!-- End Profile Iamge Icon -->
+
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+        <li class="dropdown-header">
+            <h6>@User.GetUserProperty(CustomClaimTypes.Email)</h6>
+            <span>@User.GetUserProperty(CustomClaimTypes.Role)</span>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-person"></i>
+                <span>Hồ sơ</span>
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-gear"></i>
+                <span>Cài đặt tài khoản</span>
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <li>
+            <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-question-circle"></i>
+                <span>Cần giúp đỡ?</span>
+            </a>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post">
+            <li>
+                <button class="dropdown-item d-flex align-items-center">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Đăng xuất</span>
+                </button>
+            </li>
+        </form>
+
+    </ul><!-- End Profile Dropdown Items -->
+</li>

@@ -1,13 +1,14 @@
-﻿.sidebar-nav .menu-open {
+﻿/* Sidebar */
+.sidebar-nav .active {
     background: #f6f9ff !important;
     color: #4154f1 !important;
 }
 
-.sidebar-nav .menu-open i {
+.sidebar-nav .active i {
     color: #4154f1 !important;
 }
 
-.sidebar-nav .menu-open .bi-chevron-down {
+.sidebar-nav .active .bi-chevron-down {
     transform: rotate(180deg);
 }
 
@@ -20,8 +21,12 @@
     margin-right: 8px;
 }
 
-.sidebar-nav #forms-nav {
+.sidebar-nav .nav-content {
     display: none;
+}
+
+.sidebar-nav .menu-open {
+    display: block;
 }
 
 .sidebar-nav .nav-content a {
@@ -31,4 +36,29 @@
 .sidebar-nav .nav-content a i {
     width: 24px;
     font-size: 14px;
+}
+
+/* Footer */
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: calc(100% - 300px);
+}
+
+@media (max-width: 1199px) {
+    #footer {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .toggle-sidebar #footer {
+        width: 100%;
+    }
+}
+
+/* Dashboard */
+.dashboard .truck-card .card-icon {
+    color: #6c757d;
+    background: #e2e2e2;
 }
