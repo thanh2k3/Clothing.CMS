@@ -1,0 +1,34 @@
+﻿.sidebar-nav .menu-open {
+    background: #f6f9ff !important;
+    color: #4154f1 !important;
+}
+
+.sidebar-nav .menu-open i {
+    color: #4154f1 !important;
+}
+
+.sidebar-nav .menu-open .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+.sidebar-nav .nav-link {
+    text-align: center;
+}
+
+.sidebar-nav .nav-link i {
+    width: 24px;
+    margin-right: 8px;
+}
+
+.sidebar-nav #forms-nav {
+    display: none;
+}
+
+.sidebar-nav .nav-content a {
+    text-align: center;
+}
+
+.sidebar-nav .nav-content a i {
+    width: 24px;
+    font-size: 14px;
+}

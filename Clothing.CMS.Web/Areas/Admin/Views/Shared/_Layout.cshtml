@@ -20,6 +20,7 @@
     <!-- Lib CSS Files -->
 	<link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+	<link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     @* <link href="~/lib/boxicons/css/boxicons.min.css" rel="stylesheet"> *@
     @* <link href="~/lib/quill/quill.snow.css" rel="stylesheet">
     <link href="~/lib/quill/quill.bubble.css" rel="stylesheet"> *@
@@ -27,9 +28,10 @@
     @* <link href="~/lib/simple-datatables/style.css" rel="stylesheet"> *@
 
     <!-- Template Main CSS File -->
-	<link href="~/admin/css/style.css" rel="stylesheet">
-    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/admin/css/style.css" rel="stylesheet" asp-append-version="true">
+    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true"/>
 	<link href="~/css/custom-admin.css" rel="stylesheet" asp-append-version="true"/>
+    <link href="~/admin/css/custom.css" rel="stylesheet" asp-append-version="true"/>
 
     <!-- =======================================================
     * Template Name: NiceAdmin
@@ -273,56 +275,7 @@
 
     </header><!-- End Header -->
     <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
-
-        <ul class="sidebar-nav" id="sidebar-nav">
-
-            <li class="nav-item">
-                <a class="nav-link " href="index.html">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li><!-- End Dashboard Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="forms-elements.html">
-                            <i class="bi bi-circle"></i><span>Form Elements</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-layouts.html">
-                            <i class="bi bi-circle"></i><span>Form Layouts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-editors.html">
-                            <i class="bi bi-circle"></i><span>Form Editors</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-validation.html">
-                            <i class="bi bi-circle"></i><span>Form Validation</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Forms Nav -->
-
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="users-profile.html">
-                    <i class="bi bi-person"></i>
-                    <span>Profile</span>
-                </a>
-            </li><!-- End Profile Page Nav -->
-
-        </ul>
-
-    </aside><!-- End Sidebar-->
+    @await Component.InvokeAsync("Sidebar")<!-- End Sidebar-->
 
     <!-- ======= Main ======= -->
     <main id="main" class="main">
@@ -358,8 +311,11 @@
     <script src="~/lib/tinymce/tinymce.min.js"></script>
     <script src="~/lib/php-email-form/validate.js"></script>
 
+	<script src="~/lib/jquery/jquery.min.js"></script>
+
     <!-- Template Main JS File -->
     <script src="~/admin/js/main.js"></script>
+    <script src="~/admin/js/custom.js" asp-append-version="true"></script>
 
 </body>
 
