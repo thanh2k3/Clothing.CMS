@@ -717,7 +717,7 @@ h6 {
 
 .sidebar-nav .nav-link .bi-chevron-down {
   margin-right: 0;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.35s ease-in-out;
 }
 
 .sidebar-nav .nav-link:not(.collapsed) .bi-chevron-down {
