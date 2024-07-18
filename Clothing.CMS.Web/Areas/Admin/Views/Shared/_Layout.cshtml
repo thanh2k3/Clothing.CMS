@@ -24,7 +24,6 @@
 
     <!-- Template Main CSS File -->
     <link href="~/admin/css/style.css" rel="stylesheet" asp-append-version="true">
-    <link href="~/css/site.css" rel="stylesheet" asp-append-version="true"/>
 
     <!-- Custom CSS File -->
     <link href="~/admin/css/custom.css" rel="stylesheet" asp-append-version="true"/>
@@ -33,10 +32,10 @@
 <body>
 
     <!-- ======= Header ======= -->
-    @await Component.InvokeAsync("Header")<!-- End Header -->
+    @await Component.InvokeAsync(typeof(Clothing.CMS.Web.Areas.Admin.ViewComponents.HeaderViewComponent))<!-- End Header -->
 
     <!-- ======= Sidebar ======= -->
-    @await Component.InvokeAsync("Sidebar")<!-- End Sidebar-->
+    @await Component.InvokeAsync(typeof(Clothing.CMS.Web.Areas.Admin.ViewComponents.SidebarViewComponent))<!-- End Sidebar-->
 
     <!-- ======= Main ======= -->
     <main id="main" class="main">
@@ -46,7 +45,7 @@
     </main><!-- End #main -->
 
     <!-- ======= Footer ======= -->
-    @await Component.InvokeAsync("Footer")<!-- End Footer -->
+    @await Component.InvokeAsync(typeof(Clothing.CMS.Web.Areas.Admin.ViewComponents.FooterViewComponent))<!-- End Footer -->
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
