@@ -1,4 +1,14 @@
-﻿/* Sidebar */
+﻿/* HTML */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* Sidebar */
 .sidebar-nav .active {
     background: #f6f9ff !important;
     color: #4154f1 !important;
