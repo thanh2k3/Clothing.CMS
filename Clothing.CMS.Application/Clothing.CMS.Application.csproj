@@ -11,4 +11,10 @@
     <ProjectReference Include="..\Clothing.CMS.EntityFrameworkCore\Clothing.CMS.EntityFrameworkCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+  </ItemGroup>
+
 </Project>
