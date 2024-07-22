@@ -1,5 +1,6 @@
 using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Clothing.CMS.Web.Areas.Admin.Data;
+using Clothing.CMS.Web.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+GlobalHelper.RegisterServiceLifetimer(builder.Services);
 
 var app = builder.Build();
 
