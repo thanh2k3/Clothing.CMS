@@ -28,6 +28,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 
 GlobalHelper.RegisterServiceLifetimer(builder.Services);
+GlobalHelper.RegisterAutoMapper(builder.Services);
 
 var app = builder.Build();
 

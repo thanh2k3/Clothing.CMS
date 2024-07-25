@@ -8,6 +8,7 @@ namespace Clothing.CMS.Application.Users.Dto
         public UserMapProfile()
         {
             CreateMap<CMSIdentityUser, UserDto>();
+
             //CreateMap<CreateUserDto, CMSIdentityUser>();
             //CreateMap<EditUserDto, CMSIdentityUser>();
         }

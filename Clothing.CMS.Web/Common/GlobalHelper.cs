@@ -14,6 +14,7 @@ namespace Clothing.CMS.Web.Common
         {
             //Scoped services
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }
