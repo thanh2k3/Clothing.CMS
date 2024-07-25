@@ -1,4 +1,14 @@
-﻿/* Sidebar */
+﻿/* HTML */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* Sidebar */
 .sidebar-nav .active {
     background: #f6f9ff !important;
     color: #4154f1 !important;
@@ -61,4 +71,42 @@
 .dashboard .truck-card .card-icon {
     color: #6c757d;
     background: #e2e2e2;
+}
+
+/* Search */
+.card-search .search-bar {
+    padding: 20px 0 15px 0;
+}
+
+.card-search .search-form {
+    width: 100%;
+}
+
+.card-search .search-form input {
+    border: 0;
+    font-size: 14px;
+    color: #012970;
+    border: 1px solid rgba(1, 41, 112, 0.2);
+    padding: 7px 38px 7px 8px;
+    border-radius: 3px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.card-search .search-form input:focus,
+.card-search .search-form input:hover {
+    outline: none;
+    box-shadow: 0 0 10px 0 rgba(1, 41, 112, 0.15);
+    border: 1px solid rgba(1, 41, 112, 0.3);
+}
+
+.card-search .search-form button {
+    border: 0;
+    padding: 0;
+    margin-left: -30px;
+    background: none;
+}
+
+.card-search .search-form button i {
+    color: #012970;
 }

@@ -19,6 +19,10 @@
       "destination": "wwwroot/lib/jquery-validation-unobtrusive/"
     },
     {
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
+    },
+    {
       "library": "font-awesome@6.5.2",
       "destination": "wwwroot/lib/font-awesome/"
     },
