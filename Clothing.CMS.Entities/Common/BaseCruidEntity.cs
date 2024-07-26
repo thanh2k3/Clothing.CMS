@@ -1,4 +1,4 @@
-﻿namespace Clothing.CMS.Entities
+﻿namespace Clothing.CMS.Entities.Common
 {
     public class BaseCruidEntity
     {

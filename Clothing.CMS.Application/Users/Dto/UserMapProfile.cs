@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Clothing.CMS.EntityFrameworkCore.Pattern;
+using Clothing.CMS.Entities.Authorization.Users;
 
 namespace Clothing.CMS.Application.Users.Dto
 {
@@ -7,7 +7,7 @@ namespace Clothing.CMS.Application.Users.Dto
     {
         public UserMapProfile()
         {
-            CreateMap<CMSIdentityUser, UserDto>();
+            CreateMap<User, UserDto>();
 
             //CreateMap<CreateUserDto, CMSIdentityUser>();
             //CreateMap<EditUserDto, CMSIdentityUser>();

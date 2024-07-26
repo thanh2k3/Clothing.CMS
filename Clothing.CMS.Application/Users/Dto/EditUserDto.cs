@@ -1,4 +1,4 @@
-﻿using Clothing.CMS.Entities;
+﻿using Clothing.CMS.Entities.Common;
 using System.ComponentModel;
 
 namespace Clothing.CMS.Application.Users.Dto
