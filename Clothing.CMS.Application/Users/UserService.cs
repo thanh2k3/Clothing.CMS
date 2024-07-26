@@ -2,6 +2,7 @@
 using Clothing.CMS.Application.Common.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Application.Users.Dto;
+using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ namespace Clothing.CMS.Application.Users
         {
             try
             {
-                var query = _context.Set<CMSIdentityUser>()
+                var query = _context.Set<User>()
                     .Where(x => string.IsNullOrEmpty(input.Keyword) || x.FirstName.Contains(input.Keyword));
 
                 var list = await query.Skip(input.SkipCount).Take(input.PageSize).ToListAsync();

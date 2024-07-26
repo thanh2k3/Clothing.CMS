@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using Clothing.CMS.Entities;
+using Clothing.CMS.Entities.Common;
 
 namespace Clothing.CMS.Application.Users.Dto
 {

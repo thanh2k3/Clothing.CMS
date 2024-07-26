@@ -1,4 +1,6 @@
 ﻿using Clothing.CMS.Application.Common;
+using Clothing.CMS.Entities.Authorization.Roles;
+using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +19,8 @@ namespace Clothing.CMS.Web.Areas.Admin.Data
 				var context = scope.ServiceProvider.GetRequiredService<CMSDbContext>();
 				context.Database.Migrate();
 
-				UserManager<CMSIdentityUser> _userManager = scope.ServiceProvider.GetRequiredService<UserManager<CMSIdentityUser>>();
-				RoleManager<IdentityRole> _roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+				UserManager<User> _userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+				RoleManager<Role> _roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
 				// Seed database code goes here
 
@@ -36,19 +38,20 @@ namespace Clothing.CMS.Web.Areas.Admin.Data
 					// Create SuperAdmins role if it doesn't exist
 					if (await _roleManager.FindByNameAsync(role) == null)
 					{
-						await _roleManager.CreateAsync(new IdentityRole(role));
+						await _roleManager.CreateAsync(new Role { Name = role });
 					}
 					if (await _roleManager.FindByNameAsync(role2) == null)
 					{
-						await _roleManager.CreateAsync(new IdentityRole(role2));
-					}
-					if (await _roleManager.FindByNameAsync(role3) == null)
-					{
-						await _roleManager.CreateAsync(new IdentityRole(role3));
-					}
+                        await _roleManager.CreateAsync(new Role { Name = role2 });
 
-					// Create user account if it doesn't exist
-					CMSIdentityUser user = new CMSIdentityUser
+                    }
+                    if (await _roleManager.FindByNameAsync(role3) == null)
+					{
+                        await _roleManager.CreateAsync(new Role { Name = role3 });
+                    }
+
+                    // Create user account if it doesn't exist
+                    User user = new User
 					{
 						UserName = email,
 						Email = email,

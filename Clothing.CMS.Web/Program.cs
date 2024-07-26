@@ -1,3 +1,5 @@
+using Clothing.CMS.Entities.Authorization.Roles;
+using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Clothing.CMS.Web.Areas.Admin.Data;
 using Clothing.CMS.Web.Common;
@@ -11,7 +13,7 @@ var connectionString = builder.Configuration["ConnectionStrings:Database"];
 builder.Services.AddDbContext<CMSDbContext>(o => o.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOption => { sqlOption.EnableRetryOnFailure(); }));
 
 //Identity
-builder.Services.AddIdentity<CMSIdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User, Role>()
 				.AddEntityFrameworkStores<CMSDbContext>()
 				.AddDefaultTokenProviders();
 

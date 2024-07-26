@@ -1,5 +1,5 @@
 ﻿using Clothing.CMS.Application.Common;
-using Clothing.CMS.Entities;
+using Clothing.CMS.Entities.Common;
 using Microsoft.AspNetCore.Http;
 
 namespace Clothing.CMS.Application.Services

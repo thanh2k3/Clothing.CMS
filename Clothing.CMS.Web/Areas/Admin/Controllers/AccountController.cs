@@ -1,4 +1,4 @@
-﻿using Clothing.CMS.EntityFrameworkCore.Pattern;
+﻿using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.Web.Areas.Admin.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,13 +8,13 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly UserManager<CMSIdentityUser> _userManager;
-        private readonly SignInManager<CMSIdentityUser> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger _logger;
 
         public AccountController(
-            UserManager<CMSIdentityUser> userManager,
-			SignInManager<CMSIdentityUser> signInManager,
+            UserManager<User> userManager,
+			SignInManager<User> signInManager,
             ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
