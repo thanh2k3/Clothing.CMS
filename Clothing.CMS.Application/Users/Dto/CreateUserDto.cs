@@ -13,13 +13,11 @@ namespace Clothing.CMS.Application.Users.Dto
         [DisplayName("Nhập lại mật khẩu")]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
-        [DisplayName("Họ và tên")]
-        public string FullName { get; set; }
+        [DisplayName("Tên")]
+        public string FirstName { get; set; }
         [DisplayName("Ảnh đại diện")]
         public string Avatar { get; set; }
         [DisplayName("Email")]
         public string Email { get; set; }
-        [DisplayName("Ngày sinh")]
-        public DateTime Birthday { get; set; }
     }
 }

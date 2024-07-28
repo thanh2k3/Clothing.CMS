@@ -1,5 +1,7 @@
 ﻿using Clothing.CMS.Application.Users;
 using Clothing.CMS.Application.Users.Dto;
+using Clothing.CMS.Entities.Authorization.Users;
+using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,24 +11,24 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
+        private readonly CMSDbContext _context;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, CMSDbContext context)
         {
             _userService = userService;
+            _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            try
-            {
-                var data = await _userService.GetAllPaging(new UserPagedRequestDto());
-
-                return View(data);
-            }
-            catch (Exception ex)
-            {
-                return View();
-            }
+            return View();
         }
-    }
+
+		public IActionResult GetUsers()
+		{
+			var data = _context.Users.ToList();
+
+			return new JsonResult(data);
+		}
+	}
 }

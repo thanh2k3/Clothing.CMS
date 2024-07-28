@@ -7,8 +7,9 @@ namespace Clothing.CMS.Application.Users
     public interface IUserService
     {
         Task<PagedResponseDto<List<UserDto>>> GetAllPaging(UserPagedRequestDto input);
+        Task<IEnumerable<UserDto>> GetAll();
 
-        //Task<IEnumerable<UserDto>> GetAll();
+
         //Task<bool> Create(CreateUserDto model, IFormFile? image);
         //Task<UserDto> GetById(int id);
         //Task Update(EditUserDto model, IFormFile? image);
