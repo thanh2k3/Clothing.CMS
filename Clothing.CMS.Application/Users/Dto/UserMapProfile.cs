@@ -8,9 +8,11 @@ namespace Clothing.CMS.Application.Users.Dto
         public UserMapProfile()
         {
             CreateMap<User, UserDto>();
-
-            //CreateMap<CreateUserDto, CMSIdentityUser>();
-            //CreateMap<EditUserDto, CMSIdentityUser>();
+            CreateMap<CreateUserDto, User>()
+                .ForMember(des => des.UserName, act => act.MapFrom(src => src.Email))
+                .ForMember(des => des.DateRegistered, opt => opt.MapFrom(src => DateTime.UtcNow.ToString()))
+				.ForMember(des => des.Position, act => act.MapFrom(src => ""))
+				.ForMember(des => des.NickName, act => act.MapFrom(src => ""));
         }
     }
 }

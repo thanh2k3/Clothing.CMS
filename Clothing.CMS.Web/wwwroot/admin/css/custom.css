@@ -8,6 +8,11 @@ body {
     margin-bottom: 60px;
 }
 
+/* Body */
+.card-body {
+    padding: 20px;
+}
+
 /* Sidebar */
 .sidebar-nav .active {
     background: #f6f9ff !important;
@@ -109,4 +114,19 @@ body {
 
 .card-search .search-form button i {
     color: #012970;
+}
+
+/* Datatable */
+table.table-bordered.dataTable th:first-child,
+table.table-bordered.dataTable td:first-child {
+    border-left-width: 1px;
+}
+
+table.dataTable {
+    margin: 15px 0 !important;
+    border-collapse: collapse !important; 
+}
+
+table {
+    width: 100% !important;
 }
