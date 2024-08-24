@@ -54,5 +54,37 @@ namespace Clothing.CMS.Application.Users
                 return null;
             }
         }
-    }
+
+		public async Task<bool> CreateAsync(CreateUserDto model)
+		{
+			try
+            {
+                var data = _mapper.Map<User>(model);
+
+                var searchUN = await _context.Users.FirstOrDefaultAsync(x => x.UserName == data.UserName ||
+                                                                        x.Email == data.Email);
+                if (searchUN == null)
+                {
+					IdentityResult result = await _userManager.CreateAsync(data, model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+		}
+
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+	}
 }

@@ -1,7 +1,8 @@
-﻿using Clothing.CMS.Application.Users;
+﻿using AutoMapper;
+using Clothing.CMS.Application.Users;
 using Clothing.CMS.Application.Users.Dto;
-using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern;
+using Clothing.CMS.Web.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,13 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
     [Authorize]
     public class UserController : BaseController
     {
-        private readonly IUserService _userService;
         private readonly CMSDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public UserController(IUserService userService, CMSDbContext context)
+        public UserController(IMapper mapper, IUserService userService, CMSDbContext context)
         {
+            _mapper = mapper;
             _userService = userService;
             _context = context;
         }
@@ -24,11 +27,29 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
             return View();
         }
 
-		public IActionResult GetUsers()
+		public async Task<JsonResult> GetData()
 		{
-			var data = _context.Users.ToList();
+			var data = await _userService.GetAll();
 
-			return new JsonResult(data);
+			return Json(data);
+		}
+
+        [HttpPost]
+        public async Task<JsonResult> Create(CreateUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userVM = _mapper.Map<CreateUserDto>(model);
+                var isSucceeded = await _userService.CreateAsync(userVM);
+                if (isSucceeded)
+                {
+                    return Json(new { success  = true, message = "Thêm mới người dùng thành công" });
+                }
+
+				return Json(new { success = false, message = "Người dùng này đã tồn tại!" });
+			}
+
+			return Json(new { success = false, message = "Lỗi" });
 		}
 	}
 }

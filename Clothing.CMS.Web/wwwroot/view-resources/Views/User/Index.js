@@ -4,7 +4,7 @@
 
 function GetUser() {
     $.ajax({
-        url: "/Admin/User/GetUsers",
+        url: "/Admin/User/GetData",
         type: "GET",
         dataType: "json",
         success: OnSuccess
@@ -29,7 +29,7 @@ function OnSuccess(response) {
         destroy: true,
         ordering: false,
         lengthChange: true,
-        lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+        lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "Tất cả"]],
         data: response,
         columns: [
             {

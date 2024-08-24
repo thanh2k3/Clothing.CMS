@@ -8,7 +8,7 @@ namespace Clothing.CMS.Application.Users
     {
         Task<PagedResponseDto<List<UserDto>>> GetAllPaging(UserPagedRequestDto input);
         Task<IEnumerable<UserDto>> GetAll();
-
+        Task<bool> CreateAsync(CreateUserDto model);
 
         //Task<bool> Create(CreateUserDto model, IFormFile? image);
         //Task<UserDto> GetById(int id);
