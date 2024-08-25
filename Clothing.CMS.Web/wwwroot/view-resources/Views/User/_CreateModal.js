@@ -1,4 +1,4 @@
-﻿function CreateUser() { debugger
+﻿$(document).on("click", ".create-user", function (e) {
     var formData = $("#formCreateUser").serialize();
 
     $.ajax({
@@ -6,7 +6,7 @@
         type: "POST",
         data: formData,
         dataType: "json",
-        success: function (result) { debugger
+        success: function (result) {
             if (result.success === true) {
                 GetUser();
                 HideUserCreateModal();
@@ -19,7 +19,7 @@
             alert(result.message);
         }
     })
-}
+})
 
 function HideUserCreateModal() {
     ClearTextBoxUserCreate();
@@ -28,7 +28,7 @@ function HideUserCreateModal() {
 
 function ClearTextBoxUserCreate() {
     $("#formCreateUser #Email").val("");
-    $("#formCreateUser #Avatar").val("");
+    $("#formCreateUser #AvatarURL").val("");
     $("#formCreateUser #Password").val("");
     $("#formCreateUser #ConfirmPassword").val("");
     $("#formCreateUser #FirstName").val("");

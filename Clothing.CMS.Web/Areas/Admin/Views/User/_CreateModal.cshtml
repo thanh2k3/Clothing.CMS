@@ -1,9 +1,4 @@
-﻿@using Clothing.CMS.Web.Areas.Admin.ViewModels
-@model CreateUserViewModel
-
-@{
-    Layout = null;
-}
+﻿@model CreateUserViewModel
 
 <div class="modal fade" id="UserCreateModal" tabindex="-1" role="dialog" aria-labelledby="UserCreateModalLabel" data-backdrop="static">
 	<div class="modal-dialog modal-xl" role="document">
@@ -88,7 +83,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-				<button type="submit" class="btn btn-success" onclick="return CreateUser()">Tạo</button>
+				<button type="submit" class="btn btn-success create-user">Tạo</button>
             </div>
         </div>
     </div>

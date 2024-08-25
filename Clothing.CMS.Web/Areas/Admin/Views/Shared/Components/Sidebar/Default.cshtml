@@ -2,59 +2,79 @@
 
 <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
-        @foreach (var menu in Model as IEnumerable<SidebarMenu>)
-        {
-            if (menu.Type == SidebarMenuType.Header)
-            {
-                <li class="nav-link">@menu.Name</li>
-            }
-            else if (menu.Type == SidebarMenuType.Link)
-            {
-                var active = string.Empty;
-                if (menu.URLPath != "/Admin" || Context.Request.Path.Value.EndsWith(menu.URLPath))
-                {
-                    active = "active";
-                }
-                <li class="nav-item">
-                    <a class="nav-link collapsed @active" href="@menu.URLPath">
-                        <i class="@menu.IconClassName"></i>
-                        <span>@menu.Name</span>
-                    </a>
-                </li>
-            }
-            else if (menu.Type == SidebarMenuType.Tree)
-            {
-                var active = string.Empty;
-                var menuopen = string.Empty;
-                if (menu.TreeChild.Any(x => @Context.Request.Path.Value.EndsWith(x.URLPath)))
-                {
-                    active = "active";
-                    menuopen = "menu-open";
-                }
-                <li id="@menu.IdName" class="nav-item">
-                    <a class="nav-link collapsed @active" href="#">
-                        <i class="nav-icon @menu.IconClassName"></i><span>@menu.Name</span><i class="bi bi-chevron-down ms-auto"></i>
-                    </a>
-                    <ul id="forms-nav" class="nav-content @menuopen">
-                        @foreach (SidebarMenu subMenu in menu.TreeChild)
-                        {
-                            active = string.Empty;
-                            if (Context.Request.Path.Value.EndsWith(subMenu.URLPath))
-                            {
-                                active = "active";
-                            }
-                            <li>
-                                <a href="@subMenu.URLPath" class="@active">
-                                    <i class="@subMenu.IconClassName"></i>
-                                    <span>@subMenu.Name</span>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </li>
-            }
-        }
-    </ul>
+	<ul class="sidebar-nav" id="sidebar-nav">
 
-</aside><!-- End Sidebar-->
+		@foreach (var menu in Model as IEnumerable<SidebarMenu>)
+		{
+			if (menu.Type == SidebarMenuType.Header)
+			{
+				<li class="nav-link">@menu.Name</li>
+			}
+			else if (menu.Type == SidebarMenuType.Link)
+			{
+				var collapsed = "collapsed";
+				if (menu.URLPath == "/Admin" && @Context.Request.Path.Value.EndsWith(menu.URLPath))
+				{
+					collapsed = "";
+				}
+				<li class="nav-item">
+					<a class="nav-link @collapsed" href="@menu.URLPath">
+						<i class="@menu.IconClassName nav-icon"></i>
+						<span>@menu.Name</span>
+						<span class="pull-right-container">
+							@{
+								if (menu.LinkCounter.Item1 > 0)
+								{
+									<small class="badge float-right bg-primary">@menu.LinkCounter.Item1</small>
+								}
+								if (menu.LinkCounter.Item2 > 0)
+								{
+									<small class="badge float-right bg-success">@menu.LinkCounter.Item2</small>
+								}
+								if (menu.LinkCounter.Item3 > 0)
+								{
+									<small class="badge float-right bg-danger">@menu.LinkCounter.Item3</small>
+								}
+							}
+						</span>
+					</a>
+				</li>
+			}
+			else if (menu.Type == SidebarMenuType.Tree)
+			{
+				var show = string.Empty;
+				var collapsed = "collapsed";
+				if (menu.TreeChild.Any(x => @Context.Request.Path.Value.EndsWith(x.URLPath)))
+				{
+					show = "show";
+					collapsed = "";
+				}
+				<li class="nav-item">
+					<a class="nav-link @collapsed" data-bs-target="#@menu.IdName" data-bs-toggle="collapse" href="#">
+						<i class="@menu.IconClassName"></i>
+						<span>@menu.Name</span>
+						<i class="bi bi-chevron-down ms-auto"></i>
+					</a>
+					<ul id="@menu.IdName" class="nav-content collapse @show" data-bs-parent="#sidebar-nav">
+						@foreach (SidebarMenu subMenu in menu.TreeChild)
+						{
+							var active = string.Empty;
+							if (Context.Request.Path.Value.EndsWith(subMenu.URLPath))
+							{
+								active = "active";
+							}
+							<li>
+								<a href="@subMenu.URLPath" class="@active">
+									<i class="@subMenu.IconClassName"></i>
+									<span>@subMenu.Name</span>
+								</a>
+							</li>
+						}
+					</ul>
+				</li>
+			}
+		}
+
+	</ul>
+
+</aside>
