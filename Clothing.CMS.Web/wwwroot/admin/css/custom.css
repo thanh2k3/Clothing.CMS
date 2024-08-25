@@ -14,34 +14,10 @@ body {
 }
 
 /* Sidebar */
-.sidebar-nav .active {
-    background: #f6f9ff !important;
-    color: #4154f1 !important;
-}
-
-.sidebar-nav .active i {
-    color: #4154f1 !important;
-}
-
-.sidebar-nav .active .bi-chevron-down {
-    transform: rotate(180deg);
-}
-
-.sidebar-nav .nav-link {
-    text-align: center;
-}
-
 .sidebar-nav .nav-link i {
     width: 24px;
     margin-right: 8px;
-}
-
-.sidebar-nav .nav-content {
-    display: none;
-}
-
-.sidebar-nav .menu-open {
-    display: block;
+    text-align: center;
 }
 
 .sidebar-nav .nav-content a {
@@ -129,4 +105,9 @@ table.dataTable {
 
 table {
     width: 100% !important;
+}
+
+.w-action {
+    width: 200px;
+    text-align: center;
 }

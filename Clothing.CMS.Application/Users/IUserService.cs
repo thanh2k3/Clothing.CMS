@@ -1,12 +1,9 @@
-﻿using Clothing.CMS.Application.Common.Dto;
-using Clothing.CMS.Application.Users.Dto;
-using Microsoft.AspNetCore.Http;
+﻿using Clothing.CMS.Application.Users.Dto;
 
 namespace Clothing.CMS.Application.Users
 {
     public interface IUserService
     {
-        Task<PagedResponseDto<List<UserDto>>> GetAllPaging(UserPagedRequestDto input);
         Task<IEnumerable<UserDto>> GetAll();
         Task<bool> CreateAsync(CreateUserDto model);
 

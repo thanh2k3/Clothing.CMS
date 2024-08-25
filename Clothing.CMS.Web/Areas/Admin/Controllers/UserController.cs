@@ -2,7 +2,7 @@
 using Clothing.CMS.Application.Users;
 using Clothing.CMS.Application.Users.Dto;
 using Clothing.CMS.EntityFrameworkCore.Pattern;
-using Clothing.CMS.Web.Areas.Admin.ViewModels;
+using Clothing.CMS.Web.Areas.Admin.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +11,6 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
     [Authorize]
     public class UserController : BaseController
     {
-        private readonly CMSDbContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
@@ -19,7 +18,6 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         {
             _mapper = mapper;
             _userService = userService;
-            _context = context;
         }
 
         public IActionResult Index()
@@ -29,9 +27,10 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 
 		public async Task<JsonResult> GetData()
 		{
-			var data = await _userService.GetAll();
+			var userDto = await _userService.GetAll();
+            var userVM = _mapper.Map<IEnumerable<UserViewModel>>(userDto);
 
-			return Json(data);
+            return Json(userVM);
 		}
 
         [HttpPost]
