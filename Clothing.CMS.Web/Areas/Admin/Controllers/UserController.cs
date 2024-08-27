@@ -50,5 +50,30 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 
 			return Json(new { success = false, message = "Lỗi" });
 		}
+
+        public async Task<IActionResult> EditModal(int id)
+        {
+            var userdto = await _userService.GetById(id);
+            var userVM = _mapper.Map<EditUserViewModel>(userdto);
+
+            return PartialView("_EditModal", userVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userDto = _mapper.Map<EditUserDto>(model);
+                var isSucceeded = await _userService.UpdateAsync(userDto);
+                if (isSucceeded) {
+                    return Json(new { success = true });
+                }
+
+                return Json(new { success = false });
+			}
+
+            return Json(new { success = false });
+        }
 	}
 }

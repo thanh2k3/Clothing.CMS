@@ -62,17 +62,17 @@ function OnSuccess(response) {
                 render: function (data, type, row, meta) {
                     var actions = [];
                     actions.push(
-                        `   <button class="btn btn-sm btn-info" data-bs-toggle="" data-bs-target="" data-user-id="${row.id}">`,
+                        `   <button class="btn btn-sm btn-info" data-user-id="${row.id}" data-bs-toggle="" data-bs-target="" >`,
                         `       <i class="fa-solid fa-eye"></i> Xem`,
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-warning" data-bs-toggle="" data-bs-target="" data-user-id="${row.id}">`,
+                        `   <button class="btn btn-sm btn-warning edit-user" data-user-id="${row.id}" data-bs-toggle="modal" data-bs-target="#UserEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> Sửa`,
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-danger" data-bs-toggle="" data-bs-target="" data-user-id="${row.id}">`,
+                        `   <button class="btn btn-sm btn-danger" data-user-id="${row.id}" data-bs-toggle="" data-bs-target="">`,
                         `       <i class="fa-solid fa-trash-can"></i> Xóa`,
                         `   </button>`
                     )
@@ -82,3 +82,18 @@ function OnSuccess(response) {
         ]
     });
 }
+
+$(document).on("click", ".edit-user", function (e) {
+    var userId = $(this).attr("data-user-id");
+
+    $.ajax({
+        url: "/Admin/User/EditModal?Id=" + userId,
+        type: "POST",
+        dataType: "html",
+        success: function (result) {
+            $("#UserEditModal").find(".modal-content").html(result);
+        },
+        error: function (e) {
+        }
+    })
+})
