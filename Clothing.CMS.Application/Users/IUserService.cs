@@ -6,10 +6,7 @@ namespace Clothing.CMS.Application.Users
     {
         Task<IEnumerable<UserDto>> GetAll();
         Task<bool> CreateAsync(CreateUserDto model);
-
-        //Task<bool> Create(CreateUserDto model, IFormFile? image);
-        //Task<UserDto> GetById(int id);
-        //Task Update(EditUserDto model, IFormFile? image);
-        //Task Delete(int id);
-    }
+		Task<EditUserDto> GetById(int id);
+		Task<bool> UpdateAsync(EditUserDto model);
+	}
 }

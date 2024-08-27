@@ -9,10 +9,12 @@ namespace Clothing.CMS.Application.Users.Dto
         {
             CreateMap<User, UserDto>();
             CreateMap<CreateUserDto, User>()
-                .ForMember(des => des.UserName, act => act.MapFrom(src => src.Email))
+                .ForMember(des => des.UserName, opt => opt.MapFrom(src => src.Email))
                 .ForMember(des => des.DateRegistered, opt => opt.MapFrom(src => DateTime.UtcNow.ToString()))
-				.ForMember(des => des.Position, act => act.MapFrom(src => ""))
-				.ForMember(des => des.NickName, act => act.MapFrom(src => ""));
+				.ForMember(des => des.Position, opt => opt.MapFrom(src => ""))
+				.ForMember(des => des.NickName, opt => opt.MapFrom(src => ""));
+
+            CreateMap<User, EditUserDto>();
         }
     }
 }

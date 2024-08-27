@@ -7,8 +7,10 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.User
 	{
 		public UserVMMapProfile()
 		{
-			CreateMap<CreateUserViewModel, CreateUserDto>();
 			CreateMap<UserDto, UserViewModel>();
+			CreateMap<CreateUserViewModel, CreateUserDto>();
+			CreateMap<EditUserDto, EditUserViewModel>();
+			CreateMap<EditUserViewModel, EditUserDto>();
 		}
 	}
 }
