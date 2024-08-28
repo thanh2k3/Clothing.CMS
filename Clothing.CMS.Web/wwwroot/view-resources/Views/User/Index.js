@@ -72,7 +72,7 @@ function OnSuccess(response) {
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-danger" data-user-id="${row.id}" data-bs-toggle="" data-bs-target="">`,
+                        `   <button class="btn btn-sm btn-danger delete-user" data-user-id="${row.id}" data-email="${row.email}">`,
                         `       <i class="fa-solid fa-trash-can"></i> Xóa`,
                         `   </button>`
                     )
@@ -96,4 +96,37 @@ $(document).on("click", ".edit-user", function (e) {
         error: function (e) {
         }
     })
+})
+
+$(document).on("click", ".delete-user", function (e) {
+    var userId = $(this).attr("data-user-id");
+    var email = $(this).attr("data-email");
+
+    Swal.fire({
+        title: 'Bạn có chắc không?',
+        text: "Bạn có chắn là muốn xóa tài khoản \"" + email + "\" không",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/Admin/User/Delete?Id=" + userId,
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    if (result.success === true) {
+                        GetUser();
+                    }
+                    else {
+                        alert("Lỗi");
+                    }
+                }
+            })
+        }
+    });
 })

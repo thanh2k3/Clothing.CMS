@@ -90,5 +90,25 @@ namespace Clothing.CMS.Application.Users
 				return false;
 			}
 		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			User user = await _userManager.FindByIdAsync(id.ToString());
+
+			if (user != null)
+			{
+				IdentityResult result = await _userManager.DeleteAsync(user);
+				if (result.Succeeded)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+
+			return false;
+		}
 	}
 }

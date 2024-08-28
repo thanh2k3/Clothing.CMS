@@ -55,8 +55,8 @@
       "destination": "wwwroot/lib/jquery.isotope/"
     },
     {
-      "library": "sweetalert@2.1.2",
-      "destination": "wwwroot/lib/sweetalert/"
+      "library": "sweetalert2@11.12.4",
+      "destination": "wwwroot/lib/sweetalert2/"
     },
     {
       "library": "perfect-scrollbar@1.5.5",

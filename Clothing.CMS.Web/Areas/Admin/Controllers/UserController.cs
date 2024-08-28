@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Clothing.CMS.Application.Users;
 using Clothing.CMS.Application.Users.Dto;
-using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Clothing.CMS.Web.Areas.Admin.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        public UserController(IMapper mapper, IUserService userService, CMSDbContext context)
+        public UserController(IMapper mapper, IUserService userService)
         {
             _mapper = mapper;
             _userService = userService;
@@ -75,5 +74,23 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 
             return Json(new { success = false });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var isSucceeded = await _userService.DeleteAsync(id);
+
+                if (isSucceeded)
+                {
+                    return Json(new { success = true });
+                }
+
+				return Json(new { success = false });
+			}
+
+			return Json(new { success = false });
+		}
 	}
 }
