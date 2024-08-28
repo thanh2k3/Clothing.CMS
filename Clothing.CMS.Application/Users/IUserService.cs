@@ -8,5 +8,6 @@ namespace Clothing.CMS.Application.Users
         Task<bool> CreateAsync(CreateUserDto model);
 		Task<EditUserDto> GetById(int id);
 		Task<bool> UpdateAsync(EditUserDto model);
+        Task<bool> DeleteAsync(int id);
 	}
 }
