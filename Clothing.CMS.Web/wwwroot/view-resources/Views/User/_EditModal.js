@@ -11,8 +11,12 @@
             type: "POST",
             success: function (result) {
                 if (result.success === true) {
-                    GetUser();
                     _$modal.modal("hide");
+                    GetUser();
+                    toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+                }
+                else {
+                    toastr.error(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                 }
             }
         })

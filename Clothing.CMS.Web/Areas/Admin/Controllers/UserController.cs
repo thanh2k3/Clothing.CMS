@@ -63,13 +63,14 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 var userDto = _mapper.Map<EditUserDto>(model);
                 var isSucceeded = await _userService.UpdateAsync(userDto);
                 if (isSucceeded) {
-                    return Json(new { success = true });
+                    return Json(new { success = true, message = "Chỉnh sửa người dùng thành công" });
                 }
 
-                return Json(new { success = false });
+                return Json(new { success = false, message = "Chỉnh sửa người dùng thất bại" });
 			}
 
             return Json(new { success = false });
