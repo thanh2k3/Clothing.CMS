@@ -39,15 +39,16 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
             {
                 var userVM = _mapper.Map<CreateUserDto>(model);
                 var isSucceeded = await _userService.CreateAsync(userVM);
+
                 if (isSucceeded)
                 {
-                    return Json(new { success  = true, message = "Thêm mới người dùng thành công" });
+                    return Json(new { success  = true, message = TempData["Message"] });
                 }
 
-				return Json(new { success = false, message = "Người dùng này đã tồn tại!" });
+				return Json(new { success = false, message = TempData["Message"] });
 			}
 
-			return Json(new { success = false, message = "Lỗi" });
+			return Json(new { success = false, message = "Thông tin không hợp lệ" });
 		}
 
         public async Task<IActionResult> EditModal(int id)
@@ -63,17 +64,17 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                
                 var userDto = _mapper.Map<EditUserDto>(model);
                 var isSucceeded = await _userService.UpdateAsync(userDto);
+
                 if (isSucceeded) {
-                    return Json(new { success = true, message = "Chỉnh sửa người dùng thành công" });
+                    return Json(new { success = true, message = TempData["Message"] });
                 }
 
-                return Json(new { success = false, message = "Chỉnh sửa người dùng thất bại" });
+                return Json(new { success = false, message = TempData["Message"] });
 			}
 
-            return Json(new { success = false });
+            return Json(new { success = false, message = "Thông tin không hợp lệ" });
         }
 
         [HttpPost]
@@ -85,13 +86,13 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 
                 if (isSucceeded)
                 {
-                    return Json(new { success = true });
+                    return Json(new { success = true, message = TempData["Message"] });
                 }
 
-				return Json(new { success = false });
+				return Json(new { success = false, message = TempData["Message"] });
 			}
 
-			return Json(new { success = false });
+			return Json(new { success = false, message = "Thông tin không hợp lệ" });
 		}
 	}
 }

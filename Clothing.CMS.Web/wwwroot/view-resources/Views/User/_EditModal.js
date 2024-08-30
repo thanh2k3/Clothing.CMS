@@ -9,7 +9,7 @@
             url: "/Admin/User/Edit",
             data: formData,
             type: "POST",
-            success: function (result) {
+            success: function (result) { 
                 if (result.success === true) {
                     _$modal.modal("hide");
                     GetUser();

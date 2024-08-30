@@ -1,15 +1,20 @@
 ﻿using Clothing.CMS.Application.Common;
 using Clothing.CMS.Entities.Common;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Clothing.CMS.Application.Services
 {
     public class BaseService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public BaseService(IHttpContextAccessor httpContextAccessor)
+        private readonly ITempDataDictionaryFactory _tempDataDictionaryFactory;
+
+        public BaseService(IHttpContextAccessor httpContextAccessor,
+			ITempDataDictionaryFactory tempDataDictionaryFactory)
         {
             _httpContextAccessor = httpContextAccessor;
+            _tempDataDictionaryFactory = tempDataDictionaryFactory;
         }
 
         protected void FillAuthInfo(BaseCruidEntity data)
@@ -36,6 +41,14 @@ namespace Clothing.CMS.Application.Services
                     data.ModifiedTime = timeNow;
                 }
             }
+        }
+
+        protected void NotifyMsg(string msg)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var TempData = _tempDataDictionaryFactory.GetTempData(httpContext);
+
+			TempData["Message"] = msg;
         }
     }
 }

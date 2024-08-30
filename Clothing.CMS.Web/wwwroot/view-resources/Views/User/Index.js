@@ -121,9 +121,14 @@ $(document).on("click", ".delete-user", function (e) {
                 success: function (result) {
                     if (result.success === true) {
                         GetUser();
+                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                     }
                     else {
-                        alert("Lỗi");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: result.message
+                        });
                     }
                 }
             })

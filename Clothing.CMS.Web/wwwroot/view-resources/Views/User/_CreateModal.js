@@ -8,15 +8,13 @@
         dataType: "json",
         success: function (result) {
             if (result.success === true) {
-                GetUser();
                 HideUserCreateModal();
+                GetUser();
+                toastr.success(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
             }
             else {
-                alert(result.message);
+                toastr.error(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
             }
-        },
-        error: function (result) {
-            alert(result.message);
         }
     })
 })
