@@ -111,3 +111,8 @@ table {
     width: 200px;
     text-align: center;
 }
+
+/* toastr.js */
+#toast-container > div {
+    opacity: 1;
+}

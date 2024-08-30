@@ -9,10 +9,14 @@
             url: "/Admin/User/Edit",
             data: formData,
             type: "POST",
-            success: function (result) {
+            success: function (result) { 
                 if (result.success === true) {
-                    GetUser();
                     _$modal.modal("hide");
+                    GetUser();
+                    toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+                }
+                else {
+                    toastr.error(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                 }
             }
         })

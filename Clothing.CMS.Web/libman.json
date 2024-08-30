@@ -61,6 +61,10 @@
     {
       "library": "perfect-scrollbar@1.5.5",
       "destination": "wwwroot/lib/perfect-scrollbar/"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
     }
   ]
 }

@@ -31,7 +31,7 @@ function OnSuccess(response) {
         destroy: true,
         ordering: false,
         lengthChange: true,
-        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Tất cả"]],
+        lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
         data: response,
         columns: [
             {
@@ -121,9 +121,14 @@ $(document).on("click", ".delete-user", function (e) {
                 success: function (result) {
                     if (result.success === true) {
                         GetUser();
+                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                     }
                     else {
-                        alert("Lỗi");
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: result.message
+                        });
                     }
                 }
             })

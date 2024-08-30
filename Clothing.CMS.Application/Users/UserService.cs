@@ -4,6 +4,7 @@ using Clothing.CMS.Application.Users.Dto;
 using Clothing.CMS.Entities.Authorization.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clothing.CMS.Application.Users
@@ -15,7 +16,8 @@ namespace Clothing.CMS.Application.Users
 
 		public UserService(UserManager<User> userManager,
 			IMapper mapper,
-			IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+			IHttpContextAccessor httpContextAccessor,
+			ITempDataDictionaryFactory tempDataDictionaryFactory) : base(httpContextAccessor, tempDataDictionaryFactory)
 		{
 			_userManager = userManager;
 			_mapper = mapper;
@@ -34,19 +36,24 @@ namespace Clothing.CMS.Application.Users
 			try
 			{
 				var data = _mapper.Map<User>(model);
-
 				var searchUN = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == data.UserName ||
 																		x.Email == data.Email);
+
 				if (searchUN == null)
 				{
 					IdentityResult result = await _userManager.CreateAsync(data, model.Password);
 
 					if (result.Succeeded)
 					{
+						NotifyMsg("Thêm mới thành công");
 						return true;
 					}
+
+					NotifyMsg("Thêm mới thất bại");
+					return false;
 				}
 
+				NotifyMsg("Tài khoản đã tồn tại");
 				return false;
 			}
 			catch (Exception ex)
@@ -68,6 +75,7 @@ namespace Clothing.CMS.Application.Users
 			try
 			{
 				User user = await _userManager.FindByIdAsync(model.Id.ToString());
+
 				if (user != null)
 				{
 					user.Email = model.Email;
@@ -77,15 +85,21 @@ namespace Clothing.CMS.Application.Users
 					user.AvatarURL = model.AvatarURL;
 
 					IdentityResult result = await _userManager.UpdateAsync(user);
+
 					if (result.Succeeded)
 					{
+						NotifyMsg("Chỉnh sửa thành công");
 						return true;
 					}
+
+					NotifyMsg("Chỉnh sửa thất bại");
+					return false;
 				}
 
+				NotifyMsg("Không tìm thấy dữ liệu tương thích");
 				return false;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				return false;
 			}
@@ -98,16 +112,18 @@ namespace Clothing.CMS.Application.Users
 			if (user != null)
 			{
 				IdentityResult result = await _userManager.DeleteAsync(user);
+
 				if (result.Succeeded)
 				{
+					NotifyMsg("Xóa thành công");
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+
+				NotifyMsg("Xóa thất bại");
+				return false;
 			}
 
+			NotifyMsg("Không tìm thấy dữ liệu tương thích");
 			return false;
 		}
 	}
