@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Clothing.CMS.Application\Clothing.CMS.Application.csproj" />
     <ProjectReference Include="..\Clothing.CMS.EntityFrameworkCore\Clothing.CMS.EntityFrameworkCore.csproj" />
+    <ProjectReference Include="..\Clothing.CMS.Logging\Clothing.CMS.Logging.csproj" />
     <ProjectReference Include="..\Clothing.Shared\Clothing.Shared.csproj" />
   </ItemGroup>
 

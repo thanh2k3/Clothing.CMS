@@ -1,6 +1,7 @@
 using Clothing.CMS.Entities.Authorization.Roles;
 using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern;
+using Clothing.CMS.Logging;
 using Clothing.CMS.Web.Areas.Admin.Data;
 using Clothing.CMS.Web.Common;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +29,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//Add LogEvent
+builder.Logging.AddDbLogger(options =>
+{
+	builder.Configuration.GetSection("Logging").GetSection("Database").GetSection("Options").Bind(options);
+});
 
 GlobalHelper.RegisterServiceLifetimer(builder.Services);
 GlobalHelper.RegisterAutoMapper(builder.Services);
