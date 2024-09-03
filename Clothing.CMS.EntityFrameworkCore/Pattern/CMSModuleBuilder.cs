@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Clothing.CMS.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Clothing.CMS.EntityFrameworkCore.Pattern
 {
@@ -6,7 +7,11 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern
 	{
 		public static void RegisterModule(ModelBuilder builder)
 		{
-			
+			// LogEvent
+			builder.Entity<LogEvent>(entity =>
+			{
+				entity.HasKey(t => t.Id);
+			});
 		}
 	}
 }
