@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Nhật ký hệ thống";
+}
+
+@section scripts {
+    <script src="~/view-resources/views/logevent/index.js" asp-append-version="true"></script>
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex flex-row-reverse">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#UserCreateModal">
+                        <i class="fa fa-plus-square"></i>
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="logEventTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Loại nhật ký</th>
+                                    <th>Nội dung nhật ký</th>
+                                    <th>Chi tiết</th>
+                                    <th>Thời gian tạo</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* @await Html.PartialAsync("~/Areas/Admin/Views/User/_CreateModal.cshtml")
+
+<div class="modal fade" id="UserEditModal" tabindex="-1" role="dialog" aria-labelledby="UserEditModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div> *@

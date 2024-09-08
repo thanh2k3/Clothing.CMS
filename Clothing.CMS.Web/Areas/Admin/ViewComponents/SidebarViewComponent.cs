@@ -29,6 +29,7 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewComponents
                 {
                     ModuleHelper.AddModule(ModuleHelper.Module.User),
                     ModuleHelper.AddModule(ModuleHelper.Module.Role),
+                    ModuleHelper.AddModule(ModuleHelper.Module.LogEvent),
                 };
             }
 
