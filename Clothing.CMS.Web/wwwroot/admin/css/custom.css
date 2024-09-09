@@ -93,8 +93,8 @@ body {
 }
 
 /* Datatable */
-table.table-bordered.dataTable th:first-child,
-table.table-bordered.dataTable td:first-child {
+table.table-bordered.dataTable th,
+table.table-bordered.dataTable td {
     border-left-width: 1px;
 }
 
@@ -112,7 +112,19 @@ table {
     text-align: center;
 }
 
+/*table td {
+    max-width: 120px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    overflow: hidden;
+}*/
+
 /* toastr.js */
 #toast-container > div {
     opacity: 1;
+}
+
+.hidden {
+    display: none;
 }

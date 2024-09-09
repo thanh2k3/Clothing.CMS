@@ -16,6 +16,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 
             User,
             Role,
+            LogEvent,
         }
 
         public static SidebarMenu AddHeader(string name)
@@ -92,8 +93,17 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
                         URLPath = "/Admin/Role",
                         LinkCounter = counter,
                     };
+				case Module.LogEvent:
+					return new SidebarMenu
+					{
+						Type = SidebarMenuType.Link,
+						Name = "Nhật ký log",
+						IconClassName = "fa fa-history",
+						URLPath = "/Admin/LogEvent",
+						LinkCounter = counter,
+					};
 
-                default:
+				default:
                     break;
             }
 
