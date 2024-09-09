@@ -5,5 +5,6 @@ namespace Clothing.CMS.Application.LogEvents
     public interface ILogEventService
     {
         Task<ICollection<LogEventDto>> GetAll();
+        Task<bool> DeleteAllAsync();
     }
 }

@@ -41,5 +41,25 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
                 return Json(null);
             }
         }
+
+		[HttpPost]
+		public async Task<IActionResult> DeleteLogEvent()
+		{
+			try
+			{
+				var isSucceeded = await _logEventService.DeleteAllAsync();
+
+                if (isSucceeded)
+                {
+                    return Json(new { success = true, message = TempData["Message"] });
+                }
+
+				throw new Exception("Xóa nhật ký thất bại");
+            }
+            catch (Exception ex)
+			{
+                return Json(new { success = false, message = ex.Message });
+            }
+		}
     }
 }

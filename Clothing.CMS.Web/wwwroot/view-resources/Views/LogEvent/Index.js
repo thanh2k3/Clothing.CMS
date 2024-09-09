@@ -70,55 +70,37 @@ function OnSuccess(response) {
     });
 }
 
-//$(document).on("click", ".edit-user", function (e) {
-//    var userId = $(this).attr("data-user-id");
-
-//    $.ajax({
-//        url: "/Admin/User/EditModal?Id=" + userId,
-//        type: "POST",
-//        dataType: "html",
-//        success: function (result) {
-//            $("#UserEditModal").find(".modal-content").html(result);
-//        },
-//        error: function (e) {
-//        }
-//    })
-//})
-
-//$(document).on("click", ".delete-user", function (e) {
-//    var userId = $(this).attr("data-user-id");
-//    var email = $(this).attr("data-email");
-
-//    Swal.fire({
-//        title: 'Bạn có chắc không?',
-//        text: "Bạn có chắn là muốn xóa tài khoản \"" + email + "\" không",
-//        icon: 'warning',
-//        showCancelButton: true,
-//        confirmButtonColor: '#3085d6',
-//        cancelButtonColor: '#d33',
-//        confirmButtonText: 'Đồng ý',
-//        cancelButtonText: 'Hủy',
-//        reverseButtons: true
-//    }).then((result) => {
-//        if (result.isConfirmed) {
-//            $.ajax({
-//                url: "/Admin/User/Delete?Id=" + userId,
-//                type: "POST",
-//                dataType: "json",
-//                success: function (result) {
-//                    if (result.success === true) {
-//                        GetLogEvent();
-//                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
-//                    }
-//                    else {
-//                        Swal.fire({
-//                            icon: "error",
-//                            title: "Lỗi",
-//                            text: result.message
-//                        });
-//                    }
-//                }
-//            })
-//        }
-//    });
-//})
+$(document).on("click", ".delete-logEvent", function (e) {
+    Swal.fire({
+        title: 'Bạn có chắc không?',
+        text: "Bạn có chắn là muốn xóa tất cả nhật ký!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/Admin/LogEvent/DeleteLogEvent",
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    if (result.success === true) {
+                        GetLogEvent();
+                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: result.message
+                        });
+                    }
+                }
+            })
+        }
+    });
+})
