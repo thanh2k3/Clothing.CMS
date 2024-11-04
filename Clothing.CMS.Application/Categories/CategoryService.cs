@@ -29,7 +29,7 @@ namespace Clothing.CMS.Application.Categories
             try
             {
                 var result = await _repo.GetAll()
-                  .Where(x => x.Status == StatusActivity.Active)
+                  .Where(x => x.Status == StatusActivity.Active || x.Status == StatusActivity.ActiveInternal)
                   .OrderByDescending(x => x.Id)
                   .ToListAsync();
 
@@ -48,14 +48,24 @@ namespace Clothing.CMS.Application.Categories
 			try
 			{
 				var data = _mapper.Map<Category>(model);
+                var searchCate = await _repo.FindAsync(x => x.Title == data.Title);
+
+                if (searchCate != null)
+                {
+                    NotifyMsg("Danh mục đã tồn tại");
+                    return false;
+                }
+
 				FillAuthInfo(data);
 
 				await _repo.AddAsync(data);
 
+                NotifyMsg("Thêm mới danh mục thành công");
 				return true;
 			}
 			catch (Exception ex)
 			{
+				NotifyMsg("Thêm mới danh mục thất bại");
 				return false;
 			}
 		}

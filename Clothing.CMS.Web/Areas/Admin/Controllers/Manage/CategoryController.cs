@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clothing.CMS.Application.Categories;
+using Clothing.CMS.Application.Categories.Dto;
 using Clothing.CMS.Web.Areas.Admin.ViewModels.Category;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,9 +46,22 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers.Manage
         }
 
         [HttpPost]
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync(CreateCategoryViewModel model)
         {
-            return View();
-        }
+			if (ModelState.IsValid)
+			{
+				var cateVM = _mapper.Map<CreateCategoryDto>(model);
+				var isSucceeded = await _categoryService.CreateAsync(cateVM);
+
+				if (isSucceeded)
+				{
+					return Json(new { success = true, message = TempData["Message"] });
+				}
+
+				return Json(new { success = false, message = TempData["Message"] });
+			}
+
+			return Json(new { success = false, message = "Thông tin không hợp lệ" });
+		}
     }
 }

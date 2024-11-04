@@ -7,5 +7,6 @@ namespace Clothing.CMS.Application.Categories.Dto
     {
         public string Title { get; set; }
         public StatusActivity Status { get; set; }
-    }
+		public string StatusString { get; set; }
+	}
 }

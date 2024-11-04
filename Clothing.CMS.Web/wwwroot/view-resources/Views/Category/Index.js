@@ -42,21 +42,17 @@ function OnSuccess(response) {
         lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
         data: response,
         columnDefs: [
-            //{
-            //    targets: 0,
-            //    data: "id",
-            //    className: "hidden",
-            //},
             {
                 targets: 0,
                 data: "title",
             },
             {
                 targets: 1,
-                data: "status",
+                data: "statusString",
             },
             {
                 targets: 2,
+                className: "w-action",
                 data: null,
                 defaultContent: "",
                 render: function (data, type, row, meta) {
