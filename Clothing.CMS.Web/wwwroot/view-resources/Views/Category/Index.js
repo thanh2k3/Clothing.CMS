@@ -7,7 +7,7 @@ function GetCategory() {
         url: "/Admin/Category/GetData",
         type: "GET",
         dataType: "json",
-        success: function (response) { debugger
+        success: function (response) {
             if (response != null) {
                 OnSuccess(response);
             }

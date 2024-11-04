@@ -43,5 +43,11 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers.Manage
                 return Json(null);
             }
         }
+
+        [HttpPost]
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }

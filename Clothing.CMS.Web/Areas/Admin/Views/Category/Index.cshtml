@@ -14,7 +14,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="d-flex flex-row-reverse">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#UserCreateModal">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#CategoryCreateModal">
                         <i class="fa fa-plus-square"></i>
                         Thêm mới
                     </button>
@@ -47,10 +47,10 @@
         </div>
     </div>
 </section>
-@* 
-@await Html.PartialAsync("~/Areas/Admin/Views/User/_CreateModal.cshtml")
 
-<div class="modal fade" id="UserEditModal" tabindex="-1" role="dialog" aria-labelledby="UserEditModalLabel" data-backdrop="static">
+@await Html.PartialAsync("~/Areas/Admin/Views/Category/_CreateModal.cshtml")
+
+@* <div class="modal fade" id="UserEditModal" tabindex="-1" role="dialog" aria-labelledby="UserEditModalLabel" data-backdrop="static">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
         </div>
