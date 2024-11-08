@@ -97,5 +97,29 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers.Manage
                 return Json(new { success = false, message = ex.Message });
             }
         }
-	}
+
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					return Json(new { success = false, message = "Thông tin không hợp lệ" });
+				}
+
+				var isSucceeded = await _categoryService.DeleteAsync(id);
+				if(!isSucceeded)
+				{
+                    return Json(new { success = false, message = TempData["Message"] });
+                }
+
+                return Json(new { success = true, message = TempData["Message"] });
+            }
+			catch (Exception ex)
+			{
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+    }
 }

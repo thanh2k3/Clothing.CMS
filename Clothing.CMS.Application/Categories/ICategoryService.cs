@@ -8,5 +8,6 @@ namespace Clothing.CMS.Application.Categories
         Task<bool> CreateAsync(CreateCategoryDto model);
         Task<EditCategoryDto> GetById(int id);
 		Task<bool> UpdateAsync(EditCategoryDto model);
-	}
+        Task<bool> DeleteAsync(int id);
+    }
 }

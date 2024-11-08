@@ -103,5 +103,29 @@ namespace Clothing.CMS.Application.Categories
 				return false;
             }
 		}
-	}
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            try
+            {
+                var cate = await _repo.FindAsync(x => x.Id == id);
+                if (cate == null)
+                {
+                    NotifyMsg("Không tìm thấy dữ liệu tương thích");
+                    return false;
+                }
+
+                cate.Status = StatusActivity.InActive;
+                await _repo.UpdateAsync(cate, id);
+
+                NotifyMsg("Xóa danh mục thành công");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                NotifyMsg("Xóa danh mục thất bại");
+                return false;
+            }
+        }
+    }
 }

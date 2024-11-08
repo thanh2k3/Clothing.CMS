@@ -68,7 +68,7 @@ function OnSuccess(response) {
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-danger delete-category" data-category-id="${row.id}" data-bs-toggle="" data-bs-target="" >`,
+                        `   <button class="btn btn-sm btn-danger delete-category" data-category-id="${row.id}" data-title="${row.title}">`,
                         `       <i class="fa-solid fa-trash-can"></i> Xóa`,
                         `   </button>`
                     )
@@ -92,4 +92,42 @@ $(document).on("click", ".edit-category", function (e) {
         error: function (e) {
         }
     })
+})
+
+$(document).on("click", ".delete-category", function (e) {
+    var cateId = $(this).attr("data-category-id");
+    var title = $(this).attr("data-title");
+
+    Swal.fire({
+        title: 'Bạn có chắc không?',
+        text: "Bạn có chắn là muốn xóa danh mục \"" + title + "\" không!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/Admin/Category/Delete?Id=" + cateId,
+                type: "POST",
+                dataType: "json",
+                success: function (result) {
+                    if (result.success === true) {
+                        GetCategory();
+                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: result.message
+                        });
+                    }
+                }
+            })
+        }
+    });
 })
