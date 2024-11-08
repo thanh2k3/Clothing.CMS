@@ -11,6 +11,8 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Category
             CreateMap<CategoryDto, CategoryViewModel>()
                 .ForMember(dest => dest.StatusString, opt => opt.MapFrom(src => src.Status.GetDescription()));
             CreateMap<CreateCategoryViewModel, CreateCategoryDto>();
+            CreateMap<EditCategoryDto, EditCategoryViewModel>();
+            CreateMap<EditCategoryViewModel, EditCategoryDto>();
         }
     }
 }

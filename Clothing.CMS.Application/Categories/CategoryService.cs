@@ -69,5 +69,39 @@ namespace Clothing.CMS.Application.Categories
 				return false;
 			}
 		}
-    }
+
+		public async Task<EditCategoryDto> GetById(int id)
+		{
+            try
+            {
+                var cate = await _repo.FindAsync(x => x.Id == id);
+                var cateDto = _mapper.Map<EditCategoryDto>(cate);
+
+                return cateDto;
+            }
+            catch (Exception ex)
+            {
+                throw new NotImplementedException(ex.Message);
+            }
+		}
+
+		public async Task<bool> UpdateAsync(EditCategoryDto model)
+		{
+            try
+            {
+                var data = _mapper.Map<Category>(model);
+                FillAuthInfo(data);
+
+                await _repo.UpdateAsync(data, model.Id);
+
+				NotifyMsg("Chỉnh sửa danh mục thành công");
+				return true;
+            }
+            catch (Exception ex)
+            {
+				NotifyMsg("Chỉnh sửa danh mục thất bại");
+				return false;
+            }
+		}
+	}
 }

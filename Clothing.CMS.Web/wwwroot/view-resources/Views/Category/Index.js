@@ -63,7 +63,7 @@ function OnSuccess(response) {
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-warning edit-category" data-category-id="${row.id}" data-bs-toggle="modal" data-bs-target="#UserEditModal">`,
+                        `   <button class="btn btn-sm btn-warning edit-category" data-category-id="${row.id}" data-bs-toggle="modal" data-bs-target="#CategoryEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> Sửa`,
                         `   </button>`
                     )
@@ -78,3 +78,18 @@ function OnSuccess(response) {
         ]
     });
 }
+
+$(document).on("click", ".edit-category", function (e) {
+    var cateId = $(this).attr("data-category-id");
+
+    $.ajax({
+        url: "/Admin/Category/EditModal?Id=" + cateId,
+        type: "POST",
+        dataType: "html",
+        success: function (result) {
+            $("#CategoryEditModal").find(".modal-content").html(result);
+        },
+        error: function (e) {
+        }
+    })
+})
