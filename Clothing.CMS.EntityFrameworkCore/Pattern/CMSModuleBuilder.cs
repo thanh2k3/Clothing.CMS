@@ -12,6 +12,12 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern
 			{
 				entity.HasKey(t => t.Id);
 			});
-		}
+
+            // Category
+            builder.Entity<Category>(entity =>
+            {
+                entity.HasKey(t => t.Id);
+            });
+        }
 	}
 }

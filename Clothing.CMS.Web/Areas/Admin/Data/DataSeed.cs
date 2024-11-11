@@ -27,8 +27,8 @@ namespace Clothing.CMS.Web.Areas.Admin.Data
 				// User Info
 				string firstName = "Super";
 				string lastName = "Admin";
-				string email = "wreckecr@admin.com";
-				string password = "qwer1234!@#$QWER";
+				string email = "admin@gmail.com";
+				string password = "Admin@123456";
 				string role = "SuperAdmin";
 				string role2 = "SeniorManager";
 				string role3 = "Manager";
