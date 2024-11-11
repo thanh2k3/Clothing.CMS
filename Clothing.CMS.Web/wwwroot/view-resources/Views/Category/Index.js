@@ -58,11 +58,6 @@ function OnSuccess(response) {
                 render: function (data, type, row, meta) {
                     var actions = [];
                     actions.push(
-                        `   <button class="btn btn-sm btn-info" data-category-id="${row.id}" data-bs-toggle="" data-bs-target="" >`,
-                        `       <i class="fa-solid fa-eye"></i> Xem`,
-                        `   </button>`
-                    )
-                    actions.push(
                         `   <button class="btn btn-sm btn-warning edit-category" data-category-id="${row.id}" data-bs-toggle="modal" data-bs-target="#CategoryEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> Sửa`,
                         `   </button>`
