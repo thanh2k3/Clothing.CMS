@@ -11,7 +11,7 @@ namespace Clothing.CMS.Entities
 		public string? Description { get; set; }
 		public string Price { get; set; }
 		public string OriginalPrice { get; set; }
-		public string Inventory { get; set; }
+		public int Inventory { get; set; }
 		public string ImageURL { get; set; }
 		public int CategoryId { get; set; }
 		public virtual Category Category { get; set; }
