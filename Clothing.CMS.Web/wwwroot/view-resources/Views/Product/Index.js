@@ -3,6 +3,11 @@
 });
 
 function GetProduct() {
+    var _$modal = $('#ProductCreateModal'),
+        _$form = _$modal.find('form');
+
+    _$form.registerInputAmount();
+
     $.ajax({
         url: "/Admin/Product/GetData",
         type: "GET",
