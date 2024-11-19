@@ -49,10 +49,13 @@ function OnSuccess(response) {
             {
                 targets: 1,
                 data: "imageURL",
+                render: (data, type, row, meta) => {
+                    return '<img src="/' + data + '" alt="Image" />';
+                }
             },
             {
                 targets: 2,
-                data: "categoryId",
+                data: "category.title",
             },
             {
                 targets: 3,
@@ -61,14 +64,17 @@ function OnSuccess(response) {
             {
                 targets: 4,
                 data: "originalPrice",
+                render: numberFormatCurrency()
             },
             {
                 targets: 5,
                 data: "price",
+                render: numberFormatCurrency()
             },
             {
                 targets: 6,
                 data: "inventory",
+                render: numberFormatCurrency()
             },
             {
                 targets: 7,

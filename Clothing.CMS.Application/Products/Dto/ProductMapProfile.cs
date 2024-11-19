@@ -8,6 +8,7 @@ namespace Clothing.CMS.Application.Products.Dto
 		public ProductMapProfile()
 		{
 			CreateMap<Product, ProductDto>();
+			CreateMap<CreateProductDto, Product>();
 		}
 	}
 }

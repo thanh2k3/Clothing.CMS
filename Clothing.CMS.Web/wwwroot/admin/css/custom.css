@@ -128,3 +128,8 @@ table {
 .hidden {
     display: none;
 }
+
+#productTable tbody img {
+    border-radius: 5px;
+    max-width: 70px;
+}

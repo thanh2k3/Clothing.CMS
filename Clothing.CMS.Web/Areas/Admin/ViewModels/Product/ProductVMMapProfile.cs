@@ -8,6 +8,7 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Product
 		public ProductVMMapProfile()
 		{
 			CreateMap<ProductDto, ProductViewModel>();
+			CreateMap<CreateProductViewModel, CreateProductDto>();
 		}
 	}
 }
