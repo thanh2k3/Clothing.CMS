@@ -1,30 +1,11 @@
-﻿$(document).ready(function () {
-    GetProduct();
-});
-
-function GetProduct() {
-    var _$modal = $('#ProductCreateModal'),
-        _$form = _$modal.find('form');
+﻿(function ($) {
+    var _$modal = $("#ProductCreateModal"),
+        _$form = _$modal.find("form"),
+        _$table = $("#productTable");
 
     _$form.registerInputAmount();
 
-    $.ajax({
-        url: "/Admin/Product/GetData",
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            if (response != null) {
-                OnSuccess(response);
-            }
-            else {
-                toastr.error("Có lỗi xảy ra", null, { timeOut: 3000, positionClass: "toast-top-right" })
-            }
-        }
-    })
-}
-
-function OnSuccess(response) {
-    $("#productTable").DataTable({
+    _$table.DataTable({
         language: {
             lengthMenu: "Hiển thị _MENU_ bản ghi",
             search: "Tìm kiếm:",
@@ -44,50 +25,69 @@ function OnSuccess(response) {
         ordering: false,
         autoWidth: false,
         lengthChange: true,
-        lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
-        data: response,
+        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Tất cả"]],
+        ajax: {
+            url: "/Admin/Product/GetData",
+            type: "GET",
+            dataType: "json",
+            dataSrc: function (json) {
+                // Có thể xử lý dữ liệu trước khi hiển thị nếu cần
+                return json || [];
+            },
+            error: function () {
+                toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
+            }
+        },
         columnDefs: [
             {
                 targets: 0,
-                data: "name",
-            },
-            {
-                targets: 1,
                 data: "imageURL",
+                width: "10%",
                 render: (data, type, row, meta) => {
                     return '<img src="/' + data + '" alt="Image" />';
                 }
             },
             {
+                targets: 1,
+                data: "name",
+                width: "20%",
+            },
+            {
                 targets: 2,
                 data: "category.title",
+                width: "15%",
             },
             {
                 targets: 3,
-                data: "description",
+                data: "originalPrice",
+                width: "10%",
+                render: numberFormatCurrency()
             },
             {
                 targets: 4,
-                data: "originalPrice",
+                data: "price",
+                width: "10%",
                 render: numberFormatCurrency()
             },
             {
                 targets: 5,
-                data: "price",
+                data: "inventory",
+                width: "10%",
                 render: numberFormatCurrency()
             },
             {
                 targets: 6,
-                data: "inventory",
-                render: numberFormatCurrency()
-            },
-            {
-                targets: 7,
                 className: "w-action",
                 data: null,
                 defaultContent: "",
+                width: "20%",
                 render: function (data, type, row, meta) {
                     var actions = [];
+                    actions.push(
+                        `   <button class="btn btn-sm btn-info" data-product-id="${row.id}" data-bs-toggle="modal" data-bs-target="#ProductViewModal">`,
+                        `       <i class="fa-solid fa-eye"></i> Xem`,
+                        `   </button>`
+                    )
                     actions.push(
                         `   <button class="btn btn-sm btn-warning edit-product" data-product-id="${row.id}" data-bs-toggle="modal" data-bs-target="#ProductEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> Sửa`,
@@ -103,4 +103,4 @@ function OnSuccess(response) {
             },
         ]
     });
-}
+})(jQuery);

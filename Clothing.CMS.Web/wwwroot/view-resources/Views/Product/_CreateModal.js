@@ -1,18 +1,19 @@
 ﻿(function ($) {
     var _$modal = $("#ProductCreateModal"),
-        _$form = _$modal.find("form");
+        _$form = _$modal.find("form"),
+        _$table = $("#productTable");
 
     var srcDefault = _$form.find("#targetImage").attr("src");
 
     _$modal.on("click", ".create-product", function (e) {
         var formData = new FormData();
 
-        var serializedData = _$form.serializeArray();
+        var serializedData = _$form.serializeFormToObject();
 
-        // Thêm các dữ liệu từ serialize vào FormData
-        serializedData.forEach(function (field) {
-            formData.append(field.name, field.value);
-        })
+        // Thêm các dữ liệu từ serializedData vào FormData
+        Object.keys(serializedData).forEach(function (key) {
+            formData.append(key, serializedData[key]);
+        });
 
         formData.append("Image", _$form.find("#ImageURL")[0].files[0]);
 
@@ -26,7 +27,10 @@
             success: function (result) {
                 if (result.success === true) {
                     HideProductCreateModal();
-                    GetProduct();
+
+                    // Reload lại Datatable
+                    _$table.DataTable().ajax.reload();
+
                     toastr.success(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                 }
                 else {

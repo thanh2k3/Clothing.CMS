@@ -12,9 +12,9 @@ namespace Clothing.CMS.Application.Products.Dto
 		[Display(Name = "Mô tả")]
 		public string? Description { get; set; }
 		[Display(Name = "Giá bán")]
-		public string Price { get; set; }
+		public double Price { get; set; }
 		[Display(Name = "Giá gốc")]
-		public string OriginalPrice { get; set; }
+		public double OriginalPrice { get; set; }
 		[Display(Name = "Số lượng")]
 		public int Inventory { get; set; }
 		[Display(Name = "Ảnh")]
