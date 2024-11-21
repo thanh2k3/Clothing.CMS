@@ -46,6 +46,22 @@ namespace Clothing.CMS.Application.Products
 			}
 		}
 
+		public async Task<EditProductDto> GetById(int id)
+		{
+			try
+			{
+				var product = await _repo.FindAsync(x => x.Id == id);
+
+				var productDto = _mapper.Map<EditProductDto>(product);
+
+				return productDto;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
 		public async Task<bool> CreateAsync(CreateProductDto model, IFormFile? image)
 		{
 			try
@@ -59,11 +75,11 @@ namespace Clothing.CMS.Application.Products
 						var imgName = "product-" + Guid.NewGuid().ToString() + "-" + image.FileName;
 						var name = Path.Combine(_environment.WebRootPath + "/img/product", imgName);
 						await image.CopyToAsync(new FileStream(name, FileMode.Create));
-						product.ImageURL = "img/product/" + imgName;
+						product.ImageURL = "/img/product/" + imgName;
 					}
 					else
 					{
-						product.ImageURL = "img/product/no-image.jpg";
+						product.ImageURL = "/img/product/no-image.jpg";
 					}
 
 					FillAuthInfo(product);
@@ -79,6 +95,47 @@ namespace Clothing.CMS.Application.Products
 			catch (Exception ex)
 			{
 				NotifyMsg("Thêm mới sản phẩm thất bại.");
+				return false;
+			}
+		}
+
+		public async Task<bool> UpdateAsync(EditProductDto model, IFormFile? image)
+		{
+			try
+			{
+				var product = _mapper.Map<Product>(model);
+				var existsPrt = await _repo.FindAsync(x => x.Name == product.Name && x.Id != product.Id);
+				if (existsPrt == null)
+				{
+					if (image != null)
+					{
+						var imgName = "product-" + Guid.NewGuid().ToString() + "-" + image.FileName;
+						var name = Path.Combine(_environment.WebRootPath + "/img/product", imgName);
+						await image.CopyToAsync(new FileStream(name, FileMode.Create));
+						product.ImageURL = "/img/product/" + imgName;
+					}
+					else
+					{
+						var existProduct = await _repo.FindAsync(x => x.Id == product.Id);
+						if (existProduct != null && !string.IsNullOrEmpty(existProduct.ImageURL))
+						{
+							product.ImageURL = existProduct.ImageURL;
+						}
+					}
+
+					FillAuthInfo(product);
+					await _repo.UpdateAsync(product, product.Id);
+
+					NotifyMsg("Chỉnh sửa sản phẩm thành công");
+					return true;
+				}
+
+				NotifyMsg("Sản phẩm đã tồn tại");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				NotifyMsg("Chỉnh sửa sản phẩm thất bại");
 				return false;
 			}
 		}

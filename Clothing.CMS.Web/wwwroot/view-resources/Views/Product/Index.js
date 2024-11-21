@@ -44,7 +44,7 @@
                 data: "imageURL",
                 width: "10%",
                 render: (data, type, row, meta) => {
-                    return '<img src="/' + data + '" alt="Image" />';
+                    return '<img src="' + data + '" alt="Image" />';
                 }
             },
             {
@@ -77,7 +77,7 @@
             },
             {
                 targets: 6,
-                className: "w-action",
+                className: "text-center",
                 data: null,
                 defaultContent: "",
                 width: "20%",
@@ -102,5 +102,21 @@
                 }
             },
         ]
+    });
+
+    $(document).on("click", ".edit-product", function (e) {
+        var productId = $(this).attr("data-product-id");
+
+        $.ajax({
+            url: "/Admin/Product/EditModal?Id=" + productId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#ProductEditModal div.modal-content").html(result);
+                $("#ProductEditModal").find("form").registerInputAmount();
+            },
+            error: function (e) {
+            }
+        })
     });
 })(jQuery);

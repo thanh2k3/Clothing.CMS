@@ -80,5 +80,53 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				return Json(new { success = false, message = "Có lỗi xảy ra" });
 			}
 		}
+
+		public async Task<ActionResult> EditModal(int id)
+        {
+            try
+            {
+                var productDto = await _productService.GetById(id);
+                var productVM = _mapper.Map<EditProductViewModel>(productDto);
+
+				ViewBag.CategoryItems = CategoryItems;
+
+				return PartialView("_EditModal", productVM);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return PartialView("_EditModal");
+            }
+        }
+
+		[HttpPost]
+		public async Task<JsonResult> Edit(EditProductViewModel model, IFormFile? image)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					var productDto = _mapper.Map<EditProductDto>(model);
+					var isSucceeded = await _productService.UpdateAsync(productDto, image);
+
+					if (isSucceeded)
+					{
+						_logger.LogInformation((string?)TempData["Message"]);
+						return Json(new { success = true, message = TempData["Message"] });
+					}
+
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
+				}
+
+				_logger.LogWarning("Thông tin không hợp lệ");
+				return Json(new { success = false, message = "Thông tin không hợp lệ" });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
+		}
 	}
 }

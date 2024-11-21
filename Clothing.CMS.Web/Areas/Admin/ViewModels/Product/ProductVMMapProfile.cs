@@ -9,6 +9,8 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Product
 		{
 			CreateMap<ProductDto, ProductViewModel>();
 			CreateMap<CreateProductViewModel, CreateProductDto>();
+			CreateMap<EditProductDto, EditProductViewModel>();
+			CreateMap<EditProductViewModel, EditProductDto>();
 		}
 	}
 }

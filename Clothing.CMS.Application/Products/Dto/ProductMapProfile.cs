@@ -9,6 +9,8 @@ namespace Clothing.CMS.Application.Products.Dto
 		{
 			CreateMap<Product, ProductDto>();
 			CreateMap<CreateProductDto, Product>();
+			CreateMap<Product, EditProductDto>();
+			CreateMap<EditProductDto, Product>();
 		}
 	}
 }
