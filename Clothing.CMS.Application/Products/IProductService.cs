@@ -9,5 +9,6 @@ namespace Clothing.CMS.Application.Products
 		Task<EditProductDto> GetById(int id);
 		Task<bool> CreateAsync(CreateProductDto model, IFormFile? image);
 		Task<bool> UpdateAsync(EditProductDto model, IFormFile? image);
+		Task<bool> DeleteAsync(int id);
 	}
 }

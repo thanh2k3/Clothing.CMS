@@ -3,6 +3,7 @@ using Clothing.CMS.Application.Products.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
+using Clothing.Shared;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -33,6 +34,7 @@ namespace Clothing.CMS.Application.Products
 			try
 			{
 				var result = await _repo.GetAllIncluding(x => x.Category)
+					.Where(x => x.Status == StatusActivity.Active || x.Status == StatusActivity.ActiveInternal)
 					.OrderByDescending(x => x.Id)
 					.ToListAsync();
 
@@ -136,6 +138,30 @@ namespace Clothing.CMS.Application.Products
 			catch (Exception ex)
 			{
 				NotifyMsg("Chỉnh sửa sản phẩm thất bại");
+				return false;
+			}
+		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			try
+			{
+				var product = await _repo.FindAsync(x => x.Id == id);
+				if (product == null)
+				{
+					NotifyMsg("Không tìm thấy dữ liệu tương thích");
+					return false;
+				}
+
+				product.Status = StatusActivity.InActive;
+				await _repo.UpdateAsync(product, id);
+
+				NotifyMsg("Xóa sản phẩm thành công");
+				return true;
+			}
+			catch (Exception ex)
+			{
+				NotifyMsg("Xóa sản phẩm thất bại");
 				return false;
 			}
 		}

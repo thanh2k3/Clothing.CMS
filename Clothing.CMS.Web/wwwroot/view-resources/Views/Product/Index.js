@@ -94,7 +94,7 @@
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-danger delete-product" data-product-id="${row.id}" data-title="${row.name}">`,
+                        `   <button class="btn btn-sm btn-danger delete-product" data-product-id="${row.id}" data-product-name="${row.name}">`,
                         `       <i class="fa-solid fa-trash-can"></i> Xóa`,
                         `   </button>`
                     )
@@ -119,4 +119,43 @@
             }
         })
     });
+
+    $(document).on("click", ".delete-product", function (e) {
+        var productId = $(this).attr("data-product-id");
+        var name = $(this).attr("data-product-name");
+
+        Swal.fire({
+            title: 'Bạn có chắc không?',
+            text: "Bạn có chắn là muốn xóa sản phẩm \"" + name + "\" không!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            allowOutsideClick: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/Product/Delete?Id=" + productId,
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success === true) {
+                            _$table.DataTable().ajax.reload();
+                            toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: result.message
+                            });
+                        }
+                    }
+                })
+            }
+        });
+    })
 })(jQuery);
