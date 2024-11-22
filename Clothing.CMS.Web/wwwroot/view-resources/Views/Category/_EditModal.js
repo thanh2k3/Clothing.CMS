@@ -1,8 +1,11 @@
 ﻿(function ($) {
     var _$modal = $("#CategoryEditModal"),
-        _$form = _$modal.find("form");
+        _$form = _$modal.find("form"),
+        _$table = $("#categoryTable");
 
-    function Save() {
+    _$form.closest("div.modal-content").find(".save-category").click(function (e) {
+        e.preventDefault();
+
         var formData = _$form.serialize();
 
         $.ajax({
@@ -12,7 +15,7 @@
             success: function (result) {
                 if (result.success === true) {
                     _$modal.modal("hide");
-                    GetCategory();
+                    _$table.DataTable().ajax.reload();
                     toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                 }
                 else {
@@ -20,11 +23,5 @@
                 }
             }
         })
-    }
-
-    _$form.closest("div.modal-content").find(".save-button").click(function (e) {
-        e.preventDefault();
-        Save();
-    })
-
+    });
 })(jQuery)

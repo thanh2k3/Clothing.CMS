@@ -16,7 +16,8 @@ namespace Clothing.CMS.Application.Categories
         private readonly IRepository<Category> _repo;
         private readonly IMapper _mapper;
 
-        public CategoryService(IRepository<Category> repo,
+        public CategoryService(
+            IRepository<Category> repo,
             IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
 			ITempDataDictionaryFactory tempDataDictionaryFactory) : base(httpContextAccessor, tempDataDictionaryFactory)
@@ -40,8 +41,8 @@ namespace Clothing.CMS.Application.Categories
             }
             catch (Exception ex)
             {
-                return null;
-            }
+				throw new Exception(ex.Message);
+			}
         }
 
         public async Task<bool> CreateAsync(CreateCategoryDto model)
@@ -50,19 +51,18 @@ namespace Clothing.CMS.Application.Categories
 			{
 				var data = _mapper.Map<Category>(model);
                 var searchCate = await _repo.FindAsync(x => x.Title == data.Title);
-
-                if (searchCate != null)
+                if (searchCate == null)
                 {
-                    NotifyMsg("Danh mục đã tồn tại");
-                    return false;
-                }
+					FillAuthInfo(data);
 
-				FillAuthInfo(data);
+					await _repo.AddAsync(data);
 
-				await _repo.AddAsync(data);
+					NotifyMsg("Thêm mới danh mục thành công");
+					return true;
+				}
 
-                NotifyMsg("Thêm mới danh mục thành công");
-				return true;
+				NotifyMsg("Danh mục đã tồn tại");
+				return false;
 			}
 			catch (Exception ex)
 			{
@@ -82,7 +82,7 @@ namespace Clothing.CMS.Application.Categories
             }
             catch (Exception ex)
             {
-                throw new NotImplementedException(ex.Message);
+                throw new Exception(ex.Message);
             }
 		}
 
@@ -90,14 +90,21 @@ namespace Clothing.CMS.Application.Categories
 		{
             try
             {
-                var data = _mapper.Map<Category>(model);
-                FillAuthInfo(data);
+                var category = _mapper.Map<Category>(model);
+                var existsCate = await _repo.FindAsync(x => x.Title == category.Title && x.Id != category.Id);
+                if (existsCate == null)
+                {
+					FillAuthInfo(category);
 
-                await _repo.UpdateAsync(data, model.Id);
+					await _repo.UpdateAsync(category, category.Id);
 
-				NotifyMsg("Chỉnh sửa danh mục thành công");
-				return true;
-            }
+					NotifyMsg("Chỉnh sửa danh mục thành công");
+					return true;
+				}
+
+				NotifyMsg("Danh mục đã tồn tại");
+				return false;
+			}
             catch (Exception ex)
             {
 				NotifyMsg("Chỉnh sửa danh mục thất bại");
