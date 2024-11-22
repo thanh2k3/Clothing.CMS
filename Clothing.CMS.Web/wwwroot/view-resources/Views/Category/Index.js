@@ -1,25 +1,7 @@
-﻿$(document).ready(function () {
-    GetCategory();
-});
+﻿(function ($) {
+    var _$table = $("#categoryTable");
 
-function GetCategory() {
-    $.ajax({
-        url: "/Admin/Category/GetData",
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            if (response != null) {
-                OnSuccess(response);
-            }
-            else {
-                toastr.error("Có lỗi xảy ra", null, { timeOut: 3000, positionClass: "toast-top-right" })
-            }
-        }
-    })
-}
-
-function OnSuccess(response) {
-    $("#categoryTable").DataTable({
+    _$table.DataTable({
         language: {
             lengthMenu: "Hiển thị _MENU_ bản ghi",
             search: "Tìm kiếm:",
@@ -39,8 +21,22 @@ function OnSuccess(response) {
         ordering: false,
         autoWidth: false,
         lengthChange: true,
-        lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
-        data: response,
+        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Tất cả"]],
+        ajax: {
+            url: "/Admin/Category/GetData",
+            type: "GET",
+            dataType: "json",
+            dataSrc: function (json) {
+                if (json.success === false) {
+                    toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+                    return []; // Không có dữ liệu để hiển thị
+                }
+                return json || []; // Xử lý dữ liệu nếu thành công
+            },
+            error: function () {
+                toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
+            }
+        },
         columnDefs: [
             {
                 targets: 0,
@@ -52,8 +48,9 @@ function OnSuccess(response) {
             },
             {
                 targets: 2,
-                className: "w-action",
+                className: "text-center",
                 data: null,
+                width: "20%",
                 defaultContent: "",
                 render: function (data, type, row, meta) {
                     var actions = [];
@@ -72,57 +69,58 @@ function OnSuccess(response) {
             },
         ]
     });
-}
 
-$(document).on("click", ".edit-category", function (e) {
-    var cateId = $(this).attr("data-category-id");
+    $(document).on("click", ".edit-category", function (e) {
+        var cateId = $(this).attr("data-category-id");
 
-    $.ajax({
-        url: "/Admin/Category/EditModal?Id=" + cateId,
-        type: "POST",
-        dataType: "html",
-        success: function (result) {
-            $("#CategoryEditModal").find(".modal-content").html(result);
-        },
-        error: function (e) {
-        }
+        $.ajax({
+            url: "/Admin/Category/EditModal?Id=" + cateId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#CategoryEditModal").find(".modal-content").html(result);
+            },
+            error: function (e) {
+            }
+        })
     })
-})
 
-$(document).on("click", ".delete-category", function (e) {
-    var cateId = $(this).attr("data-category-id");
-    var title = $(this).attr("data-title");
+    $(document).on("click", ".delete-category", function (e) {
+        var cateId = $(this).attr("data-category-id");
+        var title = $(this).attr("data-title");
 
-    Swal.fire({
-        title: 'Bạn có chắc không?',
-        text: "Bạn có chắn là muốn xóa danh mục \"" + title + "\" không!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: "/Admin/Category/Delete?Id=" + cateId,
-                type: "POST",
-                dataType: "json",
-                success: function (result) {
-                    if (result.success === true) {
-                        GetCategory();
-                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+        Swal.fire({
+            title: "Bạn có chắc không?",
+            text: "Bạn có chắn là muốn xóa danh mục \"" + title + "\" không!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            allowOutsideClick: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/Category/Delete?Id=" + cateId,
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success === true) {
+                            _$table.DataTable().ajax.reload();
+                            toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: result.message
+                            });
+                        }
                     }
-                    else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Lỗi",
-                            text: result.message
-                        });
-                    }
-                }
-            })
-        }
-    });
-})
+                })
+            }
+        });
+    })
+})(jQuery)
