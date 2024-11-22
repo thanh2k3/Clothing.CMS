@@ -19,8 +19,10 @@ namespace Clothing.CMS.Application.Products.Dto
 		public int Inventory { get; set; }
 		[Display(Name = "Ảnh")]
 		public string ImageURL { get; set; }
-		[Display(Name = "Loại")]
-		public int CategoryId { get; set; }
 		public Category Category { get; set; }
+		[Display(Name = "Trạng thái")]
+		public string StatusString { get; set; }
+		[Display(Name = "Loại")]
+		public string CategoryTitle { get; set; }
 	}
 }

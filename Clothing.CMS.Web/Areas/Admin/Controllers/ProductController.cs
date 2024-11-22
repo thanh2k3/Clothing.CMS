@@ -129,6 +129,21 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			}
 		}
 
+		public async Task<ActionResult> ViewModal(int id)
+		{
+			try
+			{
+				var productDto = await _productService.GetByIdIncluding(id);
+				var productVM = _mapper.Map<ProductViewModel>(productDto);
+				return PartialView("_ViewModal", productVM);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return PartialView("_ViewModal");
+			}
+		}
+
 		[HttpPost]
         public async Task<IActionResult> Delete(int id)
         {

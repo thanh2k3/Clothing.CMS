@@ -58,7 +58,19 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
             return await _context.Set<T>().SingleOrDefaultAsync(match);
         }
 
-        public ICollection<T> FindAll(Expression<Func<T, bool>> match)
+		public async Task<T> FindAsyncIncluding(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
+		{
+            IQueryable<T> queryable = GetAll();
+
+            foreach (Expression<Func<T, object>> includeProperty in includeProperties)
+            {
+				queryable = queryable.Include<T, object>(includeProperty);
+            }
+
+            return await queryable.SingleOrDefaultAsync(match);
+		}
+
+		public ICollection<T> FindAll(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().Where(match).ToList();
         }
@@ -177,5 +189,5 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-    }
+	}
 }

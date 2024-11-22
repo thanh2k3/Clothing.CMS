@@ -2,6 +2,7 @@
 using Clothing.CMS.Application.Products.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
+using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
 using Clothing.Shared;
 using Microsoft.AspNetCore.Hosting;
@@ -53,8 +54,22 @@ namespace Clothing.CMS.Application.Products
 			try
 			{
 				var product = await _repo.FindAsync(x => x.Id == id);
-
 				var productDto = _mapper.Map<EditProductDto>(product);
+
+				return productDto;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public async Task<ProductDto> GetByIdIncluding(int id)
+		{
+			try
+			{
+				var product = await _repo.FindAsyncIncluding(x => x.Id == id, x => x.Category);
+				var productDto = _mapper.Map<ProductDto>(product);
 
 				return productDto;
 			}

@@ -84,7 +84,7 @@
                 render: function (data, type, row, meta) {
                     var actions = [];
                     actions.push(
-                        `   <button class="btn btn-sm btn-info" data-product-id="${row.id}" data-bs-toggle="modal" data-bs-target="#ProductViewModal">`,
+                        `   <button class="btn btn-sm btn-info view-product" data-product-id="${row.id}" data-bs-toggle="modal" data-bs-target="#ProductViewModal">`,
                         `       <i class="fa-solid fa-eye"></i> Xem`,
                         `   </button>`
                     )
@@ -114,6 +114,22 @@
             success: function (result) {
                 $("#ProductEditModal div.modal-content").html(result);
                 $("#ProductEditModal").find("form").registerInputAmount();
+            },
+            error: function (e) {
+            }
+        })
+    });
+
+    $(document).on("click", ".view-product", function (e) {
+        var productId = $(this).attr("data-product-id");
+
+        $.ajax({
+            url: "/Admin/Product/ViewModal?Id=" + productId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#ProductViewModal div.modal-content").html(result);
+                $("#ProductViewModal").find("form").registerInputAmount();
             },
             error: function (e) {
             }
