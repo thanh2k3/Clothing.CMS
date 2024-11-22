@@ -4,7 +4,6 @@ using Clothing.CMS.Application.Products;
 using Clothing.CMS.Application.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
 using Clothing.CMS.Web.Areas.Admin.Controllers;
-using Clothing.CMS.Web.Areas.Admin.Controllers.Manage;
 
 namespace Clothing.CMS.Web.Common
 {
