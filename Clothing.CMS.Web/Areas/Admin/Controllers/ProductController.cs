@@ -47,7 +47,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			catch (Exception ex)
 			{
 				_logger.LogError(ex.Message);
-				return Json(null);
+				return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
 			}
 		}
 

@@ -1,6 +1,5 @@
 ﻿using Clothing.CMS.Entities;
 using Clothing.CMS.Entities.Common;
-using Clothing.Shared;
 using System.ComponentModel.DataAnnotations;
 
 namespace Clothing.CMS.Application.Products.Dto
@@ -19,10 +18,10 @@ namespace Clothing.CMS.Application.Products.Dto
 		public int Inventory { get; set; }
 		[Display(Name = "Ảnh")]
 		public string ImageURL { get; set; }
-		public Category Category { get; set; }
 		[Display(Name = "Trạng thái")]
 		public string StatusString { get; set; }
 		[Display(Name = "Loại")]
 		public string CategoryTitle { get; set; }
+		public Category Category { get; set; }
 	}
 }

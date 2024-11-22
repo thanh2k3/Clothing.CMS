@@ -2,7 +2,6 @@
 using Clothing.CMS.Application.Products.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
-using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
 using Clothing.Shared;
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +44,7 @@ namespace Clothing.CMS.Application.Products
 			}
 			catch (Exception ex)
 			{
-				return null;
+				throw new Exception(ex.Message);
 			}
 		}
 
@@ -102,16 +101,16 @@ namespace Clothing.CMS.Application.Products
 					FillAuthInfo(product);
 					await _repo.AddAsync(product);
 
-					NotifyMsg("Thêm mới sản phẩm thành công.");
+					NotifyMsg("Thêm mới sản phẩm thành công");
 					return true;
 				}
 
-				NotifyMsg("Sản phẩm đã tồn tại!");
+				NotifyMsg("Sản phẩm đã tồn tại");
 				return false;
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Thêm mới sản phẩm thất bại.");
+				NotifyMsg("Thêm mới sản phẩm thất bại");
 				return false;
 			}
 		}

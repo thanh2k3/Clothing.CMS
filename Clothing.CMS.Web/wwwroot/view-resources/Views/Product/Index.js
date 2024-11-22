@@ -31,8 +31,11 @@
             type: "GET",
             dataType: "json",
             dataSrc: function (json) {
-                // Có thể xử lý dữ liệu trước khi hiển thị nếu cần
-                return json || [];
+                if (json.success === false) {
+                    toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+                    return []; // Không có dữ liệu để hiển thị
+                }
+                return json || []; // Xử lý dữ liệu nếu thành công
             },
             error: function () {
                 toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
@@ -54,7 +57,7 @@
             },
             {
                 targets: 2,
-                data: "category.title",
+                data: "categoryTitle",
                 width: "15%",
             },
             {
@@ -141,14 +144,14 @@
         var name = $(this).attr("data-product-name");
 
         Swal.fire({
-            title: 'Bạn có chắc không?',
+            title: "Bạn có chắc không?",
             text: "Bạn có chắn là muốn xóa sản phẩm \"" + name + "\" không!",
-            icon: 'warning',
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy',
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
             allowOutsideClick: false,
             reverseButtons: true
         }).then((result) => {
