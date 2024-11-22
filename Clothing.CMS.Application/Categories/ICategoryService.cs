@@ -1,4 +1,5 @@
 ﻿using Clothing.CMS.Application.Categories.Dto;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Clothing.CMS.Application.Categories
 {
@@ -9,5 +10,6 @@ namespace Clothing.CMS.Application.Categories
         Task<EditCategoryDto> GetById(int id);
 		Task<bool> UpdateAsync(EditCategoryDto model);
         Task<bool> DeleteAsync(int id);
-    }
+		Task<List<SelectListItem>> GetSelectListItemAsync();
+	}
 }

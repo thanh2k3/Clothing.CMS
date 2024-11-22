@@ -1,1 +1,68 @@
-﻿<h1>Product</h1>
+﻿@{
+    ViewData["Title"] = "Sản phẩm";
+}
+
+@section scripts {
+    <script src="~/view-resources/views/product/index.js" asp-append-version="true"></script>
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+            <div class="col-sm-6">
+                <div class="d-flex flex-row-reverse">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ProductCreateModal">
+                        <i class="fa fa-plus-square"></i>
+                        Thêm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="productTable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Loại</th>
+                                    <th>Giá gốc</th>
+                                    <th>Giá bán</th>
+                                    <th>Tồn kho</th>
+                                    <th>Tác vụ</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@await Html.PartialAsync("~/Areas/Admin/Views/Product/_CreateModal.cshtml")
+
+<div class="modal fade" id="ProductEditModal" tabindex="-1" role="dialog" aria-labelledby="ProductEditModalLabel" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ProductViewModal" tabindex="-1" role="dialog" aria-labelledby="ProductViewModalLabel" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>

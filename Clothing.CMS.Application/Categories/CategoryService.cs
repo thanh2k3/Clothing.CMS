@@ -5,6 +5,7 @@ using Clothing.CMS.Entities;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
 using Clothing.Shared;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
@@ -127,5 +128,26 @@ namespace Clothing.CMS.Application.Categories
                 return false;
             }
         }
-    }
+
+        public async Task<List<SelectListItem>> GetSelectListItemAsync()
+        {
+            try
+            {
+                var result = _repo.GetAll()
+					.Where(x => x.Status == StatusActivity.Active || x.Status == StatusActivity.ActiveInternal)
+                    .Select(x => new SelectListItem()
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Title,
+                    })
+                    .ToList();
+
+                return result;
+			}
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+		}
+	}
 }

@@ -16,6 +16,7 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
         ICollection<T> FindAll(Expression<Func<T, bool>> match);
         Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
         Task<T> FindAsync(Expression<Func<T, bool>> match);
+        Task<T> FindAsyncIncluding(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties);
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
         Task<ICollection<T>> FindByAsync(Expression<Func<T, bool>> predicate);
         T Get(int id);
