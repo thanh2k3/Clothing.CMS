@@ -8,6 +8,7 @@ namespace Clothing.CMS.Application.Roles.Dto
 		public RoleMapProfile()
 		{
 			CreateMap<Role, RoleDto>();
+			CreateMap<CreateRoleDto, Role>();
 		}
 	}
 }

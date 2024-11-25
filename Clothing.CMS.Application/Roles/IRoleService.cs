@@ -5,5 +5,6 @@ namespace Clothing.CMS.Application.Roles
 	public interface IRoleService
 	{
 		Task<ICollection<RoleDto>> GetAll();
+		Task<bool> CreateAsync(CreateRoleDto model);
 	}
 }

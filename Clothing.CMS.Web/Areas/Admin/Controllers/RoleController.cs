@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clothing.CMS.Application.Roles;
+using Clothing.CMS.Application.Roles.Dto;
 using Clothing.CMS.Web.Areas.Admin.ViewModels.Role;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,5 +42,35 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
                 return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> Create(CreateRoleViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+					var roleDto = _mapper.Map<CreateRoleDto>(model);
+					var isSucceeded = await _roleService.CreateAsync(roleDto);
+
+					if (isSucceeded)
+					{
+						_logger.LogInformation((string?)TempData["Message"]);
+						return Json(new { success = true, message = TempData["Message"] });
+					}
+
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
+				}
+
+				_logger.LogWarning("Thông tin không hợp lệ");
+				return Json(new { success = false, message = "Thông tin không hợp lệ" });
+			}
+            catch (Exception ex)
+            {
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = ex.Message });
+			}
+		}
     }
 }

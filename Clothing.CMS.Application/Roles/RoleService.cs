@@ -38,5 +38,34 @@ namespace Clothing.CMS.Application.Roles
 				throw new Exception(ex.Message);
 			}
 		}
+
+		public async Task<bool> CreateAsync(CreateRoleDto model)
+		{
+			try
+			{
+				var data = _mapper.Map<Role>(model);
+				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == data.Name);
+				if (role == null)
+				{
+					IdentityResult result = await _roleManager.CreateAsync(data);
+					
+					if (result.Succeeded)
+					{
+						NotifyMsg("Thêm mới quyền thành công");
+						return true;
+					}
+
+					NotifyMsg("Thêm mới quyền thất bại");
+					return false;
+				}
+
+				NotifyMsg("Quyền đã tồn tại");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception();
+			}
+		}
 	}
 }
