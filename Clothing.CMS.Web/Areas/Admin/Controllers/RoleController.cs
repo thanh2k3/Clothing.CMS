@@ -72,5 +72,51 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				return Json(new { success = false, message = ex.Message });
 			}
 		}
-    }
+
+        public async Task<ActionResult> EditModal(int id)
+        {
+			try
+			{
+				var productDto = await _roleService.GetById(id);
+				var productVM = _mapper.Map<EditRoleViewModel>(productDto);
+
+				return PartialView("_EditModal", productVM);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return PartialView("_EditModal");
+			}
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> Edit(EditRoleViewModel model)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					var roleDto = _mapper.Map<EditRoleDto>(model);
+					var isSucceeded = await _roleService.UpdateAsync(roleDto);
+
+					if (isSucceeded)
+					{
+						_logger.LogInformation((string?)TempData["Message"]);
+						return Json(new { success = true, message = TempData["Message"] });
+					}
+
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
+				}
+
+				_logger.LogWarning("Thông tin không hợp lệ");
+				return Json(new { success = false, message = "Thông tin không hợp lệ" });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
+		}
+	}
 }

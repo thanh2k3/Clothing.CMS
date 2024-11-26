@@ -75,4 +75,20 @@
             },
         ]
     });
+
+    $(document).on("click", ".edit-role", function (e) {
+        var roleId = $(this).attr("data-role-id");
+
+        $.ajax({
+            url: "/Admin/Role/EditModal?Id=" + roleId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#RoleEditModal div.modal-content").html(result);
+                $("#RoleEditModal").find("form").registerInputAmount();
+            },
+            error: function (e) {
+            }
+        })
+    });
 })(jQuery);

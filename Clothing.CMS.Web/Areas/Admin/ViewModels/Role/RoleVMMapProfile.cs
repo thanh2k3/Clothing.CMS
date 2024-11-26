@@ -9,6 +9,8 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Role
 		{
 			CreateMap<RoleDto, RoleViewModel>();
 			CreateMap<CreateRoleViewModel, CreateRoleDto>();
+			CreateMap<EditRoleDto, EditRoleViewModel>();
+			CreateMap<EditRoleViewModel, EditRoleDto>();
 		}
 	}
 }

@@ -9,6 +9,8 @@ namespace Clothing.CMS.Application.Roles.Dto
 		{
 			CreateMap<Role, RoleDto>();
 			CreateMap<CreateRoleDto, Role>();
+			CreateMap<Role, EditRoleDto>();
+			CreateMap<EditRoleDto, Role>();
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clothing.CMS.Application.Common;
 using Clothing.CMS.Application.Roles.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities.Authorization.Roles;
@@ -13,6 +14,7 @@ namespace Clothing.CMS.Application.Roles
 	{
 		private readonly RoleManager<Role> _roleManager;
 		private readonly IMapper _mapper;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public RoleService(
 			RoleManager<Role> roleManager,
@@ -22,6 +24,7 @@ namespace Clothing.CMS.Application.Roles
 		{
 			_roleManager = roleManager;
 			_mapper = mapper;
+			_httpContextAccessor = httpContextAccessor;
 		}
 
 		public async Task<ICollection<RoleDto>> GetAll()
@@ -65,6 +68,77 @@ namespace Clothing.CMS.Application.Roles
 			catch (Exception ex)
 			{
 				throw new Exception();
+			}
+		}
+
+		public async Task<EditRoleDto> GetById(int id)
+		{
+			try
+			{
+				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Id == id);
+				var roleDto = _mapper.Map<EditRoleDto>(role);
+
+				return roleDto;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public async Task<bool> UpdateAsync(EditRoleDto model)
+		{
+			try
+			{
+				var role = _mapper.Map<Role>(model);
+				var existsRole = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == role.Name && x.Id != role.Id);
+				if (existsRole == null)
+				{
+					FillRoleAuthInfo(role);
+					IdentityResult result = await _roleManager.UpdateAsync(role);
+
+					if (result.Succeeded)
+					{
+						NotifyMsg("Chỉnh sửa quyền thành công");
+						return true;
+					}
+
+					NotifyMsg("Chỉnh sửa quyền thất bại");
+					return false;
+				}
+
+				NotifyMsg("Quyền đã tồn tại");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		protected void FillRoleAuthInfo(Role role)
+		{
+			if (role != null)
+			{
+				var userId = _httpContextAccessor.HttpContext.User.GetUserProperty(CustomClaimTypes.NameIdentifier);
+				var timeNow = DateTime.Now;
+				if (role.Id < 1)
+				{
+					role.CreatedBy = userId;
+					role.CreatedTime = timeNow;
+					role.ModifiedBy = userId;
+					role.ModifiedTime = timeNow;
+				}
+				else
+				{
+					if (string.IsNullOrEmpty(role.CreatedBy))
+					{
+						role.CreatedBy = userId;
+						role.CreatedTime = timeNow;
+					}
+					role.ModifiedBy = userId;
+					role.ModifiedTime = timeNow;
+				}
 			}
 		}
 	}
