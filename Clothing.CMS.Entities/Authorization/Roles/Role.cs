@@ -5,6 +5,7 @@ namespace Clothing.CMS.Entities.Authorization.Roles
     public class Role : IdentityRole<int>
     {
 		public string Description { get; set; }
+		public bool IsDeleted { get; set; }
 
 		// Bắt buộc
 		public DateTime CreatedTime { get; set; }
