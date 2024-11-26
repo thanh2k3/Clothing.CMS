@@ -1,0 +1,41 @@
+﻿@model CreateRoleViewModel
+
+<div class="modal fade" id="RoleCreateModal" tabindex="-1" role="dialog" aria-labelledby="RoleCreateModalLabel" data-bs-backdrop="static">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-success align-items-center text-white">
+				<i class="fa fa-plus-square"></i>
+				<h5 class="modal-title ms-2">Thêm mới quyền</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form id="formCreateRole" role="form" class="form-horizontal">
+					<div class="form-group row required mb-3">
+						<label asp-for="Name" class="col-md-2 col-form-label font-weight-normal control-label custom-label">
+							@Html.DisplayNameFor(model => model.Name)
+							<span class="text-danger">*</span>
+						</label>
+						<div class="col-md-10">
+							<input asp-for="Name" class="form-control" placeholder="Nhập tên quyền..." required autocomplete="off" />
+						</div>
+					</div>
+					<div class="form-group row required mb-3">
+						<label asp-for="Description" class="col-md-2 col-form-label font-weight-normal control-label custom-label">
+							@Html.DisplayNameFor(model => model.Description)
+							<span class="text-danger">*</span>
+						</label>
+						<div class="col-md-10">
+							<textarea asp-for="Description" rows="4" class="form-control" placeholder="Nhập mô tả của quyền..."></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+				<button type="submit" class="btn btn-success create-role">Tạo</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="~/view-resources/views/role/_createmodal.js" asp-append-version="true"></script>
