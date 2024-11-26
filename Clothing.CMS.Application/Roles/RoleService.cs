@@ -52,7 +52,7 @@ namespace Clothing.CMS.Application.Roles
 				{
 					FillRoleAuthInfo(data);
 					IdentityResult result = await _roleManager.CreateAsync(data);
-					
+
 					if (result.Succeeded)
 					{
 						NotifyMsg("Thêm mới quyền thành công");
@@ -76,10 +76,19 @@ namespace Clothing.CMS.Application.Roles
 		{
 			try
 			{
-				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Id == id);
+				var role = await _roleManager.FindByIdAsync(id.ToString());
+				if (role == null)
+				{
+					throw new KeyNotFoundException($"Không tìm thấy quyền với ID: \"{id}\"");
+				}
+
 				var roleDto = _mapper.Map<EditRoleDto>(role);
 
 				return roleDto;
+			}
+			catch (KeyNotFoundException ex)
+			{
+				throw new Exception(ex.Message);
 			}
 			catch (Exception ex)
 			{
@@ -92,28 +101,39 @@ namespace Clothing.CMS.Application.Roles
 			try
 			{
 				var role = _mapper.Map<Role>(model);
-				var existsRole = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == role.Name && x.Id != role.Id);
-				if (existsRole == null)
+				var existsRole = await _roleManager.Roles
+					.AnyAsync(x => x.Name == role.Name && x.Id != role.Id);
+				if (existsRole)
 				{
-					FillRoleAuthInfo(role);
-					IdentityResult result = await _roleManager.UpdateAsync(role);
-
-					if (result.Succeeded)
-					{
-						NotifyMsg("Chỉnh sửa quyền thành công");
-						return true;
-					}
-
-					NotifyMsg("Chỉnh sửa quyền thất bại");
+					NotifyMsg($"Quyền \"{role.Name}\" đã tồn tại");
 					return false;
 				}
 
-				NotifyMsg("Quyền đã tồn tại");
+				var data = await _roleManager.FindByIdAsync(role.Id.ToString());
+				if (data == null)
+				{
+					NotifyMsg($"Không tìm thấy quyền với ID: \"{role.Id}\"");
+					return false;
+				}
+
+				data.Name = role.Name;
+				data.Description = role.Description;
+				FillRoleAuthInfo(data);
+
+				IdentityResult result = await _roleManager.UpdateAsync(data);
+
+				if (result.Succeeded)
+				{
+					NotifyMsg($"Cập nhật quyền \"{role.Name}\" thành công");
+					return true;
+				}
+
+				NotifyMsg($"Cập nhật quyền \"{role.Name}\" thất bại");
 				return false;
 			}
 			catch (Exception ex)
 			{
-				throw new Exception(ex.Message);
+				throw new Exception();
 			}
 		}
 

@@ -80,6 +80,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				var productDto = await _roleService.GetById(id);
 				var productVM = _mapper.Map<EditRoleViewModel>(productDto);
 
+				_logger.LogInformation($"lấy ra quyền với ID: {id}");
 				return PartialView("_EditModal", productVM);
 			}
 			catch (Exception ex)
