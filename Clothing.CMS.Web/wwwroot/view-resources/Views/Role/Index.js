@@ -91,4 +91,43 @@
             }
         })
     });
+
+    $(document).on("click", ".delete-role", function (e) {
+        var roleId = $(this).attr("data-role-id");
+        var name = $(this).attr("data-role-name");
+
+        Swal.fire({
+            title: "Bạn có chắc không?",
+            text: "Bạn có chắn là muốn xóa quyền \"" + name + "\" không!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            allowOutsideClick: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/Role/Delete?Id=" + roleId,
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success === true) {
+                            _$table.DataTable().ajax.reload();
+                            toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: result.message
+                            });
+                        }
+                    }
+                })
+            }
+        });
+    });
 })(jQuery);

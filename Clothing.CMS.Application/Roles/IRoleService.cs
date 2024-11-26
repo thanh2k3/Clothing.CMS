@@ -8,5 +8,6 @@ namespace Clothing.CMS.Application.Roles
 		Task<EditRoleDto> GetById(int id);
 		Task<bool> CreateAsync(CreateRoleDto model);
 		Task<bool> UpdateAsync(EditRoleDto model);
+		Task<bool> DeleteAsync(int id);
 	}
 }

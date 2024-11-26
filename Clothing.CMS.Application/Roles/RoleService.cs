@@ -3,6 +3,7 @@ using Clothing.CMS.Application.Common;
 using Clothing.CMS.Application.Roles.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities.Authorization.Roles;
+using Clothing.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -31,7 +32,9 @@ namespace Clothing.CMS.Application.Roles
 		{
 			try
 			{
-				var role = await _roleManager.Roles.OrderByDescending(x => x.Id).ToListAsync();
+				var role = await _roleManager.Roles.Where(x => !x.IsDeleted)
+					.OrderByDescending(x => x.Id)
+					.ToListAsync();
 				var roleDto = _mapper.Map<ICollection<RoleDto>>(role);
 
 				return roleDto;
@@ -134,6 +137,34 @@ namespace Clothing.CMS.Application.Roles
 			catch (Exception ex)
 			{
 				throw new Exception();
+			}
+		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			try
+			{
+				var role = await _roleManager.FindByIdAsync(id.ToString());
+				if (role == null)
+				{
+					NotifyMsg($"Không tìm thấy quyền với ID: \"{id}\"");
+					return false;
+				}
+
+				role.IsDeleted = true;
+				IdentityResult result = await _roleManager.UpdateAsync(role);
+				if (result.Succeeded)
+				{
+					NotifyMsg($"Xóa quyền \"{role.Name}\" thành công");
+					return true;
+				}
+
+				NotifyMsg($"Xóa quyền \"{role.Name}\" thất bại");
+				return false;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
 			}
 		}
 
