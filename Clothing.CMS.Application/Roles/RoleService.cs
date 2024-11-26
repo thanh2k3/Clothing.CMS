@@ -50,6 +50,7 @@ namespace Clothing.CMS.Application.Roles
 				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == data.Name);
 				if (role == null)
 				{
+					FillRoleAuthInfo(data);
 					IdentityResult result = await _roleManager.CreateAsync(data);
 					
 					if (result.Succeeded)
