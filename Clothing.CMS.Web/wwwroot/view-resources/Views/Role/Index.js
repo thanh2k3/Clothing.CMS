@@ -55,21 +55,18 @@
                 width: "20%",
                 render: function (data, type, row, meta) {
                     var actions = [];
-                    actions.push(
-                        `   <button class="btn btn-sm btn-info view-role" data-role-id="${row.id}" data-bs-toggle="modal" data-bs-target="#RoleViewModal">`,
-                        `       <i class="fa-solid fa-eye"></i> Xem`,
-                        `   </button>`
-                    )
-                    actions.push(
-                        `   <button class="btn btn-sm btn-warning edit-role" data-role-id="${row.id}" data-bs-toggle="modal" data-bs-target="#RoleEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> Sửa`,
-                        `   </button>`
-                    )
-                    actions.push(
-                        `   <button class="btn btn-sm btn-danger delete-role" data-role-id="${row.id}" data-role-name="${row.name}">`,
-                        `       <i class="fa-solid fa-trash-can"></i> Xóa`,
-                        `   </button>`
-                    )
+                    if (row.name !== "SuperAdmin") {
+                        actions.push(
+                            `   <button class="btn btn-sm btn-warning edit-role" data-role-id="${row.id}" data-bs-toggle="modal" data-bs-target="#RoleEditModal">`,
+                            `       <i class="fas fa-pencil-alt"></i> Sửa`,
+                            `   </button>`
+                        )
+                        actions.push(
+                            `   <button class="btn btn-sm btn-danger delete-role" data-role-id="${row.id}" data-role-name="${row.name}">`,
+                            `       <i class="fa-solid fa-trash-can"></i> Xóa`,
+                            `   </button>`
+                        )
+                    }
                     return actions.join('');
                 }
             },
@@ -85,7 +82,6 @@
             dataType: "html",
             success: function (result) {
                 $("#RoleEditModal div.modal-content").html(result);
-                $("#RoleEditModal").find("form").registerInputAmount();
             },
             error: function (e) {
             }

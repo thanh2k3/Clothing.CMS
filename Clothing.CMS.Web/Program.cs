@@ -13,8 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration["ConnectionStrings:Database"];
 builder.Services.AddDbContext<CMSDbContext>(o => o.UseSqlServer(connectionString, sqlServerOptionsAction: sqlOption => { sqlOption.EnableRetryOnFailure(); }));
 
+// Duplicate role names
+builder.Services.AddScoped<IRoleValidator<Role>, CustomRoleValidator>();
+
 //Identity
 builder.Services.AddIdentity<User, Role>()
+				.AddRoleValidator<CustomRoleValidator>()
 				.AddEntityFrameworkStores<CMSDbContext>()
 				.AddDefaultTokenProviders();
 
