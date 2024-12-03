@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clothing.CMS.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(CMSDbContext))]
-    [Migration("20241126163256_Initial")]
-    partial class Initial
+    [Migration("20241129162405_Remove_Unique_RoleNameIndex")]
+    partial class Remove_Unique_RoleNameIndex
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,9 +65,7 @@ namespace Clothing.CMS.EntityFrameworkCore.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });

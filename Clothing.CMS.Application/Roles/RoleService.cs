@@ -3,7 +3,6 @@ using Clothing.CMS.Application.Common;
 using Clothing.CMS.Application.Roles.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities.Authorization.Roles;
-using Clothing.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -50,23 +49,23 @@ namespace Clothing.CMS.Application.Roles
 			try
 			{
 				var data = _mapper.Map<Role>(model);
-				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == data.Name);
-				if (role == null)
+				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == data.Name && x.IsDeleted == false);
+				if (role != null && !role.IsDeleted)
 				{
-					FillRoleAuthInfo(data);
-					IdentityResult result = await _roleManager.CreateAsync(data);
-
-					if (result.Succeeded)
-					{
-						NotifyMsg("Thêm mới quyền thành công");
-						return true;
-					}
-
-					NotifyMsg("Thêm mới quyền thất bại");
+					NotifyMsg("Quyền đã tồn tại");
 					return false;
 				}
 
-				NotifyMsg("Quyền đã tồn tại");
+				FillRoleAuthInfo(data);
+				IdentityResult result = await _roleManager.CreateAsync(data);
+
+				if (result.Succeeded)
+				{
+					NotifyMsg("Thêm mới quyền thành công");
+					return true;
+				}
+
+				NotifyMsg("Thêm mới quyền thất bại");
 				return false;
 			}
 			catch (Exception ex)
@@ -105,7 +104,7 @@ namespace Clothing.CMS.Application.Roles
 			{
 				var role = _mapper.Map<Role>(model);
 				var existsRole = await _roleManager.Roles
-					.AnyAsync(x => x.Name == role.Name && x.Id != role.Id);
+					.AnyAsync(x => x.Name == role.Name && x.Id != role.Id && x.IsDeleted == false);
 				if (existsRole)
 				{
 					NotifyMsg($"Quyền \"{role.Name}\" đã tồn tại");
@@ -152,6 +151,8 @@ namespace Clothing.CMS.Application.Roles
 				}
 
 				role.IsDeleted = true;
+				FillRoleAuthInfo(role);
+
 				IdentityResult result = await _roleManager.UpdateAsync(role);
 				if (result.Succeeded)
 				{

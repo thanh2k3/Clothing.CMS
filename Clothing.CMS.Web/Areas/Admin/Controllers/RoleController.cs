@@ -39,7 +39,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
+                return Json(new { success = false, message = "Có lỗi xảy ra" });
             }
         }
 
@@ -69,7 +69,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
             catch (Exception ex)
             {
 				_logger.LogError(ex.Message);
-				return Json(new { success = false, message = ex.Message });
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
 			}
 		}
 
@@ -77,11 +77,11 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         {
 			try
 			{
-				var productDto = await _roleService.GetById(id);
-				var productVM = _mapper.Map<EditRoleViewModel>(productDto);
+				var roleDto = await _roleService.GetById(id);
+				var roleVM = _mapper.Map<EditRoleViewModel>(roleDto);
 
 				_logger.LogInformation($"lấy ra quyền với ID: {id}");
-				return PartialView("_EditModal", productVM);
+				return PartialView("_EditModal", roleVM);
 			}
 			catch (Exception ex)
 			{
