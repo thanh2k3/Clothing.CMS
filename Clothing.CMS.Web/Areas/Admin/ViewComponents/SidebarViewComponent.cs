@@ -15,23 +15,52 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewComponents
 
             sidebars.Add(ModuleHelper.AddModule(ModuleHelper.Module.Home));
 
-            sidebars.Add(ModuleHelper.AddTree("Quản lý", "manage-item", "fa-solid fa-list"));
+			sidebars.Add(ModuleHelper.AddTree("Quản lý sản phẩm", "product-item", "fa-solid fa-box"));
+			sidebars.Last().TreeChild = new List<SidebarMenu>()
+			{
+				ModuleHelper.AddModule(ModuleHelper.Module.Product),
+			};
+
+			sidebars.Add(ModuleHelper.AddTree("Quản lý đơn hàng", "order-item", "fa-solid fa-cart-shopping"));
+			sidebars.Last().TreeChild = new List<SidebarMenu>()
+			{
+				ModuleHelper.AddModule(ModuleHelper.Module.Order),
+			};
+
+			sidebars.Add(ModuleHelper.AddTree("Quản lý danh mục", "category-item", "fa-solid fa-list"));
             sidebars.Last().TreeChild = new List<SidebarMenu>()
             {
                 ModuleHelper.AddModule(ModuleHelper.Module.Category),
-                ModuleHelper.AddModule(ModuleHelper.Module.Product),
             };
 
-            if (User.IsInRole("SuperAdmin"))
+			sidebars.Add(ModuleHelper.AddTree("Quản lý khách hàng", "customer-item", "fa-solid fa-user"));
+			sidebars.Last().TreeChild = new List<SidebarMenu>()
+			{
+				ModuleHelper.AddModule(ModuleHelper.Module.Customer),
+			};
+
+			sidebars.Add(ModuleHelper.AddTree("Quản lý thu chi", "profit-item", "fa-solid fa-hand-holding-dollar"));
+            sidebars.Last().TreeChild = new List<SidebarMenu>()
+            {
+                ModuleHelper.AddModule(ModuleHelper.Module.Revenue),
+                ModuleHelper.AddModule(ModuleHelper.Module.Expense),
+            };
+
+			if (User.IsInRole("SuperAdmin"))
             {
                 sidebars.Add(ModuleHelper.AddTree("Quản trị", "role-item", "fa-solid fa-user-gear"));
                 sidebars.Last().TreeChild = new List<SidebarMenu>()
                 {
                     ModuleHelper.AddModule(ModuleHelper.Module.User),
                     ModuleHelper.AddModule(ModuleHelper.Module.Role),
-                    ModuleHelper.AddModule(ModuleHelper.Module.LogEvent),
                 };
-            }
+
+				sidebars.Add(ModuleHelper.AddTree("Quản lý hệ thống", "logEvent-item", "fa-solid fa-gear"));
+				sidebars.Last().TreeChild = new List<SidebarMenu>()
+				{
+					ModuleHelper.AddModule(ModuleHelper.Module.LogEvent),
+				};
+			}
 
             return View(sidebars);
         }
