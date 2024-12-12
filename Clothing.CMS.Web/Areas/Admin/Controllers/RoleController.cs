@@ -52,7 +52,6 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
                 {
 					var roleDto = _mapper.Map<CreateRoleDto>(model);
 					var isSucceeded = await _roleService.CreateAsync(roleDto);
-
 					if (isSucceeded)
 					{
 						_logger.LogInformation((string?)TempData["Message"]);
@@ -99,7 +98,6 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				{
 					var roleDto = _mapper.Map<EditRoleDto>(model);
 					var isSucceeded = await _roleService.UpdateAsync(roleDto);
-
 					if (isSucceeded)
 					{
 						_logger.LogInformation((string?)TempData["Message"]);
