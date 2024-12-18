@@ -7,8 +7,16 @@ namespace Clothing.CMS.Entities.Authorization.Users
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string? AvatarURL { get; set; }
-        public string? DateRegistered { get; set; }
         public string? Position { get; set; }
         public string? NickName { get; set; }
-    }
+
+		// Bắt buộc
+		public DateTime CreatedTime { get; set; }
+		public string? CreatedBy { get; set; }
+		public DateTime ModifiedTime { get; set; }
+		public string? ModifiedBy { get; set; }
+
+		// Sort delete
+		public bool IsDeleted { get; set; }
+	}
 }

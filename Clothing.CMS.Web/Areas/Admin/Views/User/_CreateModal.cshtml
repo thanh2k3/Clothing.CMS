@@ -1,6 +1,6 @@
 ﻿@model CreateUserViewModel
 
-<div class="modal fade" id="UserCreateModal" tabindex="-1" role="dialog" aria-labelledby="UserCreateModalLabel" data-backdrop="static">
+<div class="modal fade" id="UserCreateModal" tabindex="-1" role="dialog" aria-labelledby="UserCreateModalLabel" data-bs-backdrop="static">
 	<div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
 			<div class="modal-header bg-success align-items-center text-white">
@@ -9,72 +9,81 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-				<form id="formCreateUser" role="form" class="form-horizontal">
+				<form id="formCreateUser" class="form-horizontal">
 					<div class="row mb-3">
-						<div class="col-md-6">
-							<div class="form-group row mb-0 required">
-								<label asp-for="Email" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
-									@Html.DisplayNameFor(model => model.Email)
-									<span class="text-danger">*</span>
-								</label>
-								<div class="col-sm-8">
-									<input asp-for="Email" type="text" class="form-control" required placeholder="Nhập Email..." autocomplete="off" />
+						<div class="col-md-4">
+							<img src="~/img/user/avatar-default.jpg" class="img-responsive img-thumbnail" id="targetImage" style="width: 100%; max-height: 500px;" />
+                        </div>
+						<div class="col-md-8">
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<div class="form-group row mb-0 required">
+										<label asp-for="Email" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
+											@Html.DisplayNameFor(model => model.Email)
+											<span class="text-danger">*</span>
+										</label>
+										<div class="col-sm-8">
+											<input asp-for="Email" type="text" class="form-control" required placeholder="Nhập Email..." autocomplete="off" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row mb-0 required">
+										<label asp-for="AvatarURL" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
+											@Html.DisplayNameFor(model => model.AvatarURL)
+										</label>
+										<div class="col-sm-8">
+											<input asp-for="AvatarURL" id="AvatarURL" name="avatarURL" type="file" class="form-control" />
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group row mb-0 required">
-								<label asp-for="AvatarURL" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
-									@Html.DisplayNameFor(model => model.AvatarURL)
-								</label>
-								<div class="col-sm-8">
-									<input asp-for="AvatarURL" type="file" class="form-control" />
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<div class="form-group row mb-0 required">
+										<label asp-for="Password" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
+											@Html.DisplayNameFor(model => model.Password)
+											<span class="text-danger">*</span>
+										</label>
+										<div class="col-sm-8">
+											<input asp-for="Password" type="password" class="form-control" required placeholder="Nhập mật khẩu..." autocomplete="off" />
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group row mb-0 required">
+										<label asp-for="ConfirmPassword" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
+											@Html.DisplayNameFor(model => model.ConfirmPassword)
+											<span class="text-danger">*</span>
+										</label>
+										<div class="col-sm-8">
+											<input asp-for="ConfirmPassword" type="password" class="form-control" required placeholder="Nhập mật khẩu..." autocomplete="off" />
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-6">
-							<div class="form-group row mb-0 required">
-								<label asp-for="Password" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
-									@Html.DisplayNameFor(model => model.Password)
-									<span class="text-danger">*</span>
-								</label>
-								<div class="col-sm-8">
-									<input asp-for="Password" type="password" class="form-control" required placeholder="Nhập mật khẩu..." autocomplete="off" />
+							<div class="row mb-3">
+								<div class="col-md-6">
+									<div class="form-group row mb-0 required">
+										<label asp-for="FirstName" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
+											@Html.DisplayNameFor(model => model.FirstName)
+											<span class="text-danger">*</span>
+										</label>
+										<div class="col-sm-8">
+											<input asp-for="FirstName" type="text" class="form-control" placeholder="Nhập tên..." autocomplete="off" />
+										</div>
+									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group row mb-0 required">
-								<label asp-for="ConfirmPassword" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
-									@Html.DisplayNameFor(model => model.ConfirmPassword)
-									<span class="text-danger">*</span>
-								</label>
-								<div class="col-sm-8">
-									<input asp-for="ConfirmPassword" type="password" class="form-control" required placeholder="Nhập mật khẩu..." autocomplete="off" />
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row mb-3">
-						<div class="col-md-6">
-							<div class="form-group row mb-0 required">
-								<label asp-for="FirstName" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
-									@Html.DisplayNameFor(model => model.FirstName)
-								</label>
-								<div class="col-sm-8">
-									<input asp-for="FirstName" type="text" class="form-control" placeholder="Nhập tên..." autocomplete="off" />
-								</div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group row mb-0 required">
-								<label asp-for="LastName" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
-									@Html.DisplayNameFor(model => model.LastName)
-								</label>
-								<div class="col-sm-8">
-									<input asp-for="LastName" type="text" class="form-control" placeholder="Nhập họ..." autocomplete="off" />
+								<div class="col-md-6">
+									<div class="form-group row mb-0 required">
+										<label asp-for="LastName" class="col-md col-form-label font-weight-normal control-label text-end custom-label">
+											@Html.DisplayNameFor(model => model.LastName)
+											<span class="text-danger">*</span>
+										</label>
+										<div class="col-sm-8">
+											<input asp-for="LastName" type="text" class="form-control" placeholder="Nhập họ..." autocomplete="off" />
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

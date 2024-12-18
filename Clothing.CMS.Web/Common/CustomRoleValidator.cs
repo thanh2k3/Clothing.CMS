@@ -33,6 +33,7 @@ namespace Clothing.CMS.Web.Common
 					});
 				}
 			}
+
 			return IdentityResult.Success;
 		}
 	}

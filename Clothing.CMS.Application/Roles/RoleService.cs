@@ -50,7 +50,7 @@ namespace Clothing.CMS.Application.Roles
 			{
 				var data = _mapper.Map<Role>(model);
 				var role = await _roleManager.Roles.FirstOrDefaultAsync(x => x.Name == data.Name && x.IsDeleted == false);
-				if (role != null && !role.IsDeleted)
+				if (role != null)
 				{
 					NotifyMsg("Quyền đã tồn tại");
 					return false;
@@ -58,7 +58,6 @@ namespace Clothing.CMS.Application.Roles
 
 				FillRoleAuthInfo(data);
 				IdentityResult result = await _roleManager.CreateAsync(data);
-
 				if (result.Succeeded)
 				{
 					NotifyMsg("Thêm mới quyền thành công");
@@ -107,14 +106,14 @@ namespace Clothing.CMS.Application.Roles
 					.AnyAsync(x => x.Name == role.Name && x.Id != role.Id && x.IsDeleted == false);
 				if (existsRole)
 				{
-					NotifyMsg($"Quyền \"{role.Name}\" đã tồn tại");
+					NotifyMsg("Quyền đã tồn tại");
 					return false;
 				}
 
 				var data = await _roleManager.FindByIdAsync(role.Id.ToString());
 				if (data == null)
 				{
-					NotifyMsg($"Không tìm thấy quyền với ID: \"{role.Id}\"");
+					NotifyMsg("Không tìm thấy quyền");
 					return false;
 				}
 
@@ -123,14 +122,13 @@ namespace Clothing.CMS.Application.Roles
 				FillRoleAuthInfo(data);
 
 				IdentityResult result = await _roleManager.UpdateAsync(data);
-
 				if (result.Succeeded)
 				{
-					NotifyMsg($"Cập nhật quyền \"{role.Name}\" thành công");
+					NotifyMsg("Cập nhật quyền thành công");
 					return true;
 				}
 
-				NotifyMsg($"Cập nhật quyền \"{role.Name}\" thất bại");
+				NotifyMsg("Cập nhật quyền thất bại");
 				return false;
 			}
 			catch (Exception ex)
@@ -146,7 +144,7 @@ namespace Clothing.CMS.Application.Roles
 				var role = await _roleManager.FindByIdAsync(id.ToString());
 				if (role == null)
 				{
-					NotifyMsg($"Không tìm thấy quyền với ID: \"{id}\"");
+					NotifyMsg("Không tìm thấy quyền");
 					return false;
 				}
 
@@ -156,11 +154,11 @@ namespace Clothing.CMS.Application.Roles
 				IdentityResult result = await _roleManager.UpdateAsync(role);
 				if (result.Succeeded)
 				{
-					NotifyMsg($"Xóa quyền \"{role.Name}\" thành công");
+					NotifyMsg("Xóa quyền thành công");
 					return true;
 				}
 
-				NotifyMsg($"Xóa quyền \"{role.Name}\" thất bại");
+				NotifyMsg("Xóa quyền thất bại");
 				return false;
 			}
 			catch (Exception ex)

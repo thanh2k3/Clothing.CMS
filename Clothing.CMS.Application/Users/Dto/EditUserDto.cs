@@ -3,9 +3,10 @@ using System.ComponentModel;
 
 namespace Clothing.CMS.Application.Users.Dto
 {
-    public class EditUserDto : BaseEntity
+    public class EditUserDto : BaseCruidEntity
     {
-        public string Email { get; set; }
+		[DisplayName("Email")]
+		public string Email { get; set; }
 
         [DisplayName("Họ")]
         public string FirstName { get; set; }

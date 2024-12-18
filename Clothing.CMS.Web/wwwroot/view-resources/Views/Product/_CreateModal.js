@@ -5,7 +5,7 @@
 
     var srcDefault = _$form.find("#targetImage").attr("src");
 
-    _$modal.on("click", ".create-product", function (e) {
+    $(document).on("click", ".create-product", function (e) {
         var formData = new FormData();
 
         var serializedData = _$form.serializeFormToObject();
@@ -27,10 +27,8 @@
             success: function (result) {
                 if (result.success === true) {
                     HideProductCreateModal();
-
                     // Reload lại Datatable
                     _$table.DataTable().ajax.reload();
-
                     toastr.success(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                 }
                 else {
@@ -53,7 +51,7 @@
         // Reset hình ảnh về ảnh mặc định
         _$form.find("#targetImage").attr("src", srcDefault);
         // Reset file input
-        _$form.find("#ImageURL").val("");  
+        _$form.find("#ImageURL").val("");
     }
 
     // Gắn sự kiện change cho input file

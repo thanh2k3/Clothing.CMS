@@ -1,5 +1,6 @@
 ﻿using Clothing.CMS.Entities;
 using Clothing.CMS.Entities.Authorization.Roles;
+using Clothing.CMS.Entities.Authorization.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clothing.CMS.EntityFrameworkCore.Pattern
@@ -8,6 +9,12 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern
 	{
 		public static void RegisterModule(ModelBuilder builder)
 		{
+			// Custom User
+			builder.Entity<User>()
+				.HasIndex(u => u.NormalizedUserName)
+				.HasDatabaseName("UserNameIndex")
+				.IsUnique(false); // Loại bỏ Unique Constraint
+
 			// Custom Role
 			builder.Entity<Role>()
 				.HasIndex(r => r.NormalizedName)

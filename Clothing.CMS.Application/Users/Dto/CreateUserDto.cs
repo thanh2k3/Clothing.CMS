@@ -25,7 +25,5 @@ namespace Clothing.CMS.Application.Users.Dto
 
 		[DisplayName("Ảnh đại diện")]
         public string? AvatarURL { get; set; }
-
-		public string? DateRegistered { get; set; }
 	}
 }

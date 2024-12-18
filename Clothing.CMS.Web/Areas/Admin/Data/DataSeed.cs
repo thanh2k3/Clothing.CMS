@@ -59,7 +59,8 @@ namespace Clothing.CMS.Web.Areas.Admin.Data
 						FirstName = firstName,
 						LastName = lastName,
 						AvatarURL = "/img/avatar-default.png",
-						DateRegistered = DateTime.UtcNow.ToString(),
+						CreatedTime = DateTime.Now,
+						ModifiedTime = DateTime.Now,
 						Position = "",
 						NickName = "",
 					};

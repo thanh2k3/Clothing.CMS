@@ -60,7 +60,6 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				{
 					var productDto = _mapper.Map<CreateProductDto>(model);
 					var isSucceeded = await _productService.CreateAsync(productDto, image);
-
 					if (isSucceeded)
 					{
 						_logger.LogInformation((string?)TempData["Message"]);

@@ -1,4 +1,5 @@
 ﻿using Clothing.CMS.Application.Common;
+using Clothing.CMS.Entities.Authorization.Users;
 using Clothing.CMS.Entities.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -43,7 +44,33 @@ namespace Clothing.CMS.Application.Services
             }
         }
 
-        protected void NotifyMsg(string msg)
+		protected void FillUserAuthInfo(User user)
+		{
+			if (user != null)
+			{
+				var userId = _httpContextAccessor.HttpContext.User.GetUserProperty(CustomClaimTypes.NameIdentifier);
+				var timeNow = DateTime.Now;
+				if (user.Id < 1)
+				{
+					user.CreatedBy = userId;
+					user.CreatedTime = timeNow;
+					user.ModifiedBy = userId;
+					user.ModifiedTime = timeNow;
+				}
+				else
+				{
+					if (string.IsNullOrEmpty(user.CreatedBy))
+					{
+						user.CreatedBy = userId;
+						user.CreatedTime = timeNow;
+					}
+					user.ModifiedBy = userId;
+					user.ModifiedTime = timeNow;
+				}
+			}
+		}
+
+		protected void NotifyMsg(string msg)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var TempData = _tempDataDictionaryFactory.GetTempData(httpContext);
