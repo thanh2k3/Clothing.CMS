@@ -21,10 +21,7 @@ namespace Clothing.CMS.Web.Common
 			{
 				// Id: Create, NormalizedUserName: Update, IsDeleted: Delete
 				var owner = await manager.Users.FirstOrDefaultAsync(
-					x => x.Id == user.Id
-					&& x.NormalizedUserName == userName
-					&& x.IsDeleted == true);
-
+					x => x.Id == user.Id && x.NormalizedUserName == userName && x.IsDeleted == true);
 				if (owner != null && !string.Equals(manager.GetUserIdAsync(owner), manager.GetUserIdAsync(user)))
 				{
 					return IdentityResult.Failed(new IdentityError

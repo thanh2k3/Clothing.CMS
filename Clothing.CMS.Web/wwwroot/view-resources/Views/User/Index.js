@@ -1,18 +1,7 @@
-﻿$(document).ready(function () {
-    GetUser();
-});
+﻿(function ($) {
+    var _$table = $("#userTable");
 
-function GetUser() {
-    $.ajax({
-        url: "/Admin/User/GetData",
-        type: "GET",
-        dataType: "json",
-        success: OnSuccess
-    })
-}
-
-function OnSuccess(response) {
-    $("#userTable").DataTable({
+    _$table.DataTable({
         language: {
             lengthMenu: "Hiển thị _MENU_ bản ghi",
             search: "Tìm kiếm:",
@@ -30,108 +19,141 @@ function OnSuccess(response) {
         processing: true,
         destroy: true,
         ordering: false,
+        autoWidth: false,
         lengthChange: true,
-        lengthMenu: [[5, 10, 20, -1], [5, 10, 20, "Tất cả"]],
-        data: response,
-        columns: [
+        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Tất cả"]],
+        ajax: {
+            url: "/Admin/User/GetData",
+            type: "GET",
+            dataType: "json",
+            dataSrc: function (json) {
+                if (json.success === false) {
+                    toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+                    return []; // Không có dữ liệu để hiển thị
+                }
+                return json || []; // Xử lý dữ liệu nếu thành công
+            },
+            error: function () {
+                toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
+            }
+        },
+        columnDefs: [
             {
-                data: 'Email',
-                autoWidth: true,
-                render: function (data, type, row, meta) {
-                    return row.email
+                targets: 0,
+                data: "avatarURL",
+                width: "10%",
+                render: (data, type, row, meta) => {
+                    return '<img src="' + data + '" alt="Image" />';
                 }
             },
             {
-                data: 'FirstName',
-                autoWidth: true,
-                render: function (data, type, row, meta) {
-                    return row.firstName
-                }
+                targets: 1,
+                data: "email",
             },
             {
-                data: 'LastName',
-                autoWidth: true,
-                render: function (data, type, row, meta) {
-                    return row.lastName
-                }
+                targets: 2,
+                data: "firstName",
             },
             {
+                targets: 3,
+                data: "lastName",
+            },
+            {
+                targets: 4,
+                className: "text-center",
                 data: null,
-                className: "w-action",
                 defaultContent: "",
+                width: "20%",
                 render: function (data, type, row, meta) {
                     var actions = [];
-                    actions.push(
-                        `   <button class="btn btn-sm btn-info" data-user-id="${row.id}" data-bs-toggle="" data-bs-target="" >`,
-                        `       <i class="fa-solid fa-eye"></i> Xem`,
-                        `   </button>`
-                    )
-                    actions.push(
-                        `   <button class="btn btn-sm btn-warning edit-user" data-user-id="${row.id}" data-bs-toggle="modal" data-bs-target="#UserEditModal">`,
-                        `       <i class="fas fa-pencil-alt"></i> Sửa`,
-                        `   </button>`
-                    )
-                    actions.push(
-                        `   <button class="btn btn-sm btn-danger delete-user" data-user-id="${row.id}" data-email="${row.email}">`,
-                        `       <i class="fa-solid fa-trash-can"></i> Xóa`,
-                        `   </button>`
-                    )
+                    if (row.name !== "SuperAdmin") {
+                        actions.push(
+                            `   <button class="btn btn-sm btn-info view-user" data-user-id="${row.id}" data-bs-toggle="modal" data-bs-target="#UserViewModal" >`,
+                            `       <i class="fa-solid fa-eye"></i> Xem`,
+                            `   </button>`
+                        )
+                        actions.push(
+                            `   <button class="btn btn-sm btn-warning edit-user" data-user-id="${row.id}" data-bs-toggle="modal" data-bs-target="#UserEditModal">`,
+                            `       <i class="fas fa-pencil-alt"></i> Sửa`,
+                            `   </button>`
+                        )
+                        actions.push(
+                            `   <button class="btn btn-sm btn-danger delete-user" data-user-id="${row.id}" data-email="${row.email}">`,
+                            `       <i class="fa-solid fa-trash-can"></i> Xóa`,
+                            `   </button>`
+                        )
+                    }
                     return actions.join('');
                 }
             },
         ]
     });
-}
 
-$(document).on("click", ".edit-user", function (e) {
-    var userId = $(this).attr("data-user-id");
+    $(document).on("click", ".edit-user", function (e) {
+        var userId = $(this).attr("data-user-id");
 
-    $.ajax({
-        url: "/Admin/User/EditModal?Id=" + userId,
-        type: "POST",
-        dataType: "html",
-        success: function (result) {
-            $("#UserEditModal").find(".modal-content").html(result);
-        },
-        error: function (e) {
-        }
-    })
-})
-
-$(document).on("click", ".delete-user", function (e) {
-    var userId = $(this).attr("data-user-id");
-    var email = $(this).attr("data-email");
-
-    Swal.fire({
-        title: 'Bạn có chắc không?',
-        text: "Bạn có chắn là muốn xóa tài khoản \"" + email + "\" không",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: "/Admin/User/Delete?Id=" + userId,
-                type: "POST",
-                dataType: "json",
-                success: function (result) {
-                    if (result.success === true) {
-                        GetUser();
-                        toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
-                    }
-                    else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Lỗi",
-                            text: result.message
-                        });
-                    }
-                }
-            })
-        }
+        $.ajax({
+            url: "/Admin/User/EditModal?Id=" + userId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#UserEditModal div.modal-content").html(result);
+            },
+            error: function (e) {
+            }
+        })
     });
-})
+
+    $(document).on("click", ".view-user", function (e) {
+        var userId = $(this).attr("data-user-id");
+
+        $.ajax({
+            url: "/Admin/User/ViewModal?Id=" + userId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#UserViewModal div.modal-content").html(result);
+            },
+            error: function (e) {
+            }
+        })
+    });
+
+    $(document).on("click", ".delete-user", function (e) {
+        var userId = $(this).attr("data-user-id");
+        var email = $(this).attr("data-email");
+
+        Swal.fire({
+            title: 'Bạn có chắc không?',
+            text: "Bạn có chắn là muốn xóa tài khoản \"" + email + "\" không",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/User/Delete?Id=" + userId,
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success === true) {
+                            _$table.DataTable().ajax.reload();
+                            toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: result.message
+                            });
+                        }
+                    }
+                })
+            }
+        });
+    });
+})(jQuery);

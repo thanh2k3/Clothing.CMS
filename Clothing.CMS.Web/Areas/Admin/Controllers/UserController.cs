@@ -44,26 +44,26 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
-		public async Task<JsonResult> Create(CreateUserViewModel model)
+		public async Task<JsonResult> Create(CreateUserViewModel model, IFormFile? avatarURL)
 		{
 			try
 			{
-				if (ModelState.IsValid)
+				if (!ModelState.IsValid)
 				{
-					var userDto = _mapper.Map<CreateUserDto>(model);
-					var isSucceeded = await _userService.CreateAsync(userDto);
-					if (isSucceeded)
-					{
-						_logger.LogInformation((string?)TempData["Message"]);
-						return Json(new { success = true, message = TempData["Message"] });
-					}
+					_logger.LogWarning("Thông tin không hợp lệ");
+					return Json(new { success = false, message = "Thông tin không hợp lệ" });
+				}
 
+				var userDto = _mapper.Map<CreateUserDto>(model);
+				var isSucceeded = await _userService.CreateAsync(userDto, avatarURL);
+				if (!isSucceeded)
+				{
 					_logger.LogWarning((string?)TempData["Message"]);
 					return Json(new { success = false, message = TempData["Message"] });
 				}
 
-				_logger.LogWarning("Thông tin không hợp lệ");
-				return Json(new { success = false, message = "Thông tin không hợp lệ" });
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
 			}
 			catch (Exception ex)
 			{
@@ -90,31 +90,48 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
-		public async Task<JsonResult> Edit(EditUserViewModel model)
+		public async Task<JsonResult> Edit(EditUserViewModel model, IFormFile? avatarURL)
 		{
 			try
 			{
-				if (ModelState.IsValid)
+				if (!ModelState.IsValid)
 				{
-					var userDto = _mapper.Map<EditUserDto>(model);
-					var isSucceeded = await _userService.UpdateAsync(userDto);
-					if (isSucceeded)
-					{
-						_logger.LogInformation((string?)TempData["Message"]);
-						return Json(new { success = true, message = TempData["Message"] });
-					}
+					_logger.LogWarning("Thông tin không hợp lệ");
+					return Json(new { success = false, message = "Thông tin không hợp lệ" });
+				}
 
+				var userDto = _mapper.Map<EditUserDto>(model);
+				var isSucceeded = await _userService.UpdateAsync(userDto, avatarURL);
+				if (!isSucceeded)
+				{
 					_logger.LogWarning((string?)TempData["Message"]);
 					return Json(new { success = false, message = TempData["Message"] });
 				}
 
-				_logger.LogWarning("Thông tin không hợp lệ");
-				return Json(new { success = false, message = "Thông tin không hợp lệ" });
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
 			}
 			catch (Exception ex)
 			{
 				_logger.LogError(ex.Message);
 				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
+		}
+
+		public async Task<ActionResult> ViewModal(int id)
+		{
+			try
+			{
+				var userDto = await _userService.GetById(id);
+				var userVM = _mapper.Map<EditUserViewModel>(userDto);
+
+				_logger.LogInformation($"lấy ra người dùng với ID: {id}");
+				return PartialView("_ViewModal", userVM);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return PartialView("_ViewModal");
 			}
 		}
 
@@ -124,14 +141,14 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			try
 			{
 				var isSucceeded = await _userService.DeleteAsync(id);
-				if (isSucceeded)
+				if (!isSucceeded)
 				{
-					_logger.LogInformation((string?)TempData["Message"]);
-					return Json(new { success = true, message = TempData["Message"] });
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
 				}
 
-				_logger.LogWarning((string?)TempData["Message"]);
-				return Json(new { success = false, message = TempData["Message"] });
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
 			}
 			catch (Exception ex)
 			{
