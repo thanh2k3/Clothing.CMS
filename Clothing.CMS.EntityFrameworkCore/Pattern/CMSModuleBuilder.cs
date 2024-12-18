@@ -38,6 +38,12 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern
 			{
 				entity.HasKey(t => t.Id);
 			});
+
+			// Order
+			builder.Entity<Order>(entity =>
+			{
+				entity.HasKey(t => t.Id);
+			});
 		}
 	}
 }
