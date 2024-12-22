@@ -1,5 +1,6 @@
 ﻿using Clothing.CMS.Application.Products.Dto;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Clothing.CMS.Application.Products
 {
@@ -11,5 +12,6 @@ namespace Clothing.CMS.Application.Products
 		Task<bool> CreateAsync(CreateProductDto model, IFormFile? image);
 		Task<bool> UpdateAsync(EditProductDto model, IFormFile? image);
 		Task<bool> DeleteAsync(int id);
+		Task<List<SelectListItem>> GetSelectListItemAsync();
 	}
 }

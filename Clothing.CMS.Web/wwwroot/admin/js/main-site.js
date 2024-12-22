@@ -43,5 +43,16 @@
             });
             field.value = field.value;
         });
+
+        // Xử lý sự kiện nhập liệu trực tiếp để không cho phép nhập chữ
+        $this.find('.input-amount').on('input', function () {
+            var value = $(this).val();
+            // Loại bỏ tất cả ký tự không phải số
+            value = value.replace(/\D/g, '');
+            // Định dạng lại giá trị thành số với dấu phân cách hàng nghìn
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            // Cập nhật lại giá trị của ô input
+            $(this).val(value);
+        });
     };
 })(jQuery);

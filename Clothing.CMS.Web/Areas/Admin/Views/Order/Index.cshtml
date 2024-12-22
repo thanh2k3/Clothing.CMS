@@ -14,7 +14,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="d-flex flex-row-reverse">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#OrderCreateModal">
                         <i class="fa fa-plus-square"></i>
                         Thêm mới
                     </button>
@@ -49,3 +49,5 @@
         </div>
     </div>
 </section>
+
+@await Html.PartialAsync("~/Areas/Admin/Views/Order/_CreateModal.cshtml")
