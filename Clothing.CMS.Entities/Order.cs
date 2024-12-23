@@ -16,8 +16,7 @@ namespace Clothing.CMS.Entities
 		public OrderStatus OrderStatus { get; set; }
 
 		// Sản phẩm
-		public int ProductId { get; set; }
-		public virtual Product Product { get; set; }
+		public virtual ICollection<OrderProduct> OrderProducts { get; set; }
 
 		// Người dùng
 		public int UserId { get; set; }

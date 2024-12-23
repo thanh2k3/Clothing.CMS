@@ -44,6 +44,16 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern
 			{
 				entity.HasKey(t => t.Id);
 			});
+
+			// OrderProduct
+			builder.Entity<OrderProduct>(entity =>
+			{
+				entity.HasKey(t => t.Id);
+
+				entity.HasOne(t => t.Order)
+					.WithMany(t => t.OrderProducts)
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 		}
 	}
 }
