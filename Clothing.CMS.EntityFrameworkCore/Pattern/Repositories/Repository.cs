@@ -48,7 +48,14 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
 
         }
 
-        public virtual T Find(Expression<Func<T, bool>> match)
+		public virtual async Task<ICollection<T>> AddRangeAsync(ICollection<T> entities)
+		{
+			_context.Set<T>().AddRange(entities);
+            await _context.SaveChangesAsync();
+            return entities;
+		}
+
+		public virtual T Find(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().SingleOrDefault(match);
         }

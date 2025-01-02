@@ -5,5 +5,6 @@ namespace Clothing.CMS.Application.Orders
 	public interface IOrderService
 	{
 		Task<ICollection<OrderDto>> GetAll();
+		Task<bool> CreateAsync(CreateOrderDto model);
 	}
 }

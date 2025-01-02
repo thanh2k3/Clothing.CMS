@@ -9,7 +9,6 @@ namespace Clothing.CMS.Entities
 	public class Order : BaseCruidEntity
 	{
 		public string Code { get; set; }
-		public DateTime Date { get; set; }
 		public string Address { get; set; }
 		public int Quantity { get; set; }
 		public double Total { get; set; }

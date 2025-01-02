@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clothing.CMS.Application.Orders.Dto;
+using Clothing.Shared;
 
 namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Order
 {
@@ -7,7 +8,9 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Order
 	{
 		public OrderVMMapProfile()
 		{
-			CreateMap<OrderDto, OrderViewModel>();
+			CreateMap<OrderDto, OrderViewModel>()
+				.ForMember(dest => dest.StatusString, opt => opt.MapFrom(src => src.OrderStatus.GetDescription()));
+			CreateMap<CreateOrderViewModel, CreateOrderDto>();
 		}
 	}
 }

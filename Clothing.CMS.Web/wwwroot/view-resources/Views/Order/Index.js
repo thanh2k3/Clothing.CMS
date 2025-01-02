@@ -44,19 +44,23 @@
             },
             {
                 targets: 1,
-                data: "date",
+                data: "userEmail",
             },
             {
                 targets: 2,
-                data: "address",
+                data: "createdTime",
+                render: function (data, type, row) {
+                    return (data) ? moment(data).format("DD/MM/YYYY HH:mm:ss") : "-";
+                },
             },
             {
                 targets: 3,
                 data: "total",
+                render: numberFormatCurrency(),
             },
             {
                 targets: 4,
-                data: "orderStatus",
+                data: "statusString",
             },
             {
                 targets: 5,

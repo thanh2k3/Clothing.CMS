@@ -8,17 +8,23 @@ namespace Clothing.CMS.Application.Orders.Dto
 	{
 		[Display(Name = "Mã đơn hàng")]
 		public string Code { get; set; }
-		[Display(Name = "Ngày đặt hàng")]
-		public DateTime Date { get; set; }
 		[Display(Name = "Địa chỉ")]
 		public string Address { get; set; }
+		public int Quantity { get; set; }
 		[Display(Name = "Tổng tiền")]
 		public double Total { get; set; }
-		[Display(Name = "Trạng thái đơn hàng")]
+		[Display(Name = "Trạng thái")]
 		public OrderStatus OrderStatus { get; set; }
-		[Display(Name = "Sản phẩm")]
-		public int ProductId { get; set; }
 		[Display(Name = "Người đặt")]
 		public int UserId { get; set; }
+
+		// Danh sách sản phẩm liên quan đến đơn hàng
+		public ICollection<CreateOrderProductDto> OrderProduct { get; set; }
+	}
+
+	public class CreateOrderProductDto
+	{
+		public int OrderId { get; set; }
+		public int ProductId { get; set; }
 	}
 }

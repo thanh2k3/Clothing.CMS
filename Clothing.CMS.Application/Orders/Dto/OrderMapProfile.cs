@@ -8,6 +8,7 @@ namespace Clothing.CMS.Application.Orders.Dto
 		public OrderMapProfile()
 		{
 			CreateMap<Order, OrderDto>();
+			CreateMap<CreateOrderDto, Order>();
 		}
 	}
 }
