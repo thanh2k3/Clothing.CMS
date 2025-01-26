@@ -1,10 +1,10 @@
-﻿using Clothing.Shared;
-using Clothing.CMS.Entities.Common;
+﻿using Clothing.CMS.Entities.Common;
+using Clothing.Shared;
 using System.ComponentModel.DataAnnotations;
 
 namespace Clothing.CMS.Application.Orders.Dto
 {
-	public class CreateOrderDto : BaseCruidEntity
+	public class EditOrderDto : BaseCruidEntity
 	{
 		[Display(Name = "Mã đơn hàng")]
 		public string Code { get; set; }
@@ -19,10 +19,10 @@ namespace Clothing.CMS.Application.Orders.Dto
 		public int UserId { get; set; }
 
 		// Danh sách sản phẩm liên quan đến đơn hàng
-		public ICollection<CreateOrderProductDto> OrderProduct { get; set; }
+		public ICollection<EditOrderProductDto> OrderProduct { get; set; }
 	}
 
-	public class CreateOrderProductDto
+	public class EditOrderProductDto
 	{
 		public int OrderId { get; set; }
 		public int ProductId { get; set; }

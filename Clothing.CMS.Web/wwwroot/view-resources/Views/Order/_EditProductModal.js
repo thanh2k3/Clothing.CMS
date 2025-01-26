@@ -1,7 +1,5 @@
-﻿let selectProducts = [];
-
-(function ($) {
-    var _$table = $("#orderProductTable");
+﻿(function ($) {
+    var _$table = $("#orderEditProductTable");
 
     _$table.DataTable({
         language: {
@@ -62,28 +60,30 @@
                 targets: 3,
                 data: null,
                 render: function (data, type, row, meta) {
+                    var product = orderProducts.find(p => p.productId == row.id),
+                        quantity = product && product.isActive ? product.quantity : 0;
                     return `<input type="text" class="form-control input-amount" 
-                            data-row-id="${meta.row}" value="0" />`;
+                            data-row-id="${meta.row}" value="${quantity}" />`;
                 },
             },
             {
                 targets: 4,
                 data: "id",
                 render: function (data, type, row, meta) {
+                    var isChecked = orderProducts.some(p => p.productId == data && p.isActive) ? "checked" : "";
                     return `<input type="checkbox" class="text-center form-check-input select-product" 
-                            data-product-id="${data}" />`;
+                            data-product-id="${data}" ${isChecked} />`;
                 },
             },
         ],
         initComplete: function () {
-            // Áp dụng hàm registerInputAmount sau khi DataTable được render
-            $("#orderProductTable").registerInputAmount();
+            $("#orderEditProductTable").registerInputAmount();
         }
     });
 
     // Gắn sự kiện khi DataTable vẽ lại giao diện
-    $("#orderProductTable").on("draw.dt", function () {
-        $("#orderProductTable").registerInputAmount();
+    $("#orderEditProductTable").on("draw.dt", function () {
+        $("#orderEditProductTable").registerInputAmount();
     });
 
     // Hàm tính tổng
@@ -91,32 +91,41 @@
         const totalQuantity = selectProducts.reduce((sum, product) => sum + product.quantity, 0);
         const totalAmount = selectProducts.reduce((sum, product) => sum + product.price * product.quantity, 0);
 
-        $("#formCreateOrder input[name='Quantity']").val(totalQuantity);
-        $("#formCreateOrder input[name='Total']").val(totalAmount.toLocaleString("vi-VN"));
+        $("#formEditOrder input[name='Quantity']").val(totalQuantity);
+        $("#formEditOrder input[name='Total']").val(totalAmount.toLocaleString("vi-VN"));
     }
 
     // Xử lý khi nhập dữ liệu vào ô input-amount
-    $(document).on("blur", "#OrderCreateModal .input-amount", function () {
-        const _$row = $(this).closest("tr");
-        const dataTable = $("#orderProductTable").DataTable();
-        const rowData = dataTable.row(_$row).data(); // Dữ liệu của dòng hiện tại
+    $(document).off("blur", "#OrderEditModal .input-amount")
+        .on("blur", "#OrderEditModal .input-amount", function () {
+        var _$row = $(this).closest("tr"),
+            _$dataTable = $("#orderEditProductTable").DataTable(),
+            rowData = _$dataTable.row(_$row).data();
 
-        const quantity = parseInt($(this).val().replace(/\./g, ""), 10) || 0; // Loại bỏ dấu chấm để xử lý đúng
-        const checkbox = _$row.find(".select-product");
-        const price = rowData.price;
-        const name = rowData.name;
+        var _$checkbox = _$row.find(".select-product"), // Lấy checkbox DOM element
+            isChecked = _$checkbox.is(":checked"),
+            orderId = parseInt($("#OrderEditModal").find("#Id").val(), 10);
 
-        if (quantity > 0) {
-            // Chỉ cập nhật dữ liệu khi checkbox được tích chọn
-            if (checkbox.is(":checked")) {
-                selectProducts = selectProducts.filter((p) => p.name !== name);
-                selectProducts.push({ name, price, quantity });
+        var productData = {
+            orderId: orderId,
+            productId: rowData.id,
+            quantity: parseInt(_$row.find(".input-amount").val().replace(/\./g, ""), 10) || 0,
+            price: rowData.price,
+            isActive: isChecked
+        }
+
+        if (productData.quantity > 0) {
+            if (isChecked) {
+                selectProducts = selectProducts.filter(
+                    (p) => p.productId !== productData.productId
+                );
+                selectProducts.push(productData);
             }
         } else {
-            checkbox.prop("checked", false);
-            selectProducts = selectProducts.filter((p) => p.name !== name);
-
-            // Đặt giá trị mặc định của ô input quantity là 0
+            _$checkbox.prop("checked", false);
+            selectProducts = selectProducts.filter(
+                (p) => p.productId !== productData.productId
+            );
             $(this).val(0);
         }
 
@@ -124,18 +133,20 @@
     });
 
     // Xử lý khi thay đổi trạng thái checkbox (tích chọn)
-    $(document).on("change", "#OrderCreateModal .select-product", function () {
-        const _$row = $(this).closest("tr");
-        const dataTable = $("#orderProductTable").DataTable();
-        const rowData = dataTable.row(_$row).data();
+    $(document).off("change", "#OrderEditModal .select-product")
+        .on("change", "#OrderEditModal .select-product", function () {
+        var _$row = $(this).closest("tr"),
+            _$dataTable = $("#orderEditProductTable").DataTable(),
+            rowData = _$dataTable.row(_$row).data();
 
-        const isChecked = $(this).is(":checked");
+        var isChecked = $(this).is(":checked"),
+            orderId = parseInt($("#OrderEditModal").find("#Id").val(), 10);
 
-        const productData = {
+        var productData = {
+            orderId: orderId,
             productId: rowData.id,
-            name: rowData.name,
-            price: rowData.price,
             quantity: parseInt(_$row.find(".input-amount").val().replace(/\./g, ""), 10) || 0,
+            price: rowData.price,
             isActive: isChecked
         };
 
@@ -147,11 +158,11 @@
                     timeOut: 3000,
                     positionClass: "toast-top-right"
                 });
-                $(this).prop("checked", false);
+                $(this).prop("checked", false); // Bỏ chọn checkbox nếu số lượng không hợp lệ
             }
         } else {
             selectProducts = selectProducts.filter(
-                (p) => p.name !== productData.name
+                (p) => p.productId !== productData.productId
             );
         }
 

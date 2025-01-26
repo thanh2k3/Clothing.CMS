@@ -79,5 +79,54 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				return Json(new { success = false, message = "Có lỗi xảy ra" });
 			}
 		}
+
+		public async Task<ActionResult> EditModal(int id)
+		{
+			try
+			{
+				var orderDto = await _orderService.GetById(id);
+				var orderVM = _mapper.Map<EditOrderViewModel>(orderDto);
+
+				ViewBag.UserItems = UserItems;
+
+				ViewBag.OrderProducts = orderVM.OrderProduct;
+
+				return PartialView("_EditModal", orderVM);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return PartialView("_EditModal");
+			}
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> Edit(EditOrderViewModel model)
+		{
+			try
+			{
+				if (!ModelState.IsValid)
+				{
+					_logger.LogWarning("Thông tin không hợp lệ");
+					return Json(new { success = false, message = "Thông tin không hợp lệ" });
+				}
+
+				var orderDto = _mapper.Map<EditOrderDto>(model);
+				var isSucceeded = await _orderService.UpdateAsync(orderDto);
+				if (!isSucceeded)
+				{
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
+				}
+
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
+		}
 	}
 }

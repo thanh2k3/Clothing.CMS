@@ -131,7 +131,8 @@ table {
 
 #productTable tbody img,
 #userTable tbody img,
-#orderProductTable tbody img {
+#orderProductTable tbody img,
+#orderEditProductTable tbody img {
     border-radius: 5px;
     max-width: 100%;
     height: 100px;

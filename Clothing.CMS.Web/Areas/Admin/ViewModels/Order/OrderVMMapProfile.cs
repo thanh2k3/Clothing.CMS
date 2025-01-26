@@ -11,6 +11,7 @@ namespace Clothing.CMS.Web.Areas.Admin.ViewModels.Order
 			CreateMap<OrderDto, OrderViewModel>()
 				.ForMember(dest => dest.StatusString, opt => opt.MapFrom(src => src.OrderStatus.GetDescription()));
 			CreateMap<CreateOrderViewModel, CreateOrderDto>();
+			CreateMap<EditOrderDto, EditOrderViewModel>();
 		}
 	}
 }

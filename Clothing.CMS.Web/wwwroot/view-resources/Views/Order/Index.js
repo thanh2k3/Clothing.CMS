@@ -90,4 +90,31 @@
             },
         ]
     });
+
+    $(document).on("click", ".edit-order", function (e) {
+        var orderId = $(this).attr("data-order-id");
+
+        $.ajax({
+            url: "/Admin/Order/EditModal?Id=" + orderId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#OrderEditModal div.modal-content").html(result);
+                $("#OrderEditModal").find("form").registerInputAmount();
+
+                orderProducts.forEach(function (product) {
+                    if (product.isActive) {
+                        selectProducts.push(product);
+                    }
+                });
+            },
+            error: function (e) {
+            }
+        });
+    });
+
+    // Lắng nghe sự kiện "hidden.bs.modal" đóng modal
+    $("#OrderEditModal").on("hidden.bs.modal", function () {
+        selectProducts = [];
+    });
 })(jQuery);

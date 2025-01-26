@@ -99,7 +99,13 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public virtual T Update(T t, object key)
+		public virtual async Task<int> DeleteRangeAsync(ICollection<T> entities)
+		{
+			_context.Set<T>().RemoveRange(entities);
+			return await _context.SaveChangesAsync();
+		}
+
+		public virtual T Update(T t, object key)
         {
             if (t == null)
                 return null;

@@ -12,6 +12,7 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
         void Delete(T entity);
         Task<int> DeleteAsync(T entity);
+        Task<int> DeleteRangeAsync(ICollection<T> entities);
         void Dispose();
         T Find(Expression<Func<T, bool>> match);
         ICollection<T> FindAll(Expression<Func<T, bool>> match);

@@ -44,6 +44,41 @@ namespace Clothing.CMS.Application.Orders
 			}
 		}
 
+		public async Task<EditOrderDto> GetById(int id)
+		{
+			try
+			{
+				var order = await _repo.FindAsync(x => x.Id == id);
+				if (order == null)
+				{
+					throw new KeyNotFoundException($"Không tìm thấy người dùng với ID: \"{id}\"");
+				}
+
+				var orderDto = _mapper.Map<EditOrderDto>(order);
+
+				var orderProduct = await _orderProductRepo.FindAllAsync(x => x.OrderId == id);
+
+				orderDto.OrderProduct = orderProduct.Select(op => new EditOrderProductDto
+				{
+					OrderId = op.OrderId,
+					ProductId = op.ProductId,
+					Quantity = op.Quantity,
+					Price = op.Price,
+					IsActive = op.IsActitve
+				}).ToList();
+
+				return orderDto;
+			}
+			catch (KeyNotFoundException ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
 		public async Task<bool> CreateAsync(CreateOrderDto model)
 		{
 			try
@@ -52,7 +87,7 @@ namespace Clothing.CMS.Application.Orders
 				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code);
 				if (existsOrder != null)
 				{
-					NotifyMsg("Sản phẩm đã tồn tại");
+					NotifyMsg("Đơn hàng đã tồn tại");
 					return false;
 				}
 
@@ -69,16 +104,91 @@ namespace Clothing.CMS.Application.Orders
 				{
 					OrderId = order.Id,
 					ProductId = p.ProductId,
+					Quantity = p.Quantity,
+					Price = p.Price,
+					IsActitve = p.IsActive
 				}).ToList();
 
 				await _orderProductRepo.AddRangeAsync(orderProducts);
 
-				NotifyMsg("Thêm mới sản phẩm thành công");
+				NotifyMsg("Thêm mới đơn hàng thành công");
 				return true;
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Thêm mới sản phẩm thất bại");
+				NotifyMsg("Thêm mới đơn hàng thất bại");
+				return false;
+			}
+		}
+
+		public async Task<bool> UpdateAsync(EditOrderDto model)
+		{
+			try
+			{
+				var order = _mapper.Map<Order>(model);
+				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code && x.Id != order.Id);
+				if (existsOrder != null)
+				{
+					NotifyMsg("Đơn hàng đã tồn tại");
+					return false;
+				}
+
+				if (model.OrderProduct == null && model.OrderProduct.Count <= 0)
+				{
+					NotifyMsg("Không có sản phẩm nào được chọn");
+					return false;
+				}
+
+				FillAuthInfo(order);
+				await _repo.UpdateAsync(order, order.Id);
+
+				// Lấy danh sách sản phẩm cũ của đơn hàng
+				var existsOProduct = await _orderProductRepo.FindAllAsync(x => x.OrderId == order.Id);
+
+				// Xóa các sản phẩm không còn trong danh sách mới
+				var productsToRemove = existsOProduct
+					.Where(op => !model.OrderProduct.Any(p => p.ProductId == op.ProductId))
+					.ToList();
+
+				if (productsToRemove.Any())
+				{
+					await _orderProductRepo.DeleteRangeAsync(productsToRemove);
+				}
+
+				// Thêm hoặc cập nhật các sản phẩm mới
+				var updateOrderProducts = model.OrderProduct.Select(p => new OrderProduct
+				{
+					OrderId = order.Id,
+					ProductId = p.ProductId,
+					Quantity = p.Quantity,
+					Price = p.Price,
+					IsActitve = p.IsActive
+				}).ToList();
+
+				foreach (var item in updateOrderProducts)
+				{
+					var product = existsOProduct.FirstOrDefault(op => op.ProductId == item.ProductId);
+					if (product != null)
+					{
+						// Cập nhật sản phẩm đã tồn tại
+						product.Quantity = item.Quantity;
+						product.Price = item.Price;
+						product.IsActitve = item.IsActitve;
+						await _orderProductRepo.UpdateAsync(product, product.Id);
+					}
+					else
+					{
+						// Thêm sản phẩm mới
+						await _orderProductRepo.AddAsync(item);
+					}
+				}
+
+				NotifyMsg("Chỉnh sửa đơn hàng thành công");
+				return true;
+			}
+			catch (Exception ex)
+			{
+				NotifyMsg("Chỉnh sửa đơn hàng thất bại");
 				return false;
 			}
 		}
