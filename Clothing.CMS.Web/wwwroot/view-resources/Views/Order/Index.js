@@ -81,7 +81,7 @@
                         `   </button>`
                     )
                     actions.push(
-                        `   <button class="btn btn-sm btn-danger delete-order" data-order-id="${row.id}">`,
+                        `   <button class="btn btn-sm btn-danger delete-order" data-order-id="${row.id}" data-order-code="${row.code}">`,
                         `       <i class="fa-solid fa-trash-can"></i> Xóa`,
                         `   </button>`
                     )
@@ -116,5 +116,44 @@
     // Lắng nghe sự kiện "hidden.bs.modal" đóng modal
     $("#OrderEditModal").on("hidden.bs.modal", function () {
         selectProducts = [];
+    });
+
+    $(document).on("click", ".delete-order", function (e) {
+        var orderId = $(this).attr("data-order-id");
+        var code = $(this).attr("data-order-code");
+
+        Swal.fire({
+            title: "Bạn có chắc không?",
+            text: "Bạn có chắn là muốn xóa đơn hàng có mã \"" + code + "\" không!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy",
+            allowOutsideClick: false,
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/Admin/Order/Delete?Id=" + orderId,
+                    type: "POST",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.success === true) {
+                            _$table.DataTable().ajax.reload();
+                            toastr.info(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: result.message
+                            });
+                        }
+                    }
+                })
+            }
+        });
     });
 })(jQuery);

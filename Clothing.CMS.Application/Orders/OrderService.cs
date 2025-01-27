@@ -192,5 +192,36 @@ namespace Clothing.CMS.Application.Orders
 				return false;
 			}
 		}
+
+		public async Task<bool> DeleteAsync(int id)
+		{
+			try
+			{
+				var order = await _repo.FindAsync(x => x.Id == id);
+				if (order == null)
+				{
+					NotifyMsg("Không tìm thấy đơn hàng");
+					return false;
+				}
+
+				order.IsDeleted = true;
+				FillAuthInfo(order);
+
+				var orderProduct = await _orderProductRepo.FindAllAsync(x => x.OrderId == order.Id);
+				foreach (var item in orderProduct)
+				{
+					item.IsDeleted = true;
+					await _orderProductRepo.UpdateAsync(item, item.Id);
+				}
+
+				NotifyMsg("Xóa đơn hàng thành công");
+				return true;
+			}
+			catch (Exception ex)
+			{
+				NotifyMsg("Xóa đơn hàng thất bại");
+				return false;
+			}
+		}
 	}
 }

@@ -14,11 +14,14 @@ namespace Clothing.CMS.Entities
 		public double Total { get; set; }
 		public OrderStatus OrderStatus { get; set; }
 
-		// Sản phẩm
+		// Product
 		public virtual ICollection<OrderProduct> OrderProducts { get; set; }
 
-		// Người dùng
+		// User
 		public int UserId { get; set; }
 		public virtual User User { get; set; }
+
+		// Sort delete
+		public bool IsDeleted { get; set; }
 	}
 }
