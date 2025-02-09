@@ -129,6 +129,25 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			}
 		}
 
+		public async Task<ActionResult> ViewModal(int id)
+		{
+			try
+			{
+				var orderDto = await _orderService.GetByIdIncluding(id);
+				var orderVM = _mapper.Map<OrderViewModel>(orderDto);
+
+				ViewBag.OrderProducts = orderVM.OrderProduct;
+
+				_logger.LogInformation($"lấy ra đơn hàng với ID: {id}");
+				return PartialView("_ViewModal", orderVM);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return PartialView("_ViewModal");
+			}
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> Delete(int id)
 		{

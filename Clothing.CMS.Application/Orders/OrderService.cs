@@ -79,6 +79,40 @@ namespace Clothing.CMS.Application.Orders
 			}
 		}
 
+		public async Task<OrderDto> GetByIdIncluding(int id)
+		{
+			try
+			{
+				var order = await _repo.FindAsyncIncluding(x => x.Id == id, x => x.User);
+				if (order == null)
+				{
+					throw new KeyNotFoundException($"Không tìm thấy người dùng với ID: \"{id}\"");
+				}
+
+				var orderDto = _mapper.Map<OrderDto>(order);
+
+				var orderProduct = await _orderProductRepo.FindAllAsync(x => x.OrderId == id);
+				orderDto.OrderProduct = orderProduct.Select(op => new OrderProductDto
+				{
+					OrderId = op.OrderId,
+					ProductId = op.ProductId,
+					Quantity = op.Quantity,
+					Price = op.Price,
+					IsActive = op.IsActitve
+				}).ToList();
+
+				return orderDto;
+			}
+			catch (KeyNotFoundException ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
 		public async Task<bool> CreateAsync(CreateOrderDto model)
 		{
 			try

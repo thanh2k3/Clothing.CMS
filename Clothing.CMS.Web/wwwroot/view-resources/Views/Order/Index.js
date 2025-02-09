@@ -113,6 +113,22 @@
         });
     });
 
+    $(document).on("click", ".view-order", function (e) {
+        var orderId = $(this).attr("data-order-id");
+
+        $.ajax({
+            url: "/Admin/Order/ViewModal?Id=" + orderId,
+            type: "POST",
+            dataType: "html",
+            success: function (result) {
+                $("#OrderViewModal div.modal-content").html(result);
+                $("#OrderViewModal").find("form").registerInputAmount();
+            },
+            error: function (e) {
+            }
+        })
+    });
+
     // Lắng nghe sự kiện "hidden.bs.modal" đóng modal
     $("#OrderEditModal").on("hidden.bs.modal", function () {
         selectProducts = [];
