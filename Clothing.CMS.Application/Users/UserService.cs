@@ -2,9 +2,11 @@
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Application.Users.Dto;
 using Clothing.CMS.Entities.Authorization.Users;
+using Clothing.Shared;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -185,6 +187,26 @@ namespace Clothing.CMS.Application.Users
 
 				NotifyMsg("Xóa người dùng thành công");
 				return true;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+
+		public async Task<List<SelectListItem>> GetSelectListItemAsync()
+		{
+			try
+			{
+				var result = _userManager.Users.Where(x => x.IsDeleted == false)
+					.Select(x => new SelectListItem()
+					{
+						Value = x.Id.ToString(),
+						Text = x.Email,
+					})
+					.ToList();
+
+				return result;
 			}
 			catch (Exception ex)
 			{

@@ -1,5 +1,6 @@
 ﻿using Clothing.CMS.Application.Categories;
 using Clothing.CMS.Application.LogEvents;
+using Clothing.CMS.Application.Orders;
 using Clothing.CMS.Application.Products;
 using Clothing.CMS.Application.Roles;
 using Clothing.CMS.Application.Users;
@@ -26,6 +27,9 @@ namespace Clothing.CMS.Web.Common
 
 			services.AddAutoMapper(typeof(ProductService));
 			services.AddAutoMapper(typeof(ProductController));
+
+			services.AddAutoMapper(typeof(OrderService));
+			services.AddAutoMapper(typeof(OrderController));
 		}
 
         public static void RegisterServiceLifetimer(IServiceCollection services)
@@ -37,6 +41,7 @@ namespace Clothing.CMS.Web.Common
             services.AddScoped<ILogEventService, LogEventService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IOrderService, OrderService>();
         }
     }
 }

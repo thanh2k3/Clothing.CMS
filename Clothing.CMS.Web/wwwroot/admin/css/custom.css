@@ -129,7 +129,11 @@ table {
     display: none;
 }
 
-#productTable tbody img {
+#productTable tbody img,
+#userTable tbody img,
+#orderProductTable tbody img,
+#orderEditProductTable tbody img,
+#orderViewProductTable tbody img {
     border-radius: 5px;
     max-width: 100%;
     height: 100px;
@@ -138,14 +142,3 @@ table {
     display: block;
     margin: 0 auto;
 }
-
-#userTable tbody img {
-    border-radius: 5px;
-    max-width: 100%;
-    height: 100px;
-    object-fit: cover;
-    /* Căn giữa */
-    display: block;
-    margin: 0 auto;
-}
-

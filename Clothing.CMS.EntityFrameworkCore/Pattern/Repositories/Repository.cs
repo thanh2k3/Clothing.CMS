@@ -48,7 +48,14 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
 
         }
 
-        public virtual T Find(Expression<Func<T, bool>> match)
+		public virtual async Task<ICollection<T>> AddRangeAsync(ICollection<T> entities)
+		{
+			_context.Set<T>().AddRange(entities);
+            await _context.SaveChangesAsync();
+            return entities;
+		}
+
+		public virtual T Find(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().SingleOrDefault(match);
         }
@@ -92,7 +99,13 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public virtual T Update(T t, object key)
+		public virtual async Task<int> DeleteRangeAsync(ICollection<T> entities)
+		{
+			_context.Set<T>().RemoveRange(entities);
+			return await _context.SaveChangesAsync();
+		}
+
+		public virtual T Update(T t, object key)
         {
             if (t == null)
                 return null;

@@ -4,6 +4,7 @@ using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Clothing.CMS.EntityFrameworkCore.Migrations
 {
     [DbContext(typeof(CMSDbContext))]
-    partial class CMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250112034126_Add_Price_To_OrderProduct_Table")]
+    partial class Add_Price_To_OrderProduct_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,9 +250,6 @@ namespace Clothing.CMS.EntityFrameworkCore.Migrations
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -285,9 +284,6 @@ namespace Clothing.CMS.EntityFrameworkCore.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("IsActitve")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("OrderId")

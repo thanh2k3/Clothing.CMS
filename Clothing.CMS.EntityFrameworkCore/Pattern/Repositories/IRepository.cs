@@ -6,11 +6,13 @@ namespace Clothing.CMS.EntityFrameworkCore.Pattern.Repositories
     {
         T Add(T t);
         Task<T> AddAsync(T t);
-        int Count();
+        Task<ICollection<T>> AddRangeAsync(ICollection<T> entities);
+		int Count();
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<T, bool>> predicate);
         void Delete(T entity);
         Task<int> DeleteAsync(T entity);
+        Task<int> DeleteRangeAsync(ICollection<T> entities);
         void Dispose();
         T Find(Expression<Func<T, bool>> match);
         ICollection<T> FindAll(Expression<Func<T, bool>> match);
