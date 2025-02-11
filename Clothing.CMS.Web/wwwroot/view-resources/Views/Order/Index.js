@@ -29,8 +29,10 @@
             dataSrc: function (json) {
                 if (json.success === false) {
                     toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
+
                     return []; // Không có dữ liệu để hiển thị
                 }
+
                 return json || []; // Xử lý dữ liệu nếu thành công
             },
             error: function () {
@@ -101,12 +103,6 @@
             success: function (result) {
                 $("#OrderEditModal div.modal-content").html(result);
                 $("#OrderEditModal").find("form").registerInputAmount();
-
-                orderProducts.forEach(function (product) {
-                    if (product.isActive) {
-                        selectProducts.push(product);
-                    }
-                });
             },
             error: function (e) {
             }
@@ -127,11 +123,6 @@
             error: function (e) {
             }
         })
-    });
-
-    // Lắng nghe sự kiện "hidden.bs.modal" đóng modal
-    $("#OrderEditModal").on("hidden.bs.modal", function () {
-        selectProducts = [];
     });
 
     $(document).on("click", ".delete-order", function (e) {

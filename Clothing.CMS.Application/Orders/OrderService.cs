@@ -32,6 +32,7 @@ namespace Clothing.CMS.Application.Orders
 			try
 			{
 				var order = await _repo.GetAllIncluding(x => x.User)
+					.Where(x => !x.IsDeleted)
 					.OrderByDescending(x => x.Id)
 					.ToListAsync();
 				var orderDto = _mapper.Map<ICollection<OrderDto>>(order);
@@ -118,16 +119,10 @@ namespace Clothing.CMS.Application.Orders
 			try
 			{
 				var order = _mapper.Map<Order>(model);
-				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code);
+				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code && x.IsDeleted == false);
 				if (existsOrder != null)
 				{
 					NotifyMsg("Đơn hàng đã tồn tại");
-					return false;
-				}
-
-				if (model.OrderProduct == null && model.OrderProduct.Count <= 0)
-				{
-					NotifyMsg("Không có sản phẩm nào được chọn");
 					return false;
 				}
 
@@ -160,16 +155,12 @@ namespace Clothing.CMS.Application.Orders
 			try
 			{
 				var order = _mapper.Map<Order>(model);
-				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code && x.Id != order.Id);
+				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code 
+														&& x.Id != order.Id 
+														&& x.IsDeleted == false);
 				if (existsOrder != null)
 				{
 					NotifyMsg("Đơn hàng đã tồn tại");
-					return false;
-				}
-
-				if (model.OrderProduct == null && model.OrderProduct.Count <= 0)
-				{
-					NotifyMsg("Không có sản phẩm nào được chọn");
 					return false;
 				}
 
@@ -240,6 +231,7 @@ namespace Clothing.CMS.Application.Orders
 
 				order.IsDeleted = true;
 				FillAuthInfo(order);
+				await _repo.UpdateAsync(order, order.Id);
 
 				var orderProduct = await _orderProductRepo.FindAllAsync(x => x.OrderId == order.Id);
 				foreach (var item in orderProduct)

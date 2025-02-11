@@ -34,9 +34,9 @@
                     return []; // Không có dữ liệu để hiển thị
                 }
 
-                // Lấy ra các sản phẩm có trong orderProducts và có isActive = true
+                // Lấy ra các sản phẩm có trong selectProducts và có isActive = true
                 var filterData = json.filter(product =>
-                    orderProducts.some(p => p.productId == product.id && p.isActive)
+                    selectProducts.some(p => p.productId == product.id && p.isActive)
                 );
 
                 return filterData;
@@ -67,7 +67,7 @@
                 targets: 3,
                 data: null,
                 render: function (data, type, row, meta) {
-                    var product = orderProducts.find(p => p.productId == row.id),
+                    var product = selectProducts.find(p => p.productId == row.id),
                         quantity = product && product.isActive ? product.quantity : 0;
 
                     return quantity.toLocaleString("vi-VN");
@@ -75,12 +75,12 @@
             },
         ],
         initComplete: function () {
-            $("#orderViewProductTable").registerInputAmount();
+            _$table.registerInputAmount();
         }
     });
 
     // Gắn sự kiện khi DataTable vẽ lại giao diện
-    $("#orderViewProductTable").on("draw.dt", function () {
-        $("#orderViewProductTable").registerInputAmount();
+    _$table.on("draw.dt", function () {
+        _$table.registerInputAmount();
     });
 })(jQuery);

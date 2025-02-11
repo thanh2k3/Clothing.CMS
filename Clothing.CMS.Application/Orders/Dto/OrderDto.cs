@@ -16,6 +16,7 @@ namespace Clothing.CMS.Application.Orders.Dto
 		[Display(Name = "Email")]
 		public string UserEmail { get; set; }
 
+		// Danh sách sản phẩm liên quan đến đơn hàng
 		public ICollection<OrderProductDto> OrderProduct { get; set; }
 	}
 

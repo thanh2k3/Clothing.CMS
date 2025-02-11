@@ -88,9 +88,9 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				var orderVM = _mapper.Map<EditOrderViewModel>(orderDto);
 
 				ViewBag.UserItems = UserItems;
-
 				ViewBag.OrderProducts = orderVM.OrderProduct;
 
+				_logger.LogInformation($"lấy ra đơn hàng với ID: {id}");
 				return PartialView("_EditModal", orderVM);
 			}
 			catch (Exception ex)
