@@ -236,13 +236,13 @@
             var index = item.index(this);
             var i = 0;
             for(i=0; i<=index; i++) {
-                $(item[i]).removeClass('zmdi-star-outline');
-                $(item[i]).addClass('zmdi-star');
+                $(item[i]).removeClass('fa-regular');
+                $(item[i]).addClass('fa-solid');
             }
 
             for(var j=i; j<item.length; j++) {
-                $(item[j]).addClass('zmdi-star-outline');
-                $(item[j]).removeClass('zmdi-star');
+                $(item[j]).addClass('fa-regular');
+                $(item[j]).removeClass('fa-solid');
             }
         });
 
@@ -255,13 +255,13 @@
         $(this).on('mouseleave', function(){
             var i = 0;
             for(i=0; i<=rated; i++) {
-                $(item[i]).removeClass('zmdi-star-outline');
-                $(item[i]).addClass('zmdi-star');
+                $(item[i]).removeClass('fa-regular');
+                $(item[i]).addClass('fa-solid');
             }
 
             for(var j=i; j<item.length; j++) {
-                $(item[j]).addClass('zmdi-star-outline');
-                $(item[j]).removeClass('zmdi-star');
+                $(item[j]).addClass('fa-regular');
+                $(item[j]).removeClass('fa-solid');
             }
         });
     });
