@@ -102,3 +102,10 @@
     flex-wrap: wrap;
     gap: 10px;
 }
+
+/* Cart */
+.cart-container .order-total {
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}

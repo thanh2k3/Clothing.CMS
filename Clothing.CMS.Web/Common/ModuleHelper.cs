@@ -51,7 +51,7 @@ namespace Clothing.CMS.Web.Common
 					return new HeaderMenu
 					{
 						Name = "Giỏ hàng",
-						URLPath = "/Cart",
+						URLPath = "/cart",
 						IdName = "cartMenu",
 						LinkCounter = counter
 					};
