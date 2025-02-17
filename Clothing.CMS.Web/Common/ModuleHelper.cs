@@ -8,6 +8,7 @@ namespace Clothing.CMS.Web.Common
 		{
 			Home,
 			Product,
+			ProductDetail,
 			Cart,
 			Posts,
 			About,
@@ -26,6 +27,9 @@ namespace Clothing.CMS.Web.Common
 					{
 						Name = "Trang chủ",
 						URLPath = "/",
+						HeaderClass = "",
+						WrapClass = "",
+						IdName = "homeMenu",
 						LinkCounter = counter
 					};
 				case Module.Product:
@@ -33,6 +37,14 @@ namespace Clothing.CMS.Web.Common
 					{
 						Name = "Sản phẩm",
 						URLPath = "/Product",
+						IdName = "productMenu",
+						LinkCounter = counter
+					};
+				case Module.ProductDetail:
+					return new HeaderMenu
+					{
+						URLPath = "/product/productdetail",
+						IsActive = false,
 						LinkCounter = counter
 					};
 				case Module.Cart:
@@ -40,6 +52,7 @@ namespace Clothing.CMS.Web.Common
 					{
 						Name = "Giỏ hàng",
 						URLPath = "/Cart",
+						IdName = "cartMenu",
 						LinkCounter = counter
 					};
 				case Module.Posts:
@@ -47,6 +60,7 @@ namespace Clothing.CMS.Web.Common
 					{
 						Name = "Bài viết",
 						URLPath = "/Posts",
+						IdName = "postsMenu",
 						LinkCounter = counter
 					};
 				case Module.About:
@@ -54,6 +68,7 @@ namespace Clothing.CMS.Web.Common
 					{
 						Name = "Giới thiệu",
 						URLPath = "/About",
+						IdName = "aboutMenu",
 						LinkCounter = counter
 					};
 				case Module.Contact:
@@ -61,6 +76,7 @@ namespace Clothing.CMS.Web.Common
 					{
 						Name = "Liên hệ",
 						URLPath = "/Contact",
+						IdName = "contactMenu",
 						LinkCounter = counter
 					};
 

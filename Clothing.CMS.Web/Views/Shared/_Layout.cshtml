@@ -23,7 +23,8 @@
 	<link rel="stylesheet" type="text/css" href="~/cozastore-master/css/main.css" asp-append-version="true">
 
 	<!-- Custom CSS File -->
-	<link rel="stylesheet" type="text/css" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" type="text/css" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" type="text/css" href="~/css/custom.css" asp-append-version="true" />
 </head>
 <body class="animsition">
 	
@@ -65,6 +66,8 @@
 
 	<!-- Custom JS File -->
 	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	@await RenderSectionAsync("scripts", required: false)
 
 </body>
 </html>

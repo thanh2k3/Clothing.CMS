@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<HeaderMenu>
 
-<header>
+@{
+    var currentPath = Context.Request.Path.Value.Split("/")[1]; // Lấy phần đầu tiên của URL sau domain
+    var menuItem = Model.FirstOrDefault(m => m.URLPath.Split("/")[1] == currentPath);
+    var headerClass = menuItem?.HeaderClass ?? "";
+    var wrapClass = menuItem?.WrapClass ?? "";
+}
+
+<header class="@headerClass">
     <!-- Header desktop -->
     <div class="container-menu-desktop">
         <!-- Topbar -->
@@ -30,7 +37,7 @@
             </div>
         </div>
 
-        <div class="wrap-menu-desktop">
+        <div class="wrap-menu-desktop @wrapClass">
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
@@ -44,9 +51,12 @@
                     <ul class="main-menu">
                         @foreach (var menu in Model)
                         {
-                            <li>
-                                <a href="@menu.URLPath">@menu.Name</a>
-                            </li>
+                            if (menu.IsActive == true)
+                            {
+                                <li>
+                                    <a id="@menu.IdName" href="@menu.URLPath">@menu.Name</a>
+                                </li>
+                            }
                         }
                     </ul>
                 </div>
@@ -106,7 +116,7 @@
             @foreach (var menu in Model)
             {
                 <li>
-                    <a href="@menu.URLPath">@menu.Name</a>
+                    <a id="@menu.IdName" href="@menu.URLPath">@menu.Name</a>
                 </li>
             }
 		</ul>
