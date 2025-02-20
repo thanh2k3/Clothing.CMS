@@ -34,12 +34,12 @@
 }
 
 .product-container .sale-price,
-.product-detail-container .sale-price {
+#productDetailContainer .sale-price {
     color: #ff5a5f;
 }
 
 .product-container .original-price,
-.product-detail-container .original-price {
+#productDetailContainer .original-price {
     color: #888;
     text-decoration: line-through;
     margin-left: 8px;
@@ -51,7 +51,7 @@
 }
 
 /* Product Detail */
-.product-detail-container .size-btn {
+#productDetailContainer .size-btn {
     padding: 10px 15px;
     border: 1px solid #ccc;
     background: white;
@@ -60,14 +60,14 @@
     transition: 0.3s;
 }
 
-.product-detail-container .size-btn:hover,
-.product-detail-container .size-btn.active {
+#productDetailContainer .size-btn:hover,
+#productDetailContainer .size-btn.active {
     background-color: #717fe0;
     color: white;
     border-color: #717fe0;
 }
 
-.product-detail-container .color-btn {
+#productDetailContainer .color-btn {
     padding: 10px 15px;
     border: 1px solid #ccc;
     background: white;
@@ -76,14 +76,14 @@
     transition: 0.3s;
 }
 
-.product-detail-container .color-btn:hover,
-.product-detail-container .color-btn.active {
+#productDetailContainer .color-btn:hover,
+#productDetailContainer .color-btn.active {
     background-color: #717fe0;
     color: white;
     border-color: #717fe0;
 }
 
-.product-detail-container .sub-heading {
+#productDetailContainer .sub-heading {
     justify-content: start;
     min-width: 100px;
     display: flex;
@@ -91,16 +91,35 @@
     height: 40px;
 }
 
-.product-detail-container .size-container,
-.product-detail-container .color-container {
+#productDetailContainer .size-container,
+#productDetailContainer .color-container {
     display: flex;
     align-items: flex-start;
 }
 
-.product-detail-container .btn-block {
+#productDetailContainer .btn-block {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+#productDetailContainer .wrap-num-product {
+    width: 175px;
+}
+
+#productDetailContainer .btn-product-plus,
+#productDetailContainer .btn-product-minus {
+    width: 45px;
+    height: 100%;
+    cursor: pointer;
+}
+
+.btn-swal2 {
+    background: #717fe0;
+}
+
+.btn-swal2:hover {
+    background: #333;
 }
 
 /* Cart */

@@ -1,5 +1,9 @@
 ﻿@model EditProductViewModel
 
+@section scripts {
+    <script src="~/view-resources/views/client/productdetail/index.js" asp-append-version="true"></script>
+}
+
 <!-- Cart -->
 <div class="wrap-header-cart js-panel-cart">
 	<div class="s-full js-hide-cart"></div>
@@ -105,7 +109,7 @@
 </div>
 
 <!-- Product Detail -->
-<section class="sec-product-detail bg0 p-t-65 p-b-60 product-detail-container">
+<section id="productDetailContainer" class="sec-product-detail bg0 p-t-65 p-b-60">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6 col-lg-7 p-b-30">
@@ -117,7 +121,7 @@
 						<div class="slick3 gallery-lb">
 							<div class="item-slick3" data-thumb="images/product-detail-01.jpg">
 								<div class="wrap-pic-w pos-relative">
-									<img src="~/cozastore-master/images/product-detail-01.jpg" alt="IMG-PRODUCT">
+									<img class="product-img" src="@Model.ImageURL" alt="IMG-PRODUCT">
 
 									<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="images/product-detail-01.jpg">
 										<i class="fa fa-expand"></i>
@@ -151,7 +155,7 @@
 
 			<div class="col-md-6 col-lg-5 p-b-30">
 				<div class="p-r-50 p-t-5 p-lr-0-lg">
-					<h4 class="mtext-105 cl2 js-name-detail p-b-20">
+					<h4 class="product-name mtext-105 cl2 js-name-detail p-b-20">
 						@Model.Name
 					</h4>
 					<div class="flex-w flex-m p-b-20">
@@ -169,16 +173,17 @@
 						</span>
 					</div>
 
-					<span class="mtext-106 cl2 sale-price">
+					<span class="product-price mtext-106 cl2 sale-price">
 						@Model.Price.ToString("N0")₫
-						<span class="original-price">@Model.OriginalPrice.ToString("N0")₫</span>
 					</span>
+
+					<span class="original-price mtext-106 cl2">@Model.OriginalPrice.ToString("N0")₫</span>
 
 					<div class="size-203 flex-c-m respon6 text-dark p-t-20 sub-heading">
 						<strong>Mô tả</strong>
 					</div>
 
-					<p class="stext-102 cl3 p-t-14">
+					<p class="product-desc stext-102 cl3 p-t-14">
 						@Model.Description
 					</p>
 
@@ -206,9 +211,9 @@
 							</div>
 
 							<div class="size-204 respon6-next flex-w btn-block">
-								<button type="button" class="color-btn cl3" data-color="blue">Đen</button>
-								<button type="button" class="color-btn cl3" data-color="red">Trắng</button>
-								<button type="button" class="color-btn cl3" data-color="purple">Xanh lá</button>
+								<button type="button" class="color-btn cl3" data-color="black">Đen</button>
+								<button type="button" class="color-btn cl3" data-color="white">Trắng</button>
+								<button type="button" class="color-btn cl3" data-color="green">Xanh lá</button>
 							</div>
 
 							<!-- Input ẩn để lưu giá trị màu đã chọn -->
@@ -216,20 +221,20 @@
 
 						</div>
 
-						<div class="flex-w flex-r-m p-b-20">
+						<div class="flex-w flex-r-m p-b-20 quantity-container">
 							<div class="size-203 flex-c-m respon6 text-dark sub-heading">
 								<strong>Số lượng</strong>
 							</div>
 
 							<div class="size-204 flex-w flex-m respon6-next">
 								<div class="wrap-num-product flex-w">
-									<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m stext-102">
+									<div class="btn-product-minus cl8 hov-btn3 trans-04 flex-c-m stext-102">
 										<i class="fa-solid fa-minus"></i>
 									</div>
 
-									<input class="stext-102 cl3 txt-center num-product" type="number" name="num-product" value="1">
+									<input class="stext-102 cl3 txt-center num-product product-quantity input-amount" type="text" name="num-product" value="1" autocomplete="off">
 
-									<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m stext-102">
+									<div class="btn-product-plus cl8 hov-btn3 trans-04 flex-c-m stext-102">
 										<i class="fa-solid fa-plus"></i>
 									</div>
 								</div>
@@ -238,7 +243,7 @@
 
 						<div class="flex-w flex-r-m p-t-20">
 							<div class="size-204 flex-w flex-m respon6-next">
-								<button class="flex-c-m stext-102 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+								<button class="add-to-cart flex-c-m stext-102 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
 									Thêm vào giỏ
 								</button>
 							</div>
