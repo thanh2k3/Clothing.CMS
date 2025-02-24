@@ -1,4 +1,7 @@
-﻿
+﻿@section scripts {
+    <script src="~/view-resources/views/client/cart/index.js" asp-append-version="true"></script>
+}
+
 <!-- Cart -->
 <div class="wrap-header-cart js-panel-cart">
 	<div class="s-full js-hide-cart"></div>
@@ -88,7 +91,7 @@
 <!-- breadcrumb -->
 <div class="container">
 	<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-		<a href="index.html" class="stext-102 cl8 hov-cl1 trans-04">
+		<a href="/" class="stext-102 cl8 hov-cl1 trans-04">
 			Trang chủ
 			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 		</a>
@@ -101,77 +104,27 @@
 
 
 <!-- Shoping Cart -->
-<form class="bg0 p-t-75 p-b-85">
-	<div class="container cart-container">
+<form id="cartContainer" class="bg0 p-t-75 p-b-85">
+	<div class="container">
 		<div class="row">
 			<div class="col-lg-10 col-xl-8 m-lr-auto m-b-50">
 				<div class="m-r--38 m-lr-0-xl">
 					<div class="wrap-table-shopping-cart">
 						<table class="table-shopping-cart">
-							<tr class="table_head">
-								<th class="column-1">Sản phẩm</th>
-								<th class="column-2"></th>
-								<th class="column-3">Giá</th>
-								<th class="column-4">Size</th>
-								<th class="column-5">Màu sắc</th>
-								<th class="column-6">Số lượng</th>
-								<th class="column-7">Tổng tiền</th>
-							</tr>
-
-							<tr class="table_row">
-								<td class="column-1">
-									<div class="how-itemcart1">
-										<img src="~/cozastore-master/images/item-cart-04.jpg" alt="IMG">
-									</div>
-								</td>
-								<td class="column-2">
-									Áo Thun Boxy Thêu 3D Simpson Snake Local Brand Unisex Nam Nữ Oversize - TS26
-								</td>
-								<td class="column-3">350.000₫</td>
-								<td class="column-4">L</td>
-								<td class="column-5">Xanh dương</td>
-								<td class="column-6">
-									<div class="wrap-num-product flex-w m-l-auto m-r-0">
-										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-minus"></i>
-										</div>
-
-										<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-plus"></i>
-
-										</div>
-									</div>
-								</td>
-								<td class="column-7">350.000₫</td>
-							</tr>
-
-							<tr class="table_row">
-								<td class="column-1">
-									<div class="how-itemcart1">
-										<img src="~/cozastore-master/images/item-cart-05.jpg" alt="IMG">
-									</div>
-								</td>
-								<td class="column-2">Lightweight Jacket</td>
-								<td class="column-3">500.000₫</td>
-								<td class="column-4">XL</td>
-								<td class="column-5">Đen</td>
-								<td class="column-6">
-									<div class="wrap-num-product flex-w m-l-auto m-r-0">
-										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-minus"></i>
-										</div>
-
-										<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-plus"></i>
-										</div>
-									</div>
-								</td>
-								<td class="column-7">500.000₫</td>
-							</tr>
+							<thead>
+								<tr class="table_head">
+									<th class="column-1">Ảnh</th>
+									<th class="column-2">Tên sản phẩm</th>
+									<th class="column-3">Giá</th>
+									<th class="column-4">Size</th>
+									<th class="column-5">Màu sắc</th>
+									<th class="column-6">Số lượng</th>
+									<th class="column-7">Tổng tiền</th>
+									<th class="column-8"></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
 						</table>
 					</div>
 
@@ -199,9 +152,7 @@
 							</span>
 						</div>
 						<div class="size-209 p-t-1 p-l-10">
-							<span class="mtext-110 cl2 order-total">
-								2.500.000₫
-							</span>
+							<span class="mtext-110 cl2 order-total">0₫</span>
 						</div>
 					</div>
 					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 m-t-30 trans-04 pointer">
@@ -220,3 +171,4 @@
 		<i class="fs-20 fa-solid fa-chevron-up"></i>
 	</span>
 </div>
+

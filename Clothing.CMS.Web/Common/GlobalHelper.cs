@@ -1,4 +1,5 @@
-﻿using Clothing.CMS.Application.Categories;
+﻿using Clothing.CMS.Application.Carts;
+using Clothing.CMS.Application.Categories;
 using Clothing.CMS.Application.LogEvents;
 using Clothing.CMS.Application.Orders;
 using Clothing.CMS.Application.Products;
@@ -6,6 +7,7 @@ using Clothing.CMS.Application.Roles;
 using Clothing.CMS.Application.Users;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
 using Clothing.CMS.Web.Areas.Admin.Controllers;
+using Clothing.CMS.Web.Controllers;
 
 namespace Clothing.CMS.Web.Common
 {
@@ -13,6 +15,7 @@ namespace Clothing.CMS.Web.Common
     {
         public static void RegisterAutoMapper(IServiceCollection services)
         {
+            // Admin
             services.AddAutoMapper(typeof(UserService));
             services.AddAutoMapper(typeof(UserController));
 
@@ -26,10 +29,16 @@ namespace Clothing.CMS.Web.Common
             services.AddAutoMapper(typeof(CategoryController));
 
 			services.AddAutoMapper(typeof(ProductService));
-			services.AddAutoMapper(typeof(ProductController));
+			services.AddAutoMapper(typeof(Areas.Admin.Controllers.ProductController));
 
 			services.AddAutoMapper(typeof(OrderService));
 			services.AddAutoMapper(typeof(OrderController));
+
+            // Client
+			services.AddAutoMapper(typeof(CartService));
+			services.AddAutoMapper(typeof(CartController));
+
+            services.AddAutoMapper(typeof(Controllers.ProductController));
 		}
 
         public static void RegisterServiceLifetimer(IServiceCollection services)
@@ -42,6 +51,7 @@ namespace Clothing.CMS.Web.Common
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ICartService, CartService>();
         }
     }
 }

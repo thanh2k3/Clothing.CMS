@@ -1,6 +1,4 @@
-﻿let productList = [];
-
-(function ($) {
+﻿(function ($) {
     var _$section = $("#productDetailContainer");
 
     _$section.registerInputAmount();
@@ -37,6 +35,15 @@
         _$section.find(".product-quantity").attr("value", quantity);
     }
 
+    // Hàm cập nhật thông báo của giỏ hàng
+    function updateCartNotify() {
+        $.get("/Product/GetCartProductCount", function (response) {
+            if (response.productCount !== undefined && response.productCount > 0) {
+                $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
+            }
+        });
+    }
+
     // Sự kiện thay đổi số lượng bằng nhập trực tiếp
     $(document).on("input", "#productDetailContainer .product-quantity", function () {
         var value = $(this).val().replace(/\D/g, "");
@@ -67,20 +74,20 @@
     });
 
     $(document).on("click", "#productDetailContainer .add-to-cart", function () {
-        var selectedSize = _$section.find("#selectedSize").val(),
+        var productId = parseInt(_$section.find(".product-id").val()),
+            selectedSize = _$section.find("#selectedSize").val(),
             selectedColor = _$section.find("#selectedColor").val(),
             quantity = parseInt(_$section.find(".product-quantity").val().replace(/\./g, ""), 10) || 0,
             productName = _$section.find(".product-name").text().trim(),
             productPrice = parseInt(_$section.find(".product-price").text().replace(/\D/g, ""), 10) || 0,
-            productDesc = _$section.find(".product-desc").text().trim(),
             productImage = _$section.find(".product-img").attr("src");
 
         // Kiểm tra xem các giá trị có hợp lệ không
         if (!selectedSize || !selectedColor || isNaN(quantity) || quantity <= 0) {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: "Vui lòng chọn size, màu sắc và số lượng hợp lệ!",
+                title: "Oops...!",
+                text: "Vui lòng chọn size, màu sắc và số lượng hợp lệ",
                 customClass: {
                     confirmButton: "btn-swal2"
                 }
@@ -89,36 +96,44 @@
         }
 
         var productData = {
+            productId: productId,
             name: productName,
-            image: productImage,
+            imageURL: productImage,
             price: productPrice,
-            description: productDesc,
             size: selectedSize,
             color: selectedColor,
             quantity: quantity
         };
 
-        var productExists = false;
+        $.ajax({
+            url: "/Product/AddToCart",
+            type: "POST",
+            data: productData,
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    updateCartNotify();
 
-        $.each(productList, function (index, item) {
-            if (item.name === productData.name && item.size === productData.size && item.color === productData.color) {
-                item.quantity += productData.quantity;
-                productExists = true;
-                return false;
-            }
-        });
-
-        // Nếu sản phẩm chưa có trong giỏ hàng thì thêm mới
-        if (!productExists) {
-            productList.push(productData);
-        }
-
-        Swal.fire({
-            icon: "success",
-            title: productData.name,
-            text: "đã được thêm vào giỏ hàng!",
-            customClass: {
-                confirmButton: "btn-swal2"
+                    Swal.fire({
+                        icon: "success",
+                        title: productData.name,
+                        text: response.message,
+                        customClass: {
+                            confirmButton: "btn-swal2"
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...!",
+                        text: response.message,
+                        customClass: {
+                            confirmButton: "btn-swal2"
+                        }
+                    });
+                }
+            },
+            error: function () {
             }
         });
     });
