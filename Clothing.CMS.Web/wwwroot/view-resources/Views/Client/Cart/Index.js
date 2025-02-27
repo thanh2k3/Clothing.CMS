@@ -14,11 +14,13 @@
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "Oops...",
+                        title: "Oops...!",
                         text: "Lỗi khi lấy giỏ hàng",
                         customClass: {
-                            confirmButton: "btn-swal2"
-                        }
+                            container: "custom-swal-container",
+                            popup: "custom-swal-popup"
+                        },
+                        timer: 3000
                     });
                 }
             },

@@ -29,7 +29,7 @@
 
     // Hàm cập nhật giá trị hiển thị trên input
     function updateQuantityInput(quantity) {
-        quantity = Math.max(0, Math.min(quantity, 999999));
+        quantity = Math.max(1, Math.min(quantity, 999999));
         var formatValue = formatNumberWithDot(quantity);
         _$section.find(".product-quantity").val(formatValue);
         _$section.find(".product-quantity").attr("value", quantity);
@@ -52,15 +52,28 @@
     $(document).on("input", "#productDetailContainer .product-quantity", function () {
         var value = $(this).val().replace(/\D/g, "");
 
+        // Ngăn nhập số 0
+        if (value === "0") {
+            value = "1";
+        }
+
         if (value.length > 6) {
             value = value.slice(0, 6);
         }
 
-        var quantity = parseInt(value) || 0;
+        var quantity = parseInt(value) || "";
         var formatValue = formatNumberWithDot(quantity);
 
         $(this).val(formatValue);
-        _$section.find(".product-quantity").attr("value", formatValue);
+        $(this).attr("value", quantity);
+    });
+
+    $(document).on("change", "#productDetailContainer .product-quantity", function () {
+        var quantity = parseInt($(this).val().replace(/\./g, ""), 10);
+        if (isNaN(quantity) || quantity <= 0) {
+            quantity = 1;
+            $(this).val(quantity);
+        }
     });
 
     // Khi nhấn nút tăng hoặc giảm
@@ -70,10 +83,10 @@
         if ($(this).hasClass("btn-product-plus")) {
             quantity++;
         } else if ($(this).hasClass("btn-product-minus")) {
-            quantity = Math.max(0, quantity - 1);
+            quantity = Math.max(1, quantity - 1);
         }
 
-        quantity = Math.max(0, Math.min(quantity, 999999));
+        quantity = Math.max(1, Math.min(quantity, 999999));
         updateQuantityInput(quantity);
     });
 
