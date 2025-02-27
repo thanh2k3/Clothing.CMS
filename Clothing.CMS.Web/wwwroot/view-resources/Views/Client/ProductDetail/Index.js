@@ -38,8 +38,12 @@
     // Hàm cập nhật thông báo của giỏ hàng
     function updateCartNotify() {
         $.get("/Product/GetCartProductCount", function (response) {
-            if (response.productCount !== undefined && response.productCount > 0) {
-                $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
+            if (response.productCount !== undefined) {
+                if (response.productCount > 0) {
+                    $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
+                } else {
+                    $(".wrap-icon-header .icon-cart-shopping").removeAttr("data-notify");
+                }
             }
         });
     }
@@ -88,10 +92,14 @@
                 icon: "error",
                 title: "Oops...!",
                 text: "Vui lòng chọn size, màu sắc và số lượng hợp lệ",
+                showConfirmButton: false,
                 customClass: {
-                    confirmButton: "btn-swal2"
-                }
+                    container: "custom-swal-container",
+                    popup: "custom-swal-popup"
+                },
+                timer: 3000
             });
+
             return;
         }
 
@@ -118,18 +126,24 @@
                         icon: "success",
                         title: productData.name,
                         text: response.message,
+                        showConfirmButton: false,
                         customClass: {
-                            confirmButton: "btn-swal2"
-                        }
+                            container: "custom-swal-container",
+                            popup: "custom-swal-popup"
+                        },
+                        timer: 3000
                     });
                 } else {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...!",
                         text: response.message,
+                        showConfirmButton: false,
                         customClass: {
-                            confirmButton: "btn-swal2"
-                        }
+                            container: "custom-swal-container",
+                            popup: "custom-swal-popup"
+                        },
+                        timer: 3000
                     });
                 }
             },

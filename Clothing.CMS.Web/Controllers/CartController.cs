@@ -20,7 +20,6 @@ namespace Clothing.CMS.Web.Controllers
 			_logger = loggerFactory.CreateLogger<CartController>();
 		}
 
-		// Hiển thị giỏ hàng
 		public IActionResult Index()
 		{
 			return View();
@@ -40,6 +39,50 @@ namespace Clothing.CMS.Web.Controllers
 			{
 				_logger.LogError(ex.Message);
 				return Json(new { success = false });
+			}
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> UpdateCart(int productId, string name, string size, string color, int quantity)
+		{
+			try
+			{
+				var isSucceeded = await _cartService.UpdateCartAsync(productId, name, size, color, quantity);
+				if (!isSucceeded)
+				{
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
+				}
+
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
+		}
+
+		[HttpPost]
+		public async Task<JsonResult> RemoveFromCart(int productId, string name, string size, string color)
+		{
+			try
+			{
+				var isSucceeded = await _cartService.RemoveFromCartAsync(productId, name, size, color);
+				if (!isSucceeded)
+				{
+					_logger.LogWarning((string?)TempData["Message"]);
+					return Json(new { success = false, message = TempData["Message"] });
+				}
+
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
 			}
 		}
 	}

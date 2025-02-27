@@ -1,11 +1,15 @@
 ﻿(function ($) {
-	function updateCartNotify() {
-		$.get("/Product/GetCartProductCount", function (response) {
-			if (response.productCount !== undefined && response.productCount > 0) {
-				$(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
-			}
-		});
-	}
+    function updateCartNotify() {
+        $.get("/Product/GetCartProductCount", function (response) {
+            if (response.productCount !== undefined) {
+                if (response.productCount > 0) {
+                    $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
+                } else {
+                    $(".wrap-icon-header .icon-cart-shopping").removeAttr("data-notify");
+                }
+            }
+        });
+    }
 
 	// Lắng nghe sự kiện back, forward (popstate)
 	window.addEventListener("popstate", updateCartNotify);

@@ -133,8 +133,8 @@
     overflow-y: hidden;
 }
 
-#cartContainer .btn-num-product-up,
-#cartContainer .btn-num-product-down {
+#cartContainer .btn-product-plus,
+#cartContainer .btn-product-minus {
     width: 30px;
 }
 
@@ -152,4 +152,13 @@
 
 #cartContainer .table-shopping-cart .table_row td {
     padding-top: 20px;
+}
+
+/* Custom Swal */
+.custom-swal-container {
+    z-index: 9999;
+}
+
+.custom-swal-popup {
+    padding-bottom: 40px;
 }
