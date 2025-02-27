@@ -162,3 +162,31 @@
 .custom-swal-popup {
     padding-bottom: 40px;
 }
+
+/* Cart sidebar */
+.header-cart-title {
+    width: 100%;
+}
+
+.header-cart-item {
+    display: flex;
+    align-items: center;
+}
+
+.header-cart-item-img {
+    cursor: initial;
+}
+
+.header-cart-item-img:hover:after {
+    opacity: 0;
+}
+
+.header-cart-item-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 1.3em;
+}

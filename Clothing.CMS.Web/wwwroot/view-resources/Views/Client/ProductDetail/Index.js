@@ -135,6 +135,8 @@
                 if (response.success) {
                     updateCartNotify();
 
+                    $(document).trigger("updateCartSideBar");
+
                     Swal.fire({
                         icon: "success",
                         title: productData.name,

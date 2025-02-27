@@ -139,6 +139,8 @@
                         },
                         timer: 3000
                     });
+                } else {
+                    $(document).trigger("updateCartSideBar");
                 }
             },
             error: function () { }
