@@ -1,6 +1,4 @@
-﻿let productList = [];
-
-(function ($) {
+﻿(function ($) {
     var _$section = $("#productDetailContainer");
 
     _$section.registerInputAmount();
@@ -31,25 +29,51 @@
 
     // Hàm cập nhật giá trị hiển thị trên input
     function updateQuantityInput(quantity) {
-        quantity = Math.max(0, Math.min(quantity, 999999));
+        quantity = Math.max(1, Math.min(quantity, 999999));
         var formatValue = formatNumberWithDot(quantity);
         _$section.find(".product-quantity").val(formatValue);
         _$section.find(".product-quantity").attr("value", quantity);
+    }
+
+    // Hàm cập nhật thông báo của giỏ hàng
+    function updateCartNotify() {
+        $.get("/Product/GetCartProductCount", function (response) {
+            if (response.productCount !== undefined) {
+                if (response.productCount > 0) {
+                    $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
+                } else {
+                    $(".wrap-icon-header .icon-cart-shopping").removeAttr("data-notify");
+                }
+            }
+        });
     }
 
     // Sự kiện thay đổi số lượng bằng nhập trực tiếp
     $(document).on("input", "#productDetailContainer .product-quantity", function () {
         var value = $(this).val().replace(/\D/g, "");
 
+        // Ngăn nhập số 0
+        if (value === "0") {
+            value = "1";
+        }
+
         if (value.length > 6) {
             value = value.slice(0, 6);
         }
 
-        var quantity = parseInt(value) || 0;
+        var quantity = parseInt(value) || "";
         var formatValue = formatNumberWithDot(quantity);
 
         $(this).val(formatValue);
-        _$section.find(".product-quantity").attr("value", formatValue);
+        $(this).attr("value", quantity);
+    });
+
+    $(document).on("change", "#productDetailContainer .product-quantity", function () {
+        var quantity = parseInt($(this).val().replace(/\./g, ""), 10);
+        if (isNaN(quantity) || quantity <= 0) {
+            quantity = 1;
+            $(this).val(quantity);
+        }
     });
 
     // Khi nhấn nút tăng hoặc giảm
@@ -59,66 +83,86 @@
         if ($(this).hasClass("btn-product-plus")) {
             quantity++;
         } else if ($(this).hasClass("btn-product-minus")) {
-            quantity = Math.max(0, quantity - 1);
+            quantity = Math.max(1, quantity - 1);
         }
 
-        quantity = Math.max(0, Math.min(quantity, 999999));
+        quantity = Math.max(1, Math.min(quantity, 999999));
         updateQuantityInput(quantity);
     });
 
     $(document).on("click", "#productDetailContainer .add-to-cart", function () {
-        var selectedSize = _$section.find("#selectedSize").val(),
+        var productId = parseInt(_$section.find(".product-id").val()),
+            selectedSize = _$section.find("#selectedSize").val(),
             selectedColor = _$section.find("#selectedColor").val(),
             quantity = parseInt(_$section.find(".product-quantity").val().replace(/\./g, ""), 10) || 0,
             productName = _$section.find(".product-name").text().trim(),
             productPrice = parseInt(_$section.find(".product-price").text().replace(/\D/g, ""), 10) || 0,
-            productDesc = _$section.find(".product-desc").text().trim(),
             productImage = _$section.find(".product-img").attr("src");
 
         // Kiểm tra xem các giá trị có hợp lệ không
         if (!selectedSize || !selectedColor || isNaN(quantity) || quantity <= 0) {
             Swal.fire({
                 icon: "error",
-                title: "Oops...",
-                text: "Vui lòng chọn size, màu sắc và số lượng hợp lệ!",
+                title: "Oops...!",
+                text: "Vui lòng chọn size, màu sắc và số lượng hợp lệ",
+                showConfirmButton: false,
                 customClass: {
-                    confirmButton: "btn-swal2"
-                }
+                    container: "custom-swal-container",
+                    popup: "custom-swal-popup"
+                },
+                timer: 3000
             });
+
             return;
         }
 
         var productData = {
+            productId: productId,
             name: productName,
-            image: productImage,
+            imageURL: productImage,
             price: productPrice,
-            description: productDesc,
             size: selectedSize,
             color: selectedColor,
             quantity: quantity
         };
 
-        var productExists = false;
+        $.ajax({
+            url: "/Product/AddToCart",
+            type: "POST",
+            data: productData,
+            dataType: "json",
+            success: function (response) {
+                if (response.success) {
+                    updateCartNotify();
 
-        $.each(productList, function (index, item) {
-            if (item.name === productData.name && item.size === productData.size && item.color === productData.color) {
-                item.quantity += productData.quantity;
-                productExists = true;
-                return false;
-            }
-        });
+                    $(document).trigger("updateCartSideBar");
 
-        // Nếu sản phẩm chưa có trong giỏ hàng thì thêm mới
-        if (!productExists) {
-            productList.push(productData);
-        }
-
-        Swal.fire({
-            icon: "success",
-            title: productData.name,
-            text: "đã được thêm vào giỏ hàng!",
-            customClass: {
-                confirmButton: "btn-swal2"
+                    Swal.fire({
+                        icon: "success",
+                        title: productData.name,
+                        text: response.message,
+                        showConfirmButton: false,
+                        customClass: {
+                            container: "custom-swal-container",
+                            popup: "custom-swal-popup"
+                        },
+                        timer: 3000
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...!",
+                        text: response.message,
+                        showConfirmButton: false,
+                        customClass: {
+                            container: "custom-swal-container",
+                            popup: "custom-swal-popup"
+                        },
+                        timer: 3000
+                    });
+                }
+            },
+            error: function () {
             }
         });
     });

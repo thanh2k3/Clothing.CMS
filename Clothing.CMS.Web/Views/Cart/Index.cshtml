@@ -1,94 +1,11 @@
-﻿
-<!-- Cart -->
-<div class="wrap-header-cart js-panel-cart">
-	<div class="s-full js-hide-cart"></div>
-
-	<div class="header-cart flex-col-l p-l-65 p-r-25">
-		<div class="header-cart-title flex-w flex-sb-m p-b-8">
-			<span class="mtext-103 cl2">
-				Your Cart
-			</span>
-
-			<div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
-				<i class="zmdi zmdi-close"></i>
-			</div>
-		</div>
-
-		<div class="header-cart-content flex-w js-pscroll">
-			<ul class="header-cart-wrapitem w-full">
-				<li class="header-cart-item flex-w flex-t m-b-12">
-					<div class="header-cart-item-img">
-						<img src="~/cozastore-master/images/item-cart-01.jpg" alt="IMG">
-					</div>
-
-					<div class="header-cart-item-txt p-t-8">
-						<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-							White Shirt Pleat
-						</a>
-
-						<span class="header-cart-item-info">
-							1 x $19.00
-						</span>
-					</div>
-				</li>
-
-				<li class="header-cart-item flex-w flex-t m-b-12">
-					<div class="header-cart-item-img">
-						<img src="~/cozastore-master/images/item-cart-02.jpg" alt="IMG">
-					</div>
-
-					<div class="header-cart-item-txt p-t-8">
-						<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-							Converse All Star
-						</a>
-
-						<span class="header-cart-item-info">
-							1 x $39.00
-						</span>
-					</div>
-				</li>
-
-				<li class="header-cart-item flex-w flex-t m-b-12">
-					<div class="header-cart-item-img">
-						<img src="~/cozastore-master/images/item-cart-03.jpg" alt="IMG">
-					</div>
-
-					<div class="header-cart-item-txt p-t-8">
-						<a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-							Nixon Porter Leather
-						</a>
-
-						<span class="header-cart-item-info">
-							1 x $17.00
-						</span>
-					</div>
-				</li>
-			</ul>
-
-			<div class="w-full">
-				<div class="header-cart-total w-full p-tb-40">
-					Total: $75.00
-				</div>
-
-				<div class="header-cart-buttons flex-w w-full">
-					<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
-						View Cart
-					</a>
-
-					<a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-						Check Out
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
+﻿@section scripts {
+    <script src="~/view-resources/views/client/cart/index.js" asp-append-version="true"></script>
+}
 
 <!-- breadcrumb -->
 <div class="container">
 	<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-		<a href="index.html" class="stext-102 cl8 hov-cl1 trans-04">
+		<a href="/" class="stext-102 cl8 hov-cl1 trans-04">
 			Trang chủ
 			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
 		</a>
@@ -101,81 +18,31 @@
 
 
 <!-- Shoping Cart -->
-<form class="bg0 p-t-75 p-b-85">
-	<div class="container cart-container">
+<form id="cartContainer" class="bg0 p-t-75 p-b-85">
+	<div class="container">
 		<div class="row">
 			<div class="col-lg-10 col-xl-8 m-lr-auto m-b-50">
 				<div class="m-r--38 m-lr-0-xl">
 					<div class="wrap-table-shopping-cart">
 						<table class="table-shopping-cart">
-							<tr class="table_head">
-								<th class="column-1">Sản phẩm</th>
-								<th class="column-2"></th>
-								<th class="column-3">Giá</th>
-								<th class="column-4">Size</th>
-								<th class="column-5">Màu sắc</th>
-								<th class="column-6">Số lượng</th>
-								<th class="column-7">Tổng tiền</th>
-							</tr>
-
-							<tr class="table_row">
-								<td class="column-1">
-									<div class="how-itemcart1">
-										<img src="~/cozastore-master/images/item-cart-04.jpg" alt="IMG">
-									</div>
-								</td>
-								<td class="column-2">
-									Áo Thun Boxy Thêu 3D Simpson Snake Local Brand Unisex Nam Nữ Oversize - TS26
-								</td>
-								<td class="column-3">350.000₫</td>
-								<td class="column-4">L</td>
-								<td class="column-5">Xanh dương</td>
-								<td class="column-6">
-									<div class="wrap-num-product flex-w m-l-auto m-r-0">
-										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-minus"></i>
-										</div>
-
-										<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1" value="1">
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-plus"></i>
-
-										</div>
-									</div>
-								</td>
-								<td class="column-7">350.000₫</td>
-							</tr>
-
-							<tr class="table_row">
-								<td class="column-1">
-									<div class="how-itemcart1">
-										<img src="~/cozastore-master/images/item-cart-05.jpg" alt="IMG">
-									</div>
-								</td>
-								<td class="column-2">Lightweight Jacket</td>
-								<td class="column-3">500.000₫</td>
-								<td class="column-4">XL</td>
-								<td class="column-5">Đen</td>
-								<td class="column-6">
-									<div class="wrap-num-product flex-w m-l-auto m-r-0">
-										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-minus"></i>
-										</div>
-
-										<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2" value="1">
-
-										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-											<i class="fa-solid fa-plus"></i>
-										</div>
-									</div>
-								</td>
-								<td class="column-7">500.000₫</td>
-							</tr>
+							<thead>
+								<tr class="table_head">
+									<th class="column-1">Ảnh</th>
+									<th class="column-2">Tên sản phẩm</th>
+									<th class="column-3">Giá</th>
+									<th class="column-4">Size</th>
+									<th class="column-5">Màu sắc</th>
+									<th class="column-6">Số lượng</th>
+									<th class="column-7">Tổng tiền</th>
+									<th class="column-8"></th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
 						</table>
 					</div>
 
-					<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
+					@* <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
 						<div class="flex-w flex-m m-r-20 m-tb-5">
 							<input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text" name="coupon" placeholder="Mã giảm giá">
 
@@ -183,7 +50,7 @@
 								Sử dụng
 							</div>
 						</div>
-					</div>
+					</div> *@
 				</div>
 			</div>
 
@@ -199,9 +66,7 @@
 							</span>
 						</div>
 						<div class="size-209 p-t-1 p-l-10">
-							<span class="mtext-110 cl2 order-total">
-								2.500.000₫
-							</span>
+							<span class="mtext-110 cl2 order-total">0₫</span>
 						</div>
 					</div>
 					<button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 m-t-30 trans-04 pointer">
@@ -212,11 +77,3 @@
 		</div>
 	</div>
 </form>
-
-
-<!-- Back to top -->
-<div class="btn-back-to-top" id="myBtn">
-	<span class="symbol-btn-back-to-top">
-		<i class="fs-20 fa-solid fa-chevron-up"></i>
-	</span>
-</div>

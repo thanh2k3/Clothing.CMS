@@ -32,6 +32,9 @@
 	<!-- Header -->
 	@await Component.InvokeAsync(typeof(Clothing.CMS.Web.ViewComponents.HeaderViewComponent))
 
+	<!-- Cart -->
+	@await Component.InvokeAsync("CartSidebar")
+
 	<!-- Main -->
 	@RenderBody()
 
@@ -67,8 +70,12 @@
     <script src="~/admin/js/main-site.js" asp-append-version="true"></script>
 	<script src="~/cozastore-master/js/main.js" asp-append-version="true"></script>
 
+	<!-- CartSideBar -->
+    <script src="~/view-resources/views/client/cartsidebar/index.js" asp-append-version="true"></script>
+
 	<!-- Custom JS File -->
 	<script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
 
 	@await RenderSectionAsync("scripts", required: false)
 
