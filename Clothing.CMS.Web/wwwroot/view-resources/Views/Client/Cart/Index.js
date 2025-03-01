@@ -127,7 +127,9 @@
             data: productData,
             dataType: "json",
             success: function (response) {
-                if (!response.success) {
+                if (response.success) {
+                    $(document).trigger("updateCartSideBar");
+                } else {
                     Swal.fire({
                         icon: "error",
                         title: "Oops...!",
@@ -139,8 +141,6 @@
                         },
                         timer: 3000
                     });
-                } else {
-                    $(document).trigger("updateCartSideBar");
                 }
             },
             error: function () { }
@@ -171,6 +171,7 @@
                 if (response.success) {
                     loadCart();
                     updateCartNotify();
+                    $(document).trigger("updateCartSideBar");
                 } else {
                     Swal.fire({
                         icon: "error",
