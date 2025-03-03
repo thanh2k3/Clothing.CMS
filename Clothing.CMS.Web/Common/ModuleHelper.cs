@@ -75,7 +75,7 @@ namespace Clothing.CMS.Web.Common
 					return new HeaderMenu
 					{
 						Name = "Liên hệ",
-						URLPath = "/Contact",
+						URLPath = "/contact",
 						IdName = "contactMenu",
 						LinkCounter = counter
 					};
