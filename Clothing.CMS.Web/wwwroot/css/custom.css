@@ -1,4 +1,16 @@
-﻿.product-container .product-img {
+﻿html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex-grow: 1; /* Đẩy footer xuống dưới cùng */
+}
+
+/* Product */
+.product-container .product-img {
     width: 100%;
     height: 330px;
     background: #fff;

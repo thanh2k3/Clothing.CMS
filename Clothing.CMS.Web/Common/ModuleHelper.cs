@@ -59,7 +59,7 @@ namespace Clothing.CMS.Web.Common
 					return new HeaderMenu
 					{
 						Name = "Bài viết",
-						URLPath = "/Posts",
+						URLPath = "/posts",
 						IdName = "postsMenu",
 						LinkCounter = counter
 					};
@@ -67,7 +67,7 @@ namespace Clothing.CMS.Web.Common
 					return new HeaderMenu
 					{
 						Name = "Giới thiệu",
-						URLPath = "/About",
+						URLPath = "/about",
 						IdName = "aboutMenu",
 						LinkCounter = counter
 					};
@@ -75,7 +75,7 @@ namespace Clothing.CMS.Web.Common
 					return new HeaderMenu
 					{
 						Name = "Liên hệ",
-						URLPath = "/Contact",
+						URLPath = "/contact",
 						IdName = "contactMenu",
 						LinkCounter = counter
 					};

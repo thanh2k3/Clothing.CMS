@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Home</title>
+	<title>@ViewData["Title"] - Coza Store</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" type="image/png" href="~/cozastore-master/images/icons/favicon.png" />
@@ -36,7 +36,9 @@
 	@await Component.InvokeAsync("CartSidebar")
 
 	<!-- Main -->
-	@RenderBody()
+	<main class="main-content">
+		@RenderBody()
+	</main>
 
 	<!-- Footer -->
 	@await Component.InvokeAsync(typeof(Clothing.CMS.Web.ViewComponents.FooterViewComponent))
