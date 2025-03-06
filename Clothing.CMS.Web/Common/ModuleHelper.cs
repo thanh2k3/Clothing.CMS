@@ -12,7 +12,8 @@ namespace Clothing.CMS.Web.Common
 			Cart,
 			Posts,
 			About,
-			Contact
+			Contact,
+			Checkout
 		}
 
 		public static HeaderMenu AddModule(Module module, Tuple<int, int, int> counter = null)
@@ -77,6 +78,13 @@ namespace Clothing.CMS.Web.Common
 						Name = "Liên hệ",
 						URLPath = "/contact",
 						IdName = "contactMenu",
+						LinkCounter = counter
+					};
+				case Module.Checkout:
+					return new HeaderMenu
+					{
+						URLPath = "/checkout",
+						IsActive = false,
 						LinkCounter = counter
 					};
 

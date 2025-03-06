@@ -9,6 +9,11 @@
     flex-grow: 1; /* Đẩy footer xuống dưới cùng */
 }
 
+.button-disabled {
+    pointer-events: none;
+    opacity: 0.3;
+}
+
 /* Product */
 .product-container .product-img {
     width: 100%;
@@ -209,4 +214,131 @@
     text-overflow: ellipsis;
     white-space: normal;
     max-height: 1.3em;
+}
+
+/* Checkout */
+#checkoutContainer .container-1 {
+    width: 70%;
+    height: 100%;
+}
+
+#checkoutContainer .container-2 {
+    width: 30%;
+}
+
+#checkoutContainer .how-pos4 {
+    left: 20px;
+}
+
+#checkoutContainer .rs1-select2 .select2-container .select2-selection--single {
+    height: 40px;
+}
+
+#checkoutContainer .rs1-select2 .select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 1.7;
+    color: #6c757d;
+}
+
+#checkoutContainer .payment-pos4 {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#checkoutContainer .payment-pos4 .how-pos4 {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #717fe0;
+    font-size: 18px;
+    left: 24px;
+}
+
+#checkoutContainer .btn-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+#checkoutContainer .back-cart {
+    background-color: #e6e6e6;
+    color: #222;
+    width: 30%;
+}
+
+#checkoutContainer .complete-payment {
+    width: 30%;
+}
+
+#checkoutContainer .complete-payment:hover {
+    width: 30%;
+}
+
+#checkoutContainer .back-cart:hover {
+    background-color: #717fe0;
+    color: #fff;
+}
+
+#checkoutContainer .header-cart-title {
+    width: 100%;
+}
+
+#checkoutContainer .header-cart-item {
+    display: flex;
+    align-items: center;
+}
+
+#checkoutContainer .header-cart-item-img {
+    cursor: initial;
+    position: relative;
+    display: inline-block;
+}
+
+#checkoutContainer .header-cart-item-img:hover:after {
+    opacity: 0;
+}
+
+#checkoutContainer .header-cart-item-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 1.3em;
+}
+
+#checkoutContainer .item-number {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%, -50%); /* Đưa số thứ tự ra ngoài mép ảnh */
+    background-color: #717fe0;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 10;
+    white-space: nowrap;
+}
+
+#checkoutContainer .header-cart-item-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#checkoutContainer .item-size {
+    flex: 1;
+    text-align: left;
+}
+
+#checkoutContainer .item-price {
+    text-align: right;
 }
