@@ -2,6 +2,10 @@
     ViewData["Title"] = "Thanh toán";
 }
 
+@section scripts {
+    <script src="~/view-resources/views/client/checkout/index.js" asp-append-version="true"></script>
+}
+
 <div class="container">
     <div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
         <a href="/" class="stext-102 cl8 hov-cl1 trans-04">
@@ -40,60 +44,47 @@
                             <input class="stext-102 cl2 size-111 p-l-58 p-r-20" type="text" name="email" placeholder="Địa chỉ email (không bắt buộc)">
                             <img class="how-pos4 pointer-none" src="~/cozastore-master/images/icons/icon-email.png" alt="ICON">
                         </div>
+                        <div class="row m-b-15">
+                            <div class="col-sm-4">
+                                <div class="flex-w flex-r-m">
+                                    <div class="size-111 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select id="province" class="js-select2">
+                                                <option value="">Tỉnh/Thành</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="flex-w flex-r-m">
+                                    <div class="size-111 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select id="district" class="js-select2">
+                                                <option value="">Quận/Huyện</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="flex-w flex-r-m">
+                                    <div class="size-111 respon6-next">
+                                        <div class="rs1-select2 bor8 bg0">
+                                            <select id="ward" class="js-select2">
+                                                <option value="">Phường/Xã</option>
+                                            </select>
+                                            <div class="dropDownSelect2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="bor8 m-b-15">
                             <input class="stext-102 cl2 size-111 p-l-20 p-r-20" type="text" name="address" placeholder="Địa chỉ">
                         </div>
-
-                        @* <div class="row m-b-20">
-                            <div class="col-sm-4">
-                                <div class="flex-w flex-r-m">
-                                    <div class="size-111 respon6-next">
-                                        <div class="rs1-select2 bor8 bg0">
-                                            <select class="js-select2" name="time">
-                                                <option>Phường/Xã</option>
-                                                <option>Thủy Bằng</option>
-                                                <option>Thủy Xuân</option>
-                                                <option>Thủy Biều</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="flex-w flex-r-m">
-                                    <div class="size-111 respon6-next">
-                                        <div class="rs1-select2 bor8 bg0">
-                                            <select class="js-select2" name="time">
-                                                <option>Quận/Huyện</option>
-                                                <option>Quận Thuận Hóa</option>
-                                                <option>Quận Phú Xuân</option>
-                                                <option>Huyện Hương Thủy</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="flex-w flex-r-m">
-                                    <div class="size-111 respon6-next">
-                                        <div class="rs1-select2 bor8 bg0">
-                                            <select class="js-select2 stext-102" name="time">
-                                                <option>Tỉnh/Thành</option>
-                                                <option>Huế</option>
-                                                <option>Đà Nẵng</option>
-                                                <option>TP. Hồ Chí Minh</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> *@
-
                         <div class="bor8">
                             <textarea class="stext-102 cl2 size-120 p-lr-20 p-tb-20" name="msg" placeholder="Ghi chú"></textarea>
                         </div>
@@ -103,7 +94,7 @@
                             <span class="mtext-110 cl2">Phương thức thanh toán</span>
                         </div>
                         <div class="bor8 how-pos4-parent payment-pos4">
-                            <input class="stext-102 cl2 size-111 p-l-58 p-r-20" type="text" readonly placeholder="Thanh toán khi nhận hàng">
+                            <input class="stext-102 cl2 size-111 p-l-58 p-r-20" type="text" readonly placeholder="Thanh toán khi nhận hàng (COD)">
                             <i class="fa-solid fa-circle-dot how-pos4 pointer-none"></i>
                         </div>
                     </div>
@@ -112,7 +103,7 @@
                             <span class="mtext-110 cl2">Phí vận chuyển</span>
                         </div>
                         <div class="bor8 how-pos4-parent payment-pos4">
-                            <input class="stext-102 cl2 size-111 p-l-58 p-r-20" type="text" readonly placeholder="Miễn phí">
+                            <input class="shipping-fee stext-102 cl2 size-111 p-l-58 p-r-20" type="text" readonly placeholder="Miễn phí" value="">
                             <i class="fa-solid fa-circle-dot how-pos4 pointer-none"></i>
                         </div>
                     </div>
@@ -120,40 +111,14 @@
                         <a href="/cart" class="back-cart flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                             Về giỏ hàng
                         </a>
-                        <button class="complete-payment flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer button-disabled">
+                        <button class="complete-payment flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                             Hoàn tất đơn hàng
                         </button>
                     </div>
                 </div>
                 <div class="container-2 size-210 p-l-40 p-t-12 p-b-30 p-lr-15-lg w-full-md">
                     <div class="header-cart-content">
-                        <ul class="header-cart-wrapitem w-full">
-                            <li class="header-cart-item flex-w flex-t p-t-18">
-                                <div class="header-cart-item-img">
-                                    <span class="item-number">100</span>
-                                    <img class="bor10" src="/img/product/product-9d6e9ad9-f490-441f-8fcb-5cdd7f1c8f65-anh15.jpg" alt="IMG" />
-                                </div>
-                                <div class="header-cart-item-txt">
-                                    <div class="header-cart-item-name m-b-8 trans-04">FIRER VARSITY</div>
-                                    <span class="header-cart-item-info">
-                                        <div class="item-txt">L, Trắng</div>
-                                        <div class="item-price">1.800.000₫</div>
-                                    </span>
-                                </div>
-                            </li>
-                            <li class="header-cart-item flex-w flex-t p-t-18 p-b-8">
-                                <div class="header-cart-item-img">
-                                    <span class="item-number">2</span>
-                                    <img class="bor10" src="/img/product/product-9d6e9ad9-f490-441f-8fcb-5cdd7f1c8f65-anh15.jpg" alt="IMG">
-                                </div>
-                                <div class="header-cart-item-txt">
-                                    <div class="header-cart-item-name m-b-8 trans-04">FIRER VARSITY</div>
-                                    <span class="header-cart-item-info">
-                                        <div class="item-txt">M, Xanh lá</div>
-                                        <div class="item-price">1.800.000₫</div>
-                                    </span>
-                                </div>
-                            </li>
+                        <ul class="header-cart-wrapitem w-full list-item-cart">
                         </ul>
                         <hr>
                         <div class="row m-lr-0 p-tb-8">
@@ -170,7 +135,7 @@
                         <div class="row m-lr-0 p-t-8">
                             <div class="d-flex p-lr-0">
                                 <div class="cl2">Tạm tính:</div>
-                                <div class="ms-auto cl2">1.800.000₫</div>
+                                <div class="ms-auto cl2 total-temporary"></div>
                             </div>
                             <div class="d-flex p-lr-0">
                                 <div class="cl2">Phí vận chuyển:</div>
@@ -181,7 +146,7 @@
                         <div class="row m-lr-0 p-t-8">
                             <div class="d-flex p-lr-0">
                                 <div class="mtext-105 cl2">Tổng tiền:</div>
-                                <div class="ms-auto mtext-105 cl2">1.800.000₫</div>
+                                <div class="ms-auto mtext-105 cl2 order-total"></div>
                             </div>
                         </div>
                     </div>

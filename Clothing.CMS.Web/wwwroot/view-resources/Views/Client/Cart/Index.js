@@ -34,6 +34,8 @@
         let totalPrice = 0;
 
         if (cartItemVM.length === 0) {
+            _$form.find(".btn-checkout").addClass("button-disabled");
+
             cartHTML += `
                 <tr class="table_row">
                     <td colspan="8" class="text-center">
@@ -42,6 +44,8 @@
                 </tr>
             `;
         } else {
+            _$form.find(".btn-checkout").removeClass("button-disabled");
+
             cartItemVM.forEach(item => {
                 let formattedPrice = item.price.toLocaleString("vi-VN") + "₫";
                 let formattedTotal = (item.price * item.quantity).toLocaleString("vi-VN") + "₫";

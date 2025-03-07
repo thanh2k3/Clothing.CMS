@@ -35,6 +35,8 @@
             totalPrice = 0;
 
         if (cartItemVM.length === 0) {
+            _$wrap.find(".btn-checkout").addClass("button-disabled");
+
             cartHTML += `
                 <li class="header-cart-item">Giỏ hàng trống</li>
             `;
@@ -42,6 +44,8 @@
             cartItemVM.forEach(function (item) {
                 var itemTotal = item.quantity * item.price;
                 totalPrice += itemTotal;
+
+                _$wrap.find(".btn-checkout").removeClass("button-disabled");
 
                 cartHTML += `
                     <li class="header-cart-item flex-w flex-t m-b-18">
