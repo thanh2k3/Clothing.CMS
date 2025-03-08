@@ -169,5 +169,19 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				return Json(new { success = false, message = "Có lỗi xảy ra" });
 			}
 		}
+
+		public async Task<IActionResult> GenerateOrderCode()
+		{
+			try
+			{
+				string orderCode = await _orderService.GenerateOrderCode();
+
+				return Json(orderCode);
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
 	}
 }

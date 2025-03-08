@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clothing.CMS.Application.Common;
 using Clothing.CMS.Application.Orders.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
@@ -248,6 +249,23 @@ namespace Clothing.CMS.Application.Orders
 				NotifyMsg("Xóa đơn hàng thất bại");
 				return false;
 			}
+		}
+
+		public async Task<string> GenerateOrderCode()
+		{
+			var orders = await _repo.GetAllAsync();
+			var lastOrder = orders.OrderByDescending(x => x.Id).FirstOrDefault();
+
+			string lastCode;
+			if (lastOrder != null)
+			{
+				lastCode = lastOrder.Code;
+			} else
+			{
+				lastCode = "AAAA0000";
+			}
+
+			return GenerateHelper.GenerateNextOrderCode(lastCode);
 		}
 	}
 }

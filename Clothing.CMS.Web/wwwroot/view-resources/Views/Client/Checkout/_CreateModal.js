@@ -1,6 +1,8 @@
 ﻿(function ($) {
     var _$form = $("#checkoutContainer");
 
+    GenerateOrderCode();
+
     $(document).on("click", "#checkoutContainer .complete-payment", function (e) {
         e.preventDefault();
 
@@ -59,6 +61,8 @@
                         }
                     });
 
+                    GenerateOrderCode();
+
                     Swal.fire({
                         icon: "success",
                         title: "Đơn hàng đã được đặt thành công",
@@ -104,5 +108,15 @@
 
         var wardSelect = _$form.find("#ward").next(".select2").find(".select2-selection__rendered");
         wardSelect.css("color", "");
+    }
+
+    function GenerateOrderCode() {
+        $.ajax({
+            url: "/Admin/Order/GenerateOrderCode",
+            type: "GET",
+            success: function (data) {
+                _$form.find("#Code").attr("value", data);
+            }
+        });
     }
 })(jQuery)

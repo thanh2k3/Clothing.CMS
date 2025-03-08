@@ -179,5 +179,5 @@
 
     $(document).on("updateCartItem", function () {
         loadItemSession();
-    })
+    });
 })(jQuery)
