@@ -85,5 +85,27 @@ namespace Clothing.CMS.Web.Controllers
 				return Json(new { success = false, message = "Có lỗi xảy ra" });
 			}
 		}
+
+		[HttpPost]
+		public async Task<JsonResult> ClearSession()
+		{
+			try
+			{
+				var isSucceeded = await _cartService.ClearSessionAsync();
+				if (!isSucceeded)
+				{
+					_logger.LogWarning("Session của giỏ hàng chưa được xóa");
+					return Json(new { success = false });
+				}
+
+				_logger.LogInformation("Session của giỏ hàng đã được xóa");
+				return Json(new { success = true });
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
+		}
 	}
 }

@@ -9,5 +9,6 @@ namespace Clothing.CMS.Application.Carts
 		Task<int> GetCartProductCountAsync();
 		Task<bool> UpdateCartAsync(int productId, string name, string size, string color, int quantity);
 		Task<bool> RemoveFromCartAsync(int productId, string name, string size, string color);
+		Task<bool> ClearSessionAsync();
 	}
 }

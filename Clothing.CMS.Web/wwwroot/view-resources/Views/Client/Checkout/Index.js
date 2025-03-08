@@ -1,6 +1,5 @@
 ﻿(function ($) {
-    var _$form = $("#checkoutContainer"),
-        jsonData;
+    var _$form = $("#checkoutContainer");
 
     loadItemSession();
 
@@ -51,13 +50,14 @@
                 totalTemporary += item.price * item.quantity;
 
                 itemHTML += `
-                    <li class="header-cart-item flex-w flex-t p-t-18">
+                    <li class="header-cart-item flex-w flex-t p-t-18 block-cart-item">
+                        <input class="item-id" value="${item.productId}" hidden />
                         <div class="header-cart-item-img">
-                            <span class="item-number">${item.quantity} </span>
+                            <span class="item-number">${item.quantity}</span>
                             <img class="bor10" src="${item.imageURL}" alt="${item.name}" />
                         </div>
                         <div class="header-cart-item-txt">
-                            <div class="header-cart-item-name m-b-8 trans-04">${item.name}</div>
+                            <div class="header-cart-item-name m-b-8 trans-04 item-name">${item.name}</div>
                             <span class="header-cart-item-info">
                                 <div class="item-txt">${item.size}, ${item.color}</div>
                                 <div class="item-price">${formattedPrice}</div>
@@ -85,21 +85,29 @@
         _$form.find(".order-total").text(totalPrice.toLocaleString("vi-VN") + "₫");
     }
 
+    var jsonData;
+
     // Tải dữ liệu từ JSON
     $.getJSON("/data/vietnam_units.json", function (data) {
         jsonData = data;
 
         var provinces = data.provinces;
         $.each(provinces, function (index, province) {
-            _$form.find("#province").append('<option value="' + province.code + '">' + province.name + '</option>');
+            _$form.find("#province").append('<option value="' + province.code + '" data-name="' + province.name + '">' + province.name + '</option>');
         });
     });
 
     // Khi chọn tỉnh/thành phố
     _$form.find("#province").change(function () {
-        var provinceCode = $(this).val();
+        var selectedOption = $(this).find(":selected"),
+            provinceCode = selectedOption.val(),
+            provinceName = selectedOption.attr("data-name");
+
+        _$form.find("#selectedProvince").val(provinceName);
+
         _$form.find("#district").empty().append('<option value="">Quận/Huyện</option>');
         _$form.find("#ward").empty().append('<option value="">Phường/Xã</option>');
+
 
         var provinceSelect = _$form.find("#province").next(".select2").find(".select2-selection__rendered");
         if (provinceCode) {
@@ -111,9 +119,12 @@
         if (provinceCode) {
             var districts = jsonData.districts.filter(d => d.province_code === provinceCode);
             $.each(districts, function (index, district) {
-                _$form.find("#district").append('<option value="' + district.code + '">' + district.name + '</option>');
+                _$form.find("#district").append('<option value="' + district.code + '" data-name="' + district.name + '">' + district.name + '</option>');
             });
         }
+
+        _$form.find("#selectedDistrict").val("");
+        _$form.find("#selectedWard").val("");
 
         var districtSelect = _$form.find("#district").next(".select2").find(".select2-selection__rendered");
         var wardSelect = _$form.find("#ward").next(".select2").find(".select2-selection__rendered");
@@ -123,7 +134,12 @@
 
     // Khi chọn quận/huyện
     _$form.find("#district").change(function () {
-        var districtCode = $(this).val();
+        var selectedOption = $(this).find(":selected"),
+            districtCode = selectedOption.val(),
+            districtName = selectedOption.attr("data-name");
+
+        _$form.find("#selectedDistrict").val(districtName);
+
         _$form.find("#ward").empty().append('<option value="">Phường/Xã</option>');
 
         var districtSelect = _$form.find("#district").next(".select2").find(".select2-selection__rendered");
@@ -136,16 +152,22 @@
         if (districtCode) {
             var wards = jsonData.wards.filter(w => w.district_code === districtCode);
             $.each(wards, function (index, ward) {
-                _$form.find("#ward").append('<option value="' + ward.code + '">' + ward.name + '</option>');
+                _$form.find("#ward").append('<option value="' + ward.code + '" data-name="' + ward.name + '">' + ward.name + '</option>');
             });
         }
+
+        _$form.find("#selectedWard").val("");
 
         var wardSelect = _$form.find("#ward").next(".select2").find(".select2-selection__rendered");
         wardSelect.css("color", "");
     });
 
     _$form.find("#ward").change(function () {
-        var wardCode = $(this).val();
+        var selectedOption = $(this).find(":selected"),
+            wardCode = selectedOption.val(),
+            wardName = selectedOption.attr("data-name");
+
+        _$form.find("#selectedWard").val(wardName);
 
         var wardSelect = _$form.find("#ward").next(".select2").find(".select2-selection__rendered");
         if (wardCode) {
@@ -154,4 +176,8 @@
             wardSelect.css("color", "");
         }
     });
+
+    $(document).on("updateCartItem", function () {
+        loadItemSession();
+    })
 })(jQuery)

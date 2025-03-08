@@ -95,18 +95,6 @@
         _$form.find(".order-total").text(totalPrice.toLocaleString("vi-VN") + "₫");
     }
 
-    function updateCartNotify() {
-        $.get("/Product/GetCartProductCount", function (response) {
-            if (response.productCount !== undefined) {
-                if (response.productCount > 0) {
-                    $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
-                } else {
-                    $(".wrap-icon-header .icon-cart-shopping").removeAttr("data-notify");
-                }
-            }
-        });
-    }
-
     // Hàm định dạng số với dấu "." ngăn cách phần nghìn
     function formatNumberWithDot(value) {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -174,7 +162,7 @@
             success: function (response) {
                 if (response.success) {
                     loadCart();
-                    updateCartNotify();
+                    $(document).trigger("updateCartNotify");
                     $(document).trigger("updateCartSideBar");
                 } else {
                     Swal.fire({

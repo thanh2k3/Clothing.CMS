@@ -150,5 +150,20 @@ namespace Clothing.CMS.Application.Carts
 				return false;
 			}
 		}
+
+		public async Task<bool> ClearSessionAsync()
+		{
+			try
+			{
+				_session.Remove(SessionConstants.CART_SESSION_KEY);
+				_session.Remove(SessionConstants.CART_PRODUCT_COUNT);
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+		}
 	}
 }

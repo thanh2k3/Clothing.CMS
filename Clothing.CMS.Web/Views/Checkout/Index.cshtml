@@ -1,9 +1,12 @@
-﻿@{
+﻿@model CheckoutViewModel
+
+@{
     ViewData["Title"] = "Thanh toán";
 }
 
 @section scripts {
     <script src="~/view-resources/views/client/checkout/index.js" asp-append-version="true"></script>
+    <script src="~/view-resources/views/client/checkout/_createmodal.js" asp-append-version="true"></script>
 }
 
 <div class="container">
@@ -29,19 +32,21 @@
                         THANH TOÁN
                     </h4>
                     <div class="p-b-30">
+                        <input asp-for="Code" value="A1043" hidden />
+                        <input asp-for="OrderStatus" value="1" hidden />
                         <div class="m-b-20">
                             <span class="mtext-110 cl2">Thông tin giao hàng</span>
                         </div>
                         <div class="row m-b-15">
                             <div class="col-sm-6">
-                                <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name" placeholder="Họ và tên">
+                                <input class="size-111 bor8 stext-102 cl2 p-lr-20" type="text" name="name" placeholder="Họ và tên">
                             </div>
                             <div class="col-sm-6">
-                                <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="phone" type="text" name="phone" placeholder="Số điện thoại">
+                                <input class="size-111 bor8 stext-102 cl2 p-lr-20" type="text" name="phone" placeholder="Số điện thoại">
                             </div>
                         </div>
                         <div class="bor8 m-b-15 how-pos4-parent">
-                            <input class="stext-102 cl2 size-111 p-l-58 p-r-20" type="text" name="email" placeholder="Địa chỉ email (không bắt buộc)">
+                            <input class="stext-102 cl2 size-111 p-l-58 p-r-20" type="text" name="email" placeholder="Email">
                             <img class="how-pos4 pointer-none" src="~/cozastore-master/images/icons/icon-email.png" alt="ICON">
                         </div>
                         <div class="row m-b-15">
@@ -53,6 +58,7 @@
                                                 <option value="">Tỉnh/Thành</option>
                                             </select>
                                             <div class="dropDownSelect2"></div>
+                                            <input type="hidden" id="selectedProvince" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -65,6 +71,7 @@
                                                 <option value="">Quận/Huyện</option>
                                             </select>
                                             <div class="dropDownSelect2"></div>
+                                            <input type="hidden" id="selectedDistrict" value="">
                                         </div>
                                     </div>
                                 </div>
@@ -77,17 +84,18 @@
                                                 <option value="">Phường/Xã</option>
                                             </select>
                                             <div class="dropDownSelect2"></div>
+                                            <input type="hidden" id="selectedWard" value="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="bor8 m-b-15">
-                            <input class="stext-102 cl2 size-111 p-l-20 p-r-20" type="text" name="address" placeholder="Địa chỉ">
+                            <input class="stext-102 cl2 size-111 p-l-20 p-r-20" type="text" asp-for="Address" placeholder="Địa chỉ">
                         </div>
-                        <div class="bor8">
-                            <textarea class="stext-102 cl2 size-120 p-lr-20 p-tb-20" name="msg" placeholder="Ghi chú"></textarea>
-                        </div>
+                        @* <div class="bor8">
+                            <textarea class="stext-102 cl2 size-120 p-lr-20 p-tb-20" id="customerNote" name="msg" placeholder="Ghi chú"></textarea>
+                        </div> *@
                     </div>
                     <div class="p-b-30">
                         <div class="m-b-20">
