@@ -18,8 +18,12 @@ namespace Clothing.CMS.Entities
 		public virtual ICollection<OrderProduct> OrderProducts { get; set; }
 
 		// User
-		public int UserId { get; set; }
-		public virtual User User { get; set; }
+		public int? UserId { get; set; }
+		public virtual User? User { get; set; }
+
+		// Customer
+		public int? CustomerId { get; set; }
+		public virtual Customer? Customer { get; set; }
 
 		// Sort delete
 		public bool IsDeleted { get; set; }
