@@ -16,6 +16,7 @@ namespace Clothing.CMS.Application.Orders.Dto
 		[Display(Name = "Trạng thái")]
 		public OrderStatus OrderStatus { get; set; }
 
+		[Display(Name = "Người đặt hàng")]
 		public int? UserId { get; set; }
 
 		public string? FullName { get; set; }
