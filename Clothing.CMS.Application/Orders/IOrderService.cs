@@ -10,6 +10,6 @@ namespace Clothing.CMS.Application.Orders
 		Task<bool> CreateAsync(CreateOrderDto model);
 		Task<bool> UpdateAsync(EditOrderDto model);
 		Task<bool> DeleteAsync(int id);
-
+		Task<string> GenerateOrderCode();
 	}
 }

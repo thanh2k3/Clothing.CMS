@@ -43,7 +43,7 @@
             {
                 targets: 0,
                 data: "fullName",
-                width: "25%",
+                width: "22%",
             },
             {
                 targets: 1,

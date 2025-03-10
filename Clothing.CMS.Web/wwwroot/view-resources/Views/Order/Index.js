@@ -43,14 +43,16 @@
             {
                 targets: 0,
                 data: "code",
+                width: "12%",
             },
             {
                 targets: 1,
-                data: "userEmail",
+                data: "address",
             },
             {
                 targets: 2,
                 data: "createdTime",
+                width: "16%",
                 render: function (data, type, row) {
                     return (data) ? moment(data).format("DD/MM/YYYY HH:mm:ss") : "-";
                 },
@@ -58,11 +60,13 @@
             {
                 targets: 3,
                 data: "total",
+                width: "10%",
                 render: numberFormatCurrency(),
             },
             {
                 targets: 4,
                 data: "statusString",
+                width: "12%",
             },
             {
                 targets: 5,

@@ -43,6 +43,8 @@ namespace Clothing.CMS.Web.Common
 			services.AddAutoMapper(typeof(CartController));
 
             services.AddAutoMapper(typeof(Controllers.ProductController));
+
+            services.AddAutoMapper(typeof(CheckoutController));
 		}
 
         public static void RegisterServiceLifetimer(IServiceCollection services)

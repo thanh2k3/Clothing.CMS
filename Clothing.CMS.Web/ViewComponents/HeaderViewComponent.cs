@@ -19,6 +19,7 @@ namespace Clothing.CMS.Web.ViewComponents
 			headers.Add(ModuleHelper.AddModule(ModuleHelper.Module.Posts));
 			headers.Add(ModuleHelper.AddModule(ModuleHelper.Module.About));
 			headers.Add(ModuleHelper.AddModule(ModuleHelper.Module.Contact));
+			headers.Add(ModuleHelper.AddModule(ModuleHelper.Module.Checkout));
 
 			return View(headers);
         }

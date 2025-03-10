@@ -18,5 +18,9 @@
 	window.addEventListener("hashchange", updateCartNotify);
 
 	// Lắng nghe sự kiện load lại trang (F5, Ctrl+R, Refresh)
-	window.addEventListener("load", updateCartNotify);
+    window.addEventListener("load", updateCartNotify);
+
+    $(document).on("updateCartNotify", function () {
+        updateCartNotify();
+    });
 })(jQuery)

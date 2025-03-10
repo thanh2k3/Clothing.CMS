@@ -34,6 +34,8 @@
         let totalPrice = 0;
 
         if (cartItemVM.length === 0) {
+            _$form.find(".btn-checkout").addClass("button-disabled");
+
             cartHTML += `
                 <tr class="table_row">
                     <td colspan="8" class="text-center">
@@ -42,6 +44,8 @@
                 </tr>
             `;
         } else {
+            _$form.find(".btn-checkout").removeClass("button-disabled");
+
             cartItemVM.forEach(item => {
                 let formattedPrice = item.price.toLocaleString("vi-VN") + "₫";
                 let formattedTotal = (item.price * item.quantity).toLocaleString("vi-VN") + "₫";
@@ -89,18 +93,6 @@
         // Cập nhật danh sách giỏ hàng
         _$form.find("tbody").html(cartHTML);
         _$form.find(".order-total").text(totalPrice.toLocaleString("vi-VN") + "₫");
-    }
-
-    function updateCartNotify() {
-        $.get("/Product/GetCartProductCount", function (response) {
-            if (response.productCount !== undefined) {
-                if (response.productCount > 0) {
-                    $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
-                } else {
-                    $(".wrap-icon-header .icon-cart-shopping").removeAttr("data-notify");
-                }
-            }
-        });
     }
 
     // Hàm định dạng số với dấu "." ngăn cách phần nghìn
@@ -170,7 +162,7 @@
             success: function (response) {
                 if (response.success) {
                     loadCart();
-                    updateCartNotify();
+                    $(document).trigger("updateCartNotify");
                     $(document).trigger("updateCartSideBar");
                 } else {
                     Swal.fire({

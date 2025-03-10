@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Clothing.CMS.Application.Common;
+using Clothing.CMS.Application.Customers;
 using Clothing.CMS.Application.Orders.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
@@ -13,18 +15,21 @@ namespace Clothing.CMS.Application.Orders
 	{
 		private readonly IRepository<Order> _repo;
 		private readonly IRepository<OrderProduct> _orderProductRepo;
+		private readonly IRepository<Customer> _customerRepo;
 		private readonly IMapper _mapper;
 
 		public OrderService(
 			IRepository<Order> repo,
 			IRepository<OrderProduct> orderProductRepo,
+			IRepository<Customer> customerRepo,
 			IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
 			ITempDataDictionaryFactory tempDataDictionaryFactory) : base(httpContextAccessor, tempDataDictionaryFactory)
 		{
 			_repo = repo;
-			_mapper = mapper;
 			_orderProductRepo = orderProductRepo;
+			_customerRepo = customerRepo;
+			_mapper = mapper;
 		}
 
 		public async Task<ICollection<OrderDto>> GetAll()
@@ -126,6 +131,21 @@ namespace Clothing.CMS.Application.Orders
 					return false;
 				}
 
+				if (order.UserId == null)
+				{
+					Customer customer = new Customer
+					{
+						FullName = model.FullName,
+						Email = model.Email,
+						PhoneNumber = model.PhoneNumber,
+						Address = model.Address
+					};
+
+					await _customerRepo.AddAsync(customer);
+
+					order.CustomerId = customer.Id;
+				}
+
 				FillAuthInfo(order);
 				await _repo.AddAsync(order);
 
@@ -139,6 +159,7 @@ namespace Clothing.CMS.Application.Orders
 				}).ToList();
 
 				await _orderProductRepo.AddRangeAsync(orderProducts);
+
 
 				NotifyMsg("Thêm mới đơn hàng thành công");
 				return true;
@@ -155,8 +176,8 @@ namespace Clothing.CMS.Application.Orders
 			try
 			{
 				var order = _mapper.Map<Order>(model);
-				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code 
-														&& x.Id != order.Id 
+				var existsOrder = await _repo.FindAsync(x => x.Code == order.Code
+														&& x.Id != order.Id
 														&& x.IsDeleted == false);
 				if (existsOrder != null)
 				{
@@ -248,6 +269,24 @@ namespace Clothing.CMS.Application.Orders
 				NotifyMsg("Xóa đơn hàng thất bại");
 				return false;
 			}
+		}
+
+		public async Task<string> GenerateOrderCode()
+		{
+			var orders = await _repo.GetAllAsync();
+			var lastOrder = orders.OrderByDescending(x => x.Id).FirstOrDefault();
+
+			string lastCode;
+			if (lastOrder != null)
+			{
+				lastCode = lastOrder.Code;
+			}
+			else
+			{
+				lastCode = "AAAA0000";
+			}
+
+			return GenerateHelper.GenerateNextOrderCode(lastCode);
 		}
 	}
 }

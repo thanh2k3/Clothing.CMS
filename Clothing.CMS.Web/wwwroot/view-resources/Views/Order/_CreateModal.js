@@ -4,6 +4,8 @@
         _$table = $("#orderTable"),
         _$orderProductTable = $("#orderProductTable");
 
+    GenerateOrderCode();
+
     var selectProducts = [];
 
     _$orderProductTable.DataTable({
@@ -194,6 +196,7 @@
             success: function (result) {
                 if (result.success === true) {
                     HideOrderCreateModal();
+                    GenerateOrderCode();
                     _$table.DataTable().ajax.reload();
                     toastr.success(result.message, null, { timeOut: 3000, positionClass: "toast-top-right" })
                 }
@@ -240,5 +243,15 @@
             $(rowNode).find(".select-product").prop("checked", false);
             $(rowNode).find(".input-amount").val(0);
         })
+    }
+
+    function GenerateOrderCode() {
+        $.ajax({
+            url: "/Admin/Order/GenerateOrderCode",
+            type: "GET",
+            success: function (data) {
+                _$form.find("#Code").val(data);
+            }
+        });
     }
 })(jQuery);
