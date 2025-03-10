@@ -42,8 +42,6 @@
 
         order.OrderProduct = orderProducts;
 
-        order.UserId = 22
-
         $.ajax({
             url: "/Checkout/Order",
             type: "POST",
@@ -96,9 +94,9 @@
         _$form.find("input, textarea").val("");
 
         // Reset các trường select
-        _$form.find("#province").empty().append('<option value="">Tỉnh/Thành</option>');
-        _$form.find("#district").empty().append('<option value="">Quận/Huyện</option>');
-        _$form.find("#ward").empty().append('<option value="">Phường/Xã</option>');
+        _$form.find("#province").prop("selectedIndex", 0).trigger("change");
+        _$form.find("#district").prop("selectedIndex", 0).trigger("change");
+        _$form.find("#ward").prop("selectedIndex", 0).trigger("change");
 
         var provinceSelect = _$form.find("#province").next(".select2").find(".select2-selection__rendered");
         provinceSelect.css("color", "");

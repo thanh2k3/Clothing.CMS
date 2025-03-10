@@ -15,8 +15,12 @@ namespace Clothing.CMS.Application.Orders.Dto
 		public double Total { get; set; }
 		[Display(Name = "Trạng thái")]
 		public OrderStatus OrderStatus { get; set; }
-		[Display(Name = "Người đặt")]
-		public int UserId { get; set; }
+
+		public int? UserId { get; set; }
+
+		public string? FullName { get; set; }
+		public string? Email { get; set; }
+		public string? PhoneNumber { get; set; }
 
 		// Danh sách sản phẩm liên quan đến đơn hàng
 		public ICollection<CreateOrderProductDto> OrderProduct { get; set; }
