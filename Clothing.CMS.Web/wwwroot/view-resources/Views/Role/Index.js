@@ -21,7 +21,6 @@
         ordering: false,
         autoWidth: false,
         lengthChange: true,
-        lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Tất cả"]],
         ajax: {
             url: "/Admin/Role/GetData",
             type: "GET",
@@ -31,7 +30,7 @@
                     toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
                     return []; // Không có dữ liệu để hiển thị
                 }
-                return json || []; // Xử lý dữ liệu nếu thành công
+                return json.items || []; // Xử lý dữ liệu nếu thành công
             },
             error: function () {
                 toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
