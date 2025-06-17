@@ -35,19 +35,6 @@
         _$section.find(".product-quantity").attr("value", quantity);
     }
 
-    // Hàm cập nhật thông báo của giỏ hàng
-    function updateCartNotify() {
-        $.get("/Product/GetCartProductCount", function (response) {
-            if (response.productCount !== undefined) {
-                if (response.productCount > 0) {
-                    $(".wrap-icon-header .icon-cart-shopping").attr("data-notify", response.productCount);
-                } else {
-                    $(".wrap-icon-header .icon-cart-shopping").removeAttr("data-notify");
-                }
-            }
-        });
-    }
-
     // Sự kiện thay đổi số lượng bằng nhập trực tiếp
     $(document).on("input", "#productDetailContainer .product-quantity", function () {
         var value = $(this).val().replace(/\D/g, "");
@@ -133,8 +120,7 @@
             dataType: "json",
             success: function (response) {
                 if (response.success) {
-                    updateCartNotify();
-
+                    $(document).trigger("updateCartNotify");
                     $(document).trigger("updateCartSideBar");
 
                     Swal.fire({
