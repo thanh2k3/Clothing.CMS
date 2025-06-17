@@ -21,26 +21,25 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
             _logger = loggerFactory.CreateLogger<RoleController>();
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		public IActionResult Index()
+		{
+			return View();
+		}
 
-        public async Task<JsonResult> GetData()
+		public async Task<JsonResult> GetData()
         {
-            try
-            {
-                var roleDto = await _roleService.GetAll();
-                var roleVM = _mapper.Map<ICollection<RoleViewModel>>(roleDto);
+			try
+			{
+				var data = await _roleService.GetAllPaging(new RolePagedRequestDto());
 
-                _logger.LogInformation("Lấy ra tất cả quyền");
-                return Json(roleVM);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return Json(new { success = false, message = "Có lỗi xảy ra" });
-            }
+				_logger.LogInformation("Lấy ra tất cả quyền");
+				return Json(data);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message);
+				return Json(new { success = false, message = "Có lỗi xảy ra" });
+			}
         }
 
         [HttpPost]

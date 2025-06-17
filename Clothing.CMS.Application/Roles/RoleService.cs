@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Clothing.CMS.Application.Common;
+using Clothing.CMS.Application.Common.Dto;
 using Clothing.CMS.Application.Roles.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities.Authorization.Roles;
+using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -12,35 +14,45 @@ namespace Clothing.CMS.Application.Roles
 {
 	public class RoleService : BaseService, IRoleService
 	{
+		private readonly CMSDbContext _context;
 		private readonly RoleManager<Role> _roleManager;
 		private readonly IMapper _mapper;
 		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public RoleService(
+			CMSDbContext context,
 			RoleManager<Role> roleManager,
 			IMapper mapper,
 			IHttpContextAccessor httpContextAccessor,
 			ITempDataDictionaryFactory tempDataDictionaryFactory) : base(httpContextAccessor, tempDataDictionaryFactory)
 		{
+			_context = context;
 			_roleManager = roleManager;
 			_mapper = mapper;
 			_httpContextAccessor = httpContextAccessor;
 		}
 
-		public async Task<ICollection<RoleDto>> GetAll()
+		public async Task<PagedResponseDto<List<RoleDto>>> GetAllPaging(RolePagedRequestDto input)
 		{
 			try
 			{
-				var role = await _roleManager.Roles.Where(x => !x.IsDeleted)
+				var query = _context.Set<Role>()
+					.Where(x => string.IsNullOrEmpty(input.Keyword) || x.Name.Contains(input.Keyword));
+
+				var list = await query.Skip(input.SkipCount).Take(input.PageSize)
+					.Where(x => !x.IsDeleted)
 					.OrderByDescending(x => x.Id)
 					.ToListAsync();
-				var roleDto = _mapper.Map<ICollection<RoleDto>>(role);
 
-				return roleDto;
+				var totalCount = await query.CountAsync();
+				var data = _mapper.Map<List<RoleDto>>(list);
+				var result = new PagedResponseDto<List<RoleDto>>(data, input.PageNumber, input.PageSize, totalCount, input.Keyword);
+
+				return result;
 			}
 			catch (Exception ex)
 			{
-				throw new Exception(ex.Message);
+				return null;
 			}
 		}
 
