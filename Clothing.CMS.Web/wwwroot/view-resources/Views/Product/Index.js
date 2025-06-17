@@ -26,16 +26,24 @@
         autoWidth: false,
         lengthChange: true,
         lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "Tất cả"]],
+        serverSide: true,
         ajax: {
             url: "/Admin/Product/GetData",
             type: "GET",
             dataType: "json",
-            dataSrc: function (json) {
+            data: function (d) { debugger
+                return {
+                    pageNumber: Math.floor(d.start / d.length) + 1,
+                    pageSize: d.length,
+                    keyword: d.search.value,
+                };
+            },
+            dataSrc: function (json) { debugger
                 if (json.success === false) {
                     toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
                     return []; // Không có dữ liệu để hiển thị
                 }
-                return json || []; // Xử lý dữ liệu nếu thành công
+                return json.data || []; // Xử lý dữ liệu nếu thành công
             },
             error: function () {
                 toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
