@@ -29,6 +29,12 @@ a:hover {
   text-decoration: none;
 }
 
+input:focus,
+input.is-invalid:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 h1,
 h2,
 h3,
