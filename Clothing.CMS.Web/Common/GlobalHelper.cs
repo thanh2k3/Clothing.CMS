@@ -1,4 +1,5 @@
-﻿using Clothing.CMS.Application.Carts;
+﻿using Clothing.CMS.Application.Auths;
+using Clothing.CMS.Application.Carts;
 using Clothing.CMS.Application.Categories;
 using Clothing.CMS.Application.Customers;
 using Clothing.CMS.Application.LogEvents;
@@ -38,6 +39,8 @@ namespace Clothing.CMS.Web.Common
 			services.AddAutoMapper(typeof(CustomerService));
 			services.AddAutoMapper(typeof(CustomerController));
 
+            services.AddAutoMapper(typeof(AccountController));
+
 			// Client
 			services.AddAutoMapper(typeof(CartService));
 			services.AddAutoMapper(typeof(CartController));
@@ -58,6 +61,7 @@ namespace Clothing.CMS.Web.Common
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<ICartService, CartService>();
         }

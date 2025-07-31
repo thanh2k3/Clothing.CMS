@@ -1,8 +1,12 @@
-﻿using Clothing.CMS.Entities.Authorization.Users;
-using Clothing.CMS.Web.Areas.Admin.Models.AccountViewModels;
+﻿using AutoMapper;
+using Clothing.CMS.Application.Auths;
+using Clothing.CMS.Application.Auths.Dto;
+using Clothing.CMS.Entities.Authorization.Users;
+using Clothing.CMS.Web.Areas.Admin.ViewModels.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Clothing.CMS.Web.Areas.Admin.Controllers
 {
@@ -10,73 +14,70 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IAuthService _authService;
+		private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
         public AccountController(
             UserManager<User> userManager,
 			SignInManager<User> signInManager,
-            ILoggerFactory loggerFactory)
+			IAuthService authService,
+			IMapper mapper,
+			ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _authService = authService;
+			_mapper = mapper;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
-        // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             if (_signInManager.IsSignedIn(User))
-                return RedirectToLocal("/Admin/Home");
+                return RedirectToLocal("/admin/home");
 
             if (returnUrl == null)
-                returnUrl = "/Admin/Home";
+                returnUrl = "/admin/home";
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
-        //
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-				// This doesn't count login failures towards account lockout
-				// To enable password failures to trigger account lockout, set lockoutOnFailure: true
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login(LoginViewModel model)
+		{
+			var loginDto = _mapper.Map<LoginDto>(model);
 
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning(2, "User account locked out.");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
+			var result = await _authService.LoginAsync(loginDto);
+			if (result)
+			{
+				_logger.LogInformation((string?)TempData["Message"]);
+				return Json(new { success = true, message = TempData["Message"] });
 			}
-
-			return View(model);
+			else
+			{
+				_logger.LogWarning((string?)TempData["Message"]);
+				return Json(new { success = false, message = TempData["Message"] });
+			}
 		}
 
-        //
-        // POST: /Account/LogOut
-        [HttpPost]
+
+		[HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation(4, "User logged out.");
+            var email = User.Identity.IsAuthenticated
+                ? User.FindFirst(ClaimTypes.Email)?.Value ?? User.Identity.Name
+                : "Unknown";
+
+			await _authService.LogoutAsync();
+
+            _logger.LogInformation($"Người dùng {email} đã đăng xuất.");
+
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
