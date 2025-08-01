@@ -63,7 +63,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
                         Type = SidebarMenuType.Link,
                         Name = "Trang chủ",
                         IconClassName = "fa-solid fa-house",
-                        URLPath = "/Admin",
+                        URLPath = "/admin/home",
                         LinkCounter = counter
                     };
                 case Module.Product:
@@ -72,7 +72,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
                         Type = SidebarMenuType.Link,
                         Name = "Sản Phẩm",
                         IconClassName = "fa-solid fa-shirt",
-                        URLPath = "/Admin/Product",
+                        URLPath = "/admin/product",
                         LinkCounter = counter,
                     };
 				case Module.Order:
@@ -81,7 +81,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 						Type = SidebarMenuType.Link,
 						Name = "Đơn hàng",
 						IconClassName = "fa-solid fa-basket-shopping",
-						URLPath = "/Admin/Order",
+						URLPath = "/admin/order",
 						LinkCounter = counter,
 					};
 				case Module.Category:
@@ -90,7 +90,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 						Type = SidebarMenuType.Link,
 						Name = "Danh mục",
 						IconClassName = "fas fa-bars",
-						URLPath = "/Admin/Category",
+						URLPath = "/admin/category",
 						LinkCounter = counter
 					};
 				case Module.Customer:
@@ -99,7 +99,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 						Type = SidebarMenuType.Link,
 						Name = "Khách hàng",
 						IconClassName = "fa-solid fa-users",
-						URLPath = "/Admin/Customer",
+						URLPath = "/admin/customer",
 						LinkCounter = counter
 					};
 				case Module.Revenue:
@@ -108,7 +108,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 						Type = SidebarMenuType.Link,
 						Name = "Doanh thu",
 						IconClassName = "fa-solid fa-sack-dollar",
-						URLPath = "/Admin/Revenue",
+						URLPath = "/admin/revenue",
 						LinkCounter = counter,
 					};
 				case Module.Expense:
@@ -117,7 +117,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 						Type = SidebarMenuType.Link,
 						Name = "Chi phí",
 						IconClassName = "fa-solid fa-sack-xmark",
-						URLPath = "/Admin/Expense",
+						URLPath = "/admin/expense",
 						LinkCounter = counter,
 					};
 				case Module.User:
@@ -126,7 +126,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
                         Type = SidebarMenuType.Link,
                         Name = "Người dùng",
                         IconClassName = "fa-solid fa-user-tag",
-                        URLPath = "/Admin/User",
+                        URLPath = "/admin/user",
                         LinkCounter = counter,
                     };
                 case Module.Role:
@@ -135,7 +135,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
                         Type = SidebarMenuType.Link,
                         Name = "Phân quyền",
                         IconClassName = "fa-solid fa-user-shield",
-                        URLPath = "/Admin/Role",
+                        URLPath = "/admin/role",
                         LinkCounter = counter,
                     };
 				case Module.LogEvent:
@@ -144,7 +144,7 @@ namespace Clothing.CMS.Web.Areas.Admin.Common
 						Type = SidebarMenuType.Link,
 						Name = "Nhật ký log",
 						IconClassName = "fa fa-history",
-						URLPath = "/Admin/LogEvent",
+						URLPath = "/admin/logevent",
 						LinkCounter = counter,
 					};
 
