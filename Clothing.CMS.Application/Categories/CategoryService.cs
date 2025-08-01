@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Clothing.CMS.Application.Categories.Dto;
+using Clothing.CMS.Application.Common.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
@@ -26,7 +27,7 @@ namespace Clothing.CMS.Application.Categories
             _mapper = mapper;
         }
 
-        public async Task<ICollection<CategoryDto>> GetAll()
+        public async Task<BaseResponse<ICollection<CategoryDto>>> GetAll()
         {
             try
             {
@@ -37,15 +38,15 @@ namespace Clothing.CMS.Application.Categories
 
                 var cateDto = _mapper.Map<ICollection<CategoryDto>>(result);
 
-                return cateDto;
-            }
-            catch (Exception ex)
+				return BaseResponse<ICollection<CategoryDto>>.Ok(cateDto, "Lấy danh sách danh mục thành công");
+			}
+			catch (Exception ex)
             {
 				throw new Exception(ex.Message);
 			}
         }
 
-        public async Task<bool> CreateAsync(CreateCategoryDto model)
+        public async Task<BaseResponse<bool>> CreateAsync(CreateCategoryDto model)
 		{
 			try
 			{
@@ -57,36 +58,33 @@ namespace Clothing.CMS.Application.Categories
 
 					await _repo.AddAsync(data);
 
-					NotifyMsg("Thêm mới danh mục thành công");
-					return true;
+					return BaseResponse<bool>.Ok(true, "Thêm mới danh mục thành công");
 				}
 
-				NotifyMsg("Danh mục đã tồn tại");
-				return false;
+				return BaseResponse<bool>.Fail("Danh mục đã tồn tại");
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Thêm mới danh mục thất bại");
-				return false;
+				return BaseResponse<bool>.Fail("Thêm mới danh mục thất bại");
 			}
 		}
 
-		public async Task<EditCategoryDto> GetById(int id)
+		public async Task<BaseResponse<EditCategoryDto>> GetById(int id)
 		{
             try
             {
                 var cate = await _repo.FindAsync(x => x.Id == id);
                 var cateDto = _mapper.Map<EditCategoryDto>(cate);
 
-                return cateDto;
-            }
-            catch (Exception ex)
+				return BaseResponse<EditCategoryDto>.Ok(cateDto);
+			}
+			catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
 		}
 
-		public async Task<bool> UpdateAsync(EditCategoryDto model)
+		public async Task<BaseResponse<bool>> UpdateAsync(EditCategoryDto model)
 		{
             try
             {
@@ -98,42 +96,36 @@ namespace Clothing.CMS.Application.Categories
 
 					await _repo.UpdateAsync(category, category.Id);
 
-					NotifyMsg("Chỉnh sửa danh mục thành công");
-					return true;
+                    return BaseResponse<bool>.Ok(true, "Chỉnh sửa danh mục thành công");
 				}
 
-				NotifyMsg("Danh mục đã tồn tại");
-				return false;
+				return BaseResponse<bool>.Fail("Danh mục đã tồn tại");
 			}
             catch (Exception ex)
             {
-				NotifyMsg("Chỉnh sửa danh mục thất bại");
-				return false;
-            }
+				return BaseResponse<bool>.Fail("Chỉnh sửa danh mục thất bại");
+			}
 		}
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<BaseResponse<bool>> DeleteAsync(int id)
         {
             try
             {
                 var cate = await _repo.FindAsync(x => x.Id == id);
                 if (cate == null)
                 {
-                    NotifyMsg("Không tìm thấy dữ liệu tương thích");
-                    return false;
-                }
+					return BaseResponse<bool>.Fail("Không tìm thấy dữ liệu tương thích");
+				}
 
-                cate.Status = StatusActivity.InActive;
+				cate.Status = StatusActivity.InActive;
                 await _repo.UpdateAsync(cate, id);
 
-                NotifyMsg("Xóa danh mục thành công");
-                return true;
-            }
-            catch (Exception ex)
+				return BaseResponse<bool>.Ok(true, "Xóa danh mục thành công");
+			}
+			catch (Exception ex)
             {
-                NotifyMsg("Xóa danh mục thất bại");
-                return false;
-            }
+				return BaseResponse<bool>.Fail("Xóa danh mục thành công");
+			}
         }
 
         public async Task<List<SelectListItem>> GetSelectListItemAsync()

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Clothing.CMS.Application.Common.Dto;
 using Clothing.CMS.Application.Products.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
@@ -30,7 +31,7 @@ namespace Clothing.CMS.Application.Products
 			_environment = environment;
 		}
 
-		public async Task<ICollection<ProductDto>> GetAll()
+		public async Task<BaseResponse<ICollection<ProductDto>>> GetAll()
 		{
 			try
 			{
@@ -41,7 +42,7 @@ namespace Clothing.CMS.Application.Products
 
 				var productDto = _mapper.Map<ICollection<ProductDto>>(result);
 
-				return productDto;
+				return BaseResponse<ICollection<ProductDto>>.Ok(productDto, "Lấy danh sách sản phẩm thành công");
 			}
 			catch (Exception ex)
 			{
@@ -49,14 +50,14 @@ namespace Clothing.CMS.Application.Products
 			}
 		}
 
-		public async Task<EditProductDto> GetById(int id)
+		public async Task<BaseResponse<EditProductDto>> GetById(int id)
 		{
 			try
 			{
 				var product = await _repo.FindAsync(x => x.Id == id);
 				var productDto = _mapper.Map<EditProductDto>(product);
 
-				return productDto;
+				return BaseResponse<EditProductDto>.Ok(productDto);
 			}
 			catch (Exception ex)
 			{
@@ -64,14 +65,14 @@ namespace Clothing.CMS.Application.Products
 			}
 		}
 
-		public async Task<ProductDto> GetByIdIncluding(int id)
+		public async Task<BaseResponse<ProductDto>> GetByIdIncluding(int id)
 		{
 			try
 			{
 				var product = await _repo.FindAsyncIncluding(x => x.Id == id, x => x.Category);
 				var productDto = _mapper.Map<ProductDto>(product);
 
-				return productDto;
+				return BaseResponse<ProductDto>.Ok(productDto);
 			}
 			catch (Exception ex)
 			{
@@ -79,44 +80,41 @@ namespace Clothing.CMS.Application.Products
 			}
 		}
 
-		public async Task<bool> CreateAsync(CreateProductDto model, IFormFile? image)
+		public async Task<BaseResponse<bool>> CreateAsync(CreateProductDto model, IFormFile? image)
 		{
 			try
 			{
 				var product = _mapper.Map<Product>(model);
-				var searchPrt = await _repo.FindAsync(x => x.Name == product.Name);
-				if (searchPrt == null)
+				var searchPrt = await _repo.FindAsync(x => x.Name.ToLower().Trim() == product.Name.Trim().ToLower());
+
+
+				if (searchPrt != null)
+					return BaseResponse<bool>.Fail("Sản phẩm đã tồn tại");
+
+				if (image != null)
 				{
-					if (image != null)
-					{
-						var imgName = "product-" + Guid.NewGuid().ToString() + "-" + image.FileName;
-						var name = Path.Combine(_environment.WebRootPath + "/img/product", imgName);
-						await image.CopyToAsync(new FileStream(name, FileMode.Create));
-						product.ImageURL = "/img/product/" + imgName;
-					}
-					else
-					{
-						product.ImageURL = "/img/product/no-image.jpg";
-					}
-
-					FillAuthInfo(product);
-					await _repo.AddAsync(product);
-
-					NotifyMsg("Thêm mới sản phẩm thành công");
-					return true;
+					var imgName = "product-" + Guid.NewGuid().ToString() + "-" + image.FileName;
+					var name = Path.Combine(_environment.WebRootPath + "/img/product", imgName);
+					await image.CopyToAsync(new FileStream(name, FileMode.Create));
+					product.ImageURL = "/img/product/" + imgName;
+				}
+				else
+				{
+					product.ImageURL = "/img/product/no-image.jpg";
 				}
 
-				NotifyMsg("Sản phẩm đã tồn tại");
-				return false;
+				FillAuthInfo(product);
+				await _repo.AddAsync(product);
+
+				return BaseResponse<bool>.Ok(true, "Thêm mới sản phẩm thành công");
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Thêm mới sản phẩm thất bại");
-				return false;
+				return BaseResponse<bool>.Fail("Thêm mới sản phẩm thất bại");
 			}
 		}
 
-		public async Task<bool> UpdateAsync(EditProductDto model, IFormFile? image)
+		public async Task<BaseResponse<bool>> UpdateAsync(EditProductDto model, IFormFile? image)
 		{
 			try
 			{
@@ -143,41 +141,35 @@ namespace Clothing.CMS.Application.Products
 					FillAuthInfo(product);
 					await _repo.UpdateAsync(product, product.Id);
 
-					NotifyMsg("Chỉnh sửa sản phẩm thành công");
-					return true;
+					return BaseResponse<bool>.Ok(true, "Thêm mới sản phẩm thành công");
 				}
 
-				NotifyMsg("Sản phẩm đã tồn tại");
-				return false;
+				return BaseResponse<bool>.Fail("Sản phẩm đã tồn tại");
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Chỉnh sửa sản phẩm thất bại");
-				return false;
+				return BaseResponse<bool>.Fail("Chỉnh sửa sản phẩm thất bại");
 			}
 		}
 
-		public async Task<bool> DeleteAsync(int id)
+		public async Task<BaseResponse<bool>> DeleteAsync(int id)
 		{
 			try
 			{
 				var product = await _repo.FindAsync(x => x.Id == id);
 				if (product == null)
 				{
-					NotifyMsg("Không tìm thấy dữ liệu tương thích");
-					return false;
+					return BaseResponse<bool>.Fail("Không tìm thấy dữ liệu tương thích");
 				}
 
 				product.Status = StatusActivity.InActive;
 				await _repo.UpdateAsync(product, id);
 
-				NotifyMsg("Xóa sản phẩm thành công");
-				return true;
+				return BaseResponse<bool>.Ok(true, "Xóa sản phẩm thành công");
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Xóa sản phẩm thất bại");
-				return false;
+				return BaseResponse<bool>.Fail("Xóa sản phẩm thất bại");
 			}
 		}
 

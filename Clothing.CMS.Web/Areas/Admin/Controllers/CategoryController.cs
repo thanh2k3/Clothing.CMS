@@ -30,10 +30,10 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		{
 			try
 			{
-				var cateDto = await _categoryService.GetAll();
-				var cateVM = _mapper.Map<ICollection<CategoryViewModel>>(cateDto);
+				var response = await _categoryService.GetAll();
+				var cateVM = _mapper.Map<ICollection<CategoryViewModel>>(response.Data);
 
-				_logger.LogInformation("Lấy ra tất cả danh mục");
+				_logger.LogInformation(response.Message);
 				return Json(cateVM);
 			}
 			catch (Exception ex)
@@ -51,16 +51,16 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				if (ModelState.IsValid)
 				{
 					var cateVM = _mapper.Map<CreateCategoryDto>(model);
-					var isSucceeded = await _categoryService.CreateAsync(cateVM);
+					var response = await _categoryService.CreateAsync(cateVM);
 
-					if (isSucceeded)
+					if (response.Success)
 					{
-						_logger.LogInformation((string?)TempData["Message"]);
-						return Json(new { success = true, message = TempData["Message"] });
+						_logger.LogInformation(response.Message);
+						return Json(new { success = true, message = response.Message });
 					}
 
-					_logger.LogWarning((string?)TempData["Message"]);
-					return Json(new { success = false, message = TempData["Message"] });
+					_logger.LogWarning(response.Message);
+					return Json(new { success = false, message = response.Message });
 				}
 
 				_logger.LogWarning("Thông tin không hợp lệ");
@@ -77,8 +77,8 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		{
 			try
 			{
-				var cateDto = await _categoryService.GetById(id);
-				var cateVM = _mapper.Map<EditCategoryViewModel>(cateDto);
+				var response = await _categoryService.GetById(id);
+				var cateVM = _mapper.Map<EditCategoryViewModel>(response.Data);
 
 				return PartialView("_EditModal", cateVM);
 			}
@@ -97,16 +97,16 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				if (ModelState.IsValid)
 				{
 					var cateDto = _mapper.Map<EditCategoryDto>(model);
-					var isSucceeded = await _categoryService.UpdateAsync(cateDto);
+					var response = await _categoryService.UpdateAsync(cateDto);
 
-					if (isSucceeded)
+					if (response.Success)
 					{
-						_logger.LogInformation((string?)TempData["Message"]);
-						return Json(new { success = true, message = TempData["Message"] });
+						_logger.LogInformation(response.Message);
+						return Json(new { success = true, message = response.Message });
 					}
 
-					_logger.LogWarning((string?)TempData["Message"]);
-					return Json(new { success = false, message = TempData["Message"] });
+					_logger.LogWarning(response.Message);
+					return Json(new { success = false, message = response.Message });
 				}
 
 				_logger.LogWarning("Thông tin không hợp lệ");
@@ -124,15 +124,15 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		{
 			try
 			{
-				var isSucceeded = await _categoryService.DeleteAsync(id);
-				if (isSucceeded)
+				var response = await _categoryService.DeleteAsync(id);
+				if (response.Success)
 				{
-					_logger.LogInformation((string?)TempData["Message"]);
-					return Json(new { success = true, message = TempData["Message"] });
+					_logger.LogInformation(response.Message);
+					return Json(new { success = true, message = response.Message });
 				}
 
-				_logger.LogWarning((string?)TempData["Message"]);
-				return Json(new { success = false, message = TempData["Message"] });
+				_logger.LogWarning(response.Message);
+				return Json(new { success = false, message = response.Message });
 			}
 			catch (Exception ex)
 			{

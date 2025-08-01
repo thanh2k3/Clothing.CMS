@@ -1,4 +1,5 @@
 ﻿using Clothing.CMS.Application.Auths.Dto;
+using Clothing.CMS.Application.Common.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities.Authorization.Roles;
 using Clothing.CMS.Entities.Authorization.Users;
@@ -28,21 +29,19 @@ namespace Clothing.CMS.Application.Auths
 			_httpContextAccessor = httpContextAccessor;
 		}
 
-		public async Task<bool> LoginAsync(LoginDto model)
+		public async Task<BaseResponse<bool>> LoginAsync(LoginDto model)
 		{
 			try
 			{
 				var user = await _userManager.FindByEmailAsync(model.Email);
 				if (user == null)
 				{
-					NotifyMsg("Email không chính xác.");
-					return false;
+					return BaseResponse<bool>.Fail("Email không chính xác.");
 				}
 
 				if (!await _userManager.CheckPasswordAsync(user, model.Password))
 				{
-					NotifyMsg("Mật khẩu không chính xác.");
-					return false;
+					return BaseResponse<bool>.Fail("Mật khẩu không chính xác.");
 				}
 
 				var result = await _signManager.PasswordSignInAsync(user, model.Password, isPersistent: false, lockoutOnFailure: true);
@@ -50,7 +49,7 @@ namespace Clothing.CMS.Application.Auths
 				{
 					var userRoles = await _userManager.GetRolesAsync(user);
 
-					// Tạo danh sách claim
+					// Create list claim
 					var claims = new List<Claim>
 					{
 						new Claim(ClaimTypes.Name, user.UserName),
@@ -64,7 +63,7 @@ namespace Clothing.CMS.Application.Auths
 						claims.Add(new Claim(ClaimTypes.Role, userRole));
 					}
 
-					// Tạo identity + principal
+					// Create identity + principal
 					var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 					var principal = new ClaimsPrincipal(identity);
 
@@ -77,24 +76,20 @@ namespace Clothing.CMS.Application.Auths
 							ExpiresUtc = DateTime.UtcNow.AddHours(1)
 						});
 
-					NotifyMsg("Đăng nhập thành công");
-					return true;
+					return BaseResponse<bool>.Ok(true, "Đăng nhập thành công.");
 				}
 				else if (result.IsLockedOut)
 				{
-					NotifyMsg("Tài khoản đã bị khóa do nhập sai quá nhiều lần. Vui lòng thử lại sau.");
-					return false;
+					return BaseResponse<bool>.Fail("Tài khoản đã bị khóa do nhập sai quá nhiều lần. Vui lòng thử lại sau.");
 				}
 				else
 				{
-					NotifyMsg("Đăng nhập không thành công.");
-					return false;
+					return BaseResponse<bool>.Fail("Đăng nhập không thành công.");
 				}
 			}
 			catch (Exception ex)
 			{
-				NotifyMsg("Có lỗi xảy ra trong quá trình đăng nhập.");
-				return false;
+				return BaseResponse<bool>.Fail("Có lỗi xảy ra trong quá trình đăng nhập.");
 			}
 		}
 

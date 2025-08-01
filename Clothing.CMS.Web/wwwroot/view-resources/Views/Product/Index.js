@@ -31,19 +31,19 @@
             url: "/Admin/Product/GetData",
             type: "GET",
             dataType: "json",
-            data: function (d) { debugger
+            data: function (d) {
                 return {
                     pageNumber: Math.floor(d.start / d.length) + 1,
                     pageSize: d.length,
                     keyword: d.search.value,
                 };
             },
-            dataSrc: function (json) { debugger
+            dataSrc: function (json) {
                 if (json.success === false) {
                     toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
                     return []; // Không có dữ liệu để hiển thị
                 }
-                return json.data || []; // Xử lý dữ liệu nếu thành công
+                return json || []; // Xử lý dữ liệu nếu thành công
             },
             error: function () {
                 toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });
