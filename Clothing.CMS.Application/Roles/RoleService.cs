@@ -37,7 +37,7 @@ namespace Clothing.CMS.Application.Roles
 			try
 			{
 				var query = _context.Set<Role>()
-					.Where(x => string.IsNullOrEmpty(input.Keyword) || x.Name.Contains(input.Keyword));
+					.Where(x => string.IsNullOrEmpty(input.KeyWord) || x.Name.Contains(input.KeyWord));
 
 				var list = await query.Skip(input.SkipCount).Take(input.PageSize)
 					.Where(x => !x.IsDeleted)
@@ -46,7 +46,7 @@ namespace Clothing.CMS.Application.Roles
 
 				var totalCount = await query.CountAsync();
 				var data = _mapper.Map<List<RoleDto>>(list);
-				var result = new PagedResponseDto<List<RoleDto>>(data, input.PageNumber, input.PageSize, totalCount, input.Keyword);
+				var result = new PagedResponseDto<List<RoleDto>>(data, input.PageNumber, input.PageSize, totalCount, input.KeyWord);
 
 				return result;
 			}

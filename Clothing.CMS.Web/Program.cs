@@ -27,10 +27,11 @@ builder.Services.AddIdentity<User, Role>()
 builder.Services.ConfigureApplicationCookie(options =>
 {
 	options.Cookie.HttpOnly = true;
-	options.ExpireTimeSpan = TimeSpan.FromDays(30);
-	options.LoginPath = $"/Admin/Account/Login";
-	options.LogoutPath = $"/Admin/Account/Logout";
-	options.AccessDeniedPath = $"/Admin/Account/AccessDenied";
+	options.ExpireTimeSpan = TimeSpan.FromDays(1);
+	options.SlidingExpiration = true;
+	options.LoginPath = $"/admin/account/login";
+	options.LogoutPath = $"/admin/account/logout";
+	options.AccessDeniedPath = $"/admin/account/accessDenied";
 });
 
 // Add services to the container.

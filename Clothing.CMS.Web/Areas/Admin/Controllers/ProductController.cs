@@ -34,15 +34,28 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			return View();
 		}
 
-		public async Task<JsonResult> GetData()
+		public async Task<JsonResult> GetData([FromQuery] ProductPagedRequestDto input)
 		{
 			try
 			{
-				var productDto = await _productService.GetAll();
-				var productVM = _mapper.Map<ICollection<ProductViewModel>>(productDto);
+				var response = await _productService.GetAllPaging(input);
 
-				_logger.LogInformation("Lấy ra tất cả sản phẩm");
-				return Json(productVM);
+				if (response == null || response.Items == null)
+				{
+					return Json(new { success = false, message = "Không tìm thấy dữ liệu sản phẩm" });
+				}
+
+				var productVMs = _mapper.Map<IEnumerable<ProductViewModel>>(response.Items);
+
+				return Json( new 
+				{ success = true, data = productVMs, paging = new
+					{
+						currentPage = response.PageNumber,
+						pageSize = response.PageSize,
+						totalCount = response.TotalCount,
+						keyword = response.KeyWord
+					}
+				});
 			}
 			catch (Exception ex)
 			{
@@ -50,6 +63,23 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
 			}
 		}
+
+		//public async Task<JsonResult> GetData()
+		//{
+		//	try
+		//	{
+		//		var response = await _productService.GetAll();
+		//		var productVM = _mapper.Map<ICollection<ProductViewModel>>(response.Data);
+
+		//		_logger.LogInformation(response.Message);
+		//		return Json(productVM);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		_logger.LogError(ex.Message);
+		//		return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
+		//	}
+		//}
 
 		[HttpPost]
 		public async Task<JsonResult> Create(CreateProductViewModel model, IFormFile? image)
@@ -59,15 +89,15 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				if (ModelState.IsValid)
 				{
 					var productDto = _mapper.Map<CreateProductDto>(model);
-					var isSucceeded = await _productService.CreateAsync(productDto, image);
-					if (isSucceeded)
+					var response = await _productService.CreateAsync(productDto, image);
+					if (response.Success)
 					{
-						_logger.LogInformation((string?)TempData["Message"]);
-						return Json(new { success = true, message = TempData["Message"] });
+						_logger.LogInformation(response.Message);
+						return Json(new { success = true, message = response.Message });
 					}
 
-					_logger.LogWarning((string?)TempData["Message"]);
-					return Json(new { success = false, message = TempData["Message"] });
+					_logger.LogWarning(response.Message);
+					return Json(new { success = false, message = response.Message });
 				}
 
 				_logger.LogWarning("Thông tin không hợp lệ");
@@ -84,8 +114,8 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         {
             try
             {
-                var productDto = await _productService.GetById(id);
-                var productVM = _mapper.Map<EditProductViewModel>(productDto);
+                var response = await _productService.GetById(id);
+                var productVM = _mapper.Map<EditProductViewModel>(response.Data);
 
 				ViewBag.CategoryItems = CategoryItems;
 
@@ -106,16 +136,16 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				if (ModelState.IsValid)
 				{
 					var productDto = _mapper.Map<EditProductDto>(model);
-					var isSucceeded = await _productService.UpdateAsync(productDto, image);
+					var response = await _productService.UpdateAsync(productDto, image);
 
-					if (isSucceeded)
+					if (response.Success)
 					{
-						_logger.LogInformation((string?)TempData["Message"]);
-						return Json(new { success = true, message = TempData["Message"] });
+						_logger.LogInformation(response.Message);
+						return Json(new { success = true, message = response.Message });
 					}
 
-					_logger.LogWarning((string?)TempData["Message"]);
-					return Json(new { success = false, message = TempData["Message"] });
+					_logger.LogWarning(response.Message);
+					return Json(new { success = false, message = response.Message });
 				}
 
 				_logger.LogWarning("Thông tin không hợp lệ");
@@ -132,8 +162,8 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		{
 			try
 			{
-				var productDto = await _productService.GetByIdIncluding(id);
-				var productVM = _mapper.Map<ProductViewModel>(productDto);
+				var response = await _productService.GetByIdIncluding(id);
+				var productVM = _mapper.Map<ProductViewModel>(response.Data);
 				return PartialView("_ViewModal", productVM);
 			}
 			catch (Exception ex)
@@ -148,15 +178,15 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
         {
             try
             {
-                var isSucceeded = await _productService.DeleteAsync(id);
-                if (isSucceeded)
+                var response = await _productService.DeleteAsync(id);
+                if (response.Success)
                 {
-                    _logger.LogInformation((string?)TempData["Message"]);
-                    return Json(new { success = true, message = TempData["Message"] });
+                    _logger.LogInformation(response.Message);
+                    return Json(new { success = true, message = response.Message });
                 }
 
-                _logger.LogWarning((string?)TempData["Message"]);
-                return Json(new { success = false, message = TempData["Message"] });
+                _logger.LogWarning(response.Message);
+                return Json(new { success = false, message = response.Message });
             }
             catch (Exception ex)
             {

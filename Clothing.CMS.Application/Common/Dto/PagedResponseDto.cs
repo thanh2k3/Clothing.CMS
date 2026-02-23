@@ -7,6 +7,7 @@
 		public int PageSize { get; set; }
 		public int TotalCount { get; set; } = 0;
 		public string KeyWord { get; set; }
+
 		public PagedResponseDto(T data, int pageNumber, int pageSize, int totalCount, string keyWord)
 		{
 			this.PageNumber = pageNumber;

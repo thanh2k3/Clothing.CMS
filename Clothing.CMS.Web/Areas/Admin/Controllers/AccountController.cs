@@ -51,21 +51,25 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(LoginViewModel model)
 		{
-			var loginDto = _mapper.Map<LoginDto>(model);
-
-			var result = await _authService.LoginAsync(loginDto);
-			if (result)
+			if (!ModelState.IsValid)
 			{
-				_logger.LogInformation((string?)TempData["Message"]);
-				return Json(new { success = true, message = TempData["Message"] });
+				return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
+			}
+
+			var loginDto = _mapper.Map<LoginDto>(model);
+			var response = await _authService.LoginAsync(loginDto);
+
+			if (response.Success)
+			{
+				_logger.LogInformation(response.Message);
+				return Json(new { success = true, message = response.Message });
 			}
 			else
 			{
-				_logger.LogWarning((string?)TempData["Message"]);
-				return Json(new { success = false, message = TempData["Message"] });
+				_logger.LogWarning(response.Message);
+				return Json(new { success = false, message = response.Message, errors = response.Errors });
 			}
 		}
-
 
 		[HttpPost]
         public async Task<IActionResult> Logout()

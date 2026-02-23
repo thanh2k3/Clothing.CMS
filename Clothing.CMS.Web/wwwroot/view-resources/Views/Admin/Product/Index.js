@@ -38,12 +38,17 @@
                     keyword: d.search.value,
                 };
             },
-            dataSrc: function (json) {
+            dataSrc: function (json) { debugger
                 if (json.success === false) {
                     toastr.error(json.message, null, { timeOut: 3000, positionClass: "toast-top-right" });
                     return []; // Không có dữ liệu để hiển thị
                 }
-                return json || []; // Xử lý dữ liệu nếu thành công
+
+                // Gắn lại info phân trang cho DataTable
+                json.recordsTotal = json.paging.totalCount;
+                json.recordsFiltered = json.paging.totalCount;
+
+                return json.data;
             },
             error: function () {
                 toastr.error("Có lỗi xảy ra khi tải dữ liệu", null, { timeOut: 3000, positionClass: "toast-top-right" });

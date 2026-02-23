@@ -24,7 +24,7 @@
             dataType: "json",
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function (result) { debugger
                 if (result.success === true) {
                     HideProductCreateModal();
                     // Reload lại Datatable
