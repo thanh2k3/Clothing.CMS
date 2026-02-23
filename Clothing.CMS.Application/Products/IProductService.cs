@@ -7,7 +7,8 @@ namespace Clothing.CMS.Application.Products
 {
 	public interface IProductService
 	{
-		Task<BaseResponse<ICollection<ProductDto>>> GetAll();
+		//Task<BaseResponse<ICollection<ProductDto>>> GetAll();
+		Task<PagedResponseDto<IEnumerable<ProductDto>>> GetAllPaging(ProductPagedRequestDto input);
 		Task<BaseResponse<EditProductDto>> GetById(int id);
 		Task<BaseResponse<ProductDto>> GetByIdIncluding(int id);
 		Task<BaseResponse<bool>> CreateAsync(CreateProductDto model, IFormFile? image);

@@ -34,15 +34,28 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 			return View();
 		}
 
-		public async Task<JsonResult> GetData()
+		public async Task<JsonResult> GetData([FromQuery] ProductPagedRequestDto input)
 		{
 			try
 			{
-				var response = await _productService.GetAll();
-				var productVM = _mapper.Map<ICollection<ProductViewModel>>(response.Data);
+				var response = await _productService.GetAllPaging(input);
 
-				_logger.LogInformation(response.Message);
-				return Json(productVM);
+				if (response == null || response.Items == null)
+				{
+					return Json(new { success = false, message = "Không tìm thấy dữ liệu sản phẩm" });
+				}
+
+				var productVMs = _mapper.Map<IEnumerable<ProductViewModel>>(response.Items);
+
+				return Json( new 
+				{ success = true, data = productVMs, paging = new
+					{
+						currentPage = response.PageNumber,
+						pageSize = response.PageSize,
+						totalCount = response.TotalCount,
+						keyword = response.KeyWord
+					}
+				});
 			}
 			catch (Exception ex)
 			{
@@ -50,6 +63,23 @@ namespace Clothing.CMS.Web.Areas.Admin.Controllers
 				return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
 			}
 		}
+
+		//public async Task<JsonResult> GetData()
+		//{
+		//	try
+		//	{
+		//		var response = await _productService.GetAll();
+		//		var productVM = _mapper.Map<ICollection<ProductViewModel>>(response.Data);
+
+		//		_logger.LogInformation(response.Message);
+		//		return Json(productVM);
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		_logger.LogError(ex.Message);
+		//		return Json(new { success = false, message = "Có lỗi xảy ra khi tải dữ liệu" });
+		//	}
+		//}
 
 		[HttpPost]
 		public async Task<JsonResult> Create(CreateProductViewModel model, IFormFile? image)

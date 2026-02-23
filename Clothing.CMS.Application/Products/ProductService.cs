@@ -3,6 +3,7 @@ using Clothing.CMS.Application.Common.Dto;
 using Clothing.CMS.Application.Products.Dto;
 using Clothing.CMS.Application.Services;
 using Clothing.CMS.Entities;
+using Clothing.CMS.EntityFrameworkCore.Pattern;
 using Clothing.CMS.EntityFrameworkCore.Pattern.Repositories;
 using Clothing.Shared;
 using Microsoft.AspNetCore.Hosting;
@@ -10,43 +11,77 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Clothing.CMS.Application.Products
 {
 	public class ProductService : BaseService, IProductService
 	{
 		private readonly IRepository<Product> _repo;
+		private readonly CMSDbContext _context;
 		private readonly IMapper _mapper;
+		private readonly ILogger _logger;
 		private readonly IHostingEnvironment _environment;
+
 
 		public ProductService(
 			IRepository<Product> repo,
+			CMSDbContext context,
 			IMapper mapper,
+			ILogger<ProductService> logger,
 			IHostingEnvironment environment,
 			IHttpContextAccessor httpContextAccessor,
 			ITempDataDictionaryFactory tempDataDictionaryFactory) : base(httpContextAccessor, tempDataDictionaryFactory)
 		{
 			_repo = repo;
+			_context = context;
 			_mapper = mapper;
+			_logger = logger;
 			_environment = environment;
 		}
 
-		public async Task<BaseResponse<ICollection<ProductDto>>> GetAll()
+		//public async Task<BaseResponse<ICollection<ProductDto>>> GetAll()
+		//{
+		//	try
+		//	{
+		//		var result = await _repo.GetAllIncluding(x => x.Category)
+		//			.Where(x => x.Status == StatusActivity.Active || x.Status == StatusActivity.ActiveInternal)
+		//			.OrderByDescending(x => x.Id)
+		//			.ToListAsync();
+
+		//		var productDto = _mapper.Map<ICollection<ProductDto>>(result);
+
+		//		return BaseResponse<ICollection<ProductDto>>.Ok(productDto, "Lấy danh sách sản phẩm thành công");
+		//	}
+		//	catch (Exception ex)
+		//	{
+		//		throw new Exception(ex.Message);
+		//	}
+		//}
+
+		public async Task<PagedResponseDto<IEnumerable<ProductDto>>> GetAllPaging(ProductPagedRequestDto input)
 		{
 			try
 			{
-				var result = await _repo.GetAllIncluding(x => x.Category)
-					.Where(x => x.Status == StatusActivity.Active || x.Status == StatusActivity.ActiveInternal)
-					.OrderByDescending(x => x.Id)
-					.ToListAsync();
+				var query = _context.Set<Product>()
+					.Where(x => string.IsNullOrEmpty(input.KeyWord) || x.Name.Contains(input.KeyWord));
 
-				var productDto = _mapper.Map<ICollection<ProductDto>>(result);
+				var totalCount = await query.CountAsync();
+				var list = await query.Skip(input.SkipCount).Take(input.PageSize).ToListAsync();
 
-				return BaseResponse<ICollection<ProductDto>>.Ok(productDto, "Lấy danh sách sản phẩm thành công");
+				var data = _mapper.Map<IEnumerable<ProductDto>>(list);
+				var result = new PagedResponseDto<IEnumerable<ProductDto>>(data, input.PageNumber, input.PageSize, totalCount, input.KeyWord);
+
+				_logger.LogInformation("Lấy sản phẩm phân trang: Page {Page}, Size {Size}, Keyword: {Keyword}",
+					input.PageNumber, input.PageSize, input.KeyWord);
+
+				return result;
 			}
 			catch (Exception ex)
 			{
-				throw new Exception(ex.Message);
+				_logger.LogError(ex, "Lỗi khi lấy danh sách sản phẩm phân trang");
+				throw;
 			}
 		}
 
